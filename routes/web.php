@@ -1,19 +1,10 @@
 <?php
 
+use App\Http\Controllers\CommentsController;
+use App\Http\Controllers\PostsController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
-
-/*
-|--------------------------------------------------------------------------
-| Web Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider within a group which
-| contains the "web" middleware group. Now create something great!
-|
-*/
 
 Route::get('/', function () {
     return Inertia::render('Welcome', [
@@ -27,5 +18,21 @@ Route::get('/', function () {
 Route::get('/dashboard', function () {
     return Inertia::render('Dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
+
+//Need to add auth middleware once front end complete
+//Also need to reinstate CSRF
+Route::prefix('posts')->group(function() {
+    Route::post('create', [PostsController::class, 'createPost']);
+    Route::delete('delete/{id}', [PostsController::class, 'deletePost']);
+    Route::post('update', [PostsController::class, 'updatePost']);
+});
+
+//Need to add auth middleware once front end complete
+//Also need to reinstate CSRF
+Route::prefix('comments')->group(function() {
+    Route::post('create', [CommentsController::class, 'createComment']);
+    Route::delete('delete', [CommentsController::class, 'deleteComment']);
+    Route::post('update', [CommentsController::class, 'updateComment']);
+});
 
 require __DIR__.'/auth.php';

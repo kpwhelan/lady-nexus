@@ -6,8 +6,32 @@ use App\Models\Post;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class PostsController extends Controller {
+    public function getPosts(): JsonResponse {
+        // $posts = DB::table('posts')
+        // ->select('*', 'posts.id as post_id', 'categories.name as category_name', 'users.id as user_table_id', 'categories.id as category_table_id')
+        // ->leftJoin('users', 'user_id', '=', 'users.id')
+        // ->leftJoin('categories', 'category_id', '=', 'categories.id')
+        // ->take(100)
+        // ->orderBy('posts.created_at', 'desc')
+        // ->get();
+
+        $posts = Post::with(['user', 'category', 'comments'])->take(100)->orderBy('created_at', 'desc')->get();
+
+        // foreach ($posts as $post) {
+        //     $post->comment_count = Post::find($post->post_id)->comments()->count();
+        // }
+
+
+        return response()->json([
+            'status' => 'Success',
+            'code'   => 200,
+            'posts'  => $posts,
+        ]);
+    }
+
     public function createPost(Request $request): JsonResponse {
         $request->validate([
             'post' => 'required|string',

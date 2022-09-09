@@ -2,21 +2,16 @@ import React, { useEffect, useState } from 'react';
 import Authenticated from '@/Layouts/Authenticated';
 import { Head } from '@inertiajs/inertia-react';
 import axios from 'axios';
-import WelcomePost from '@/Components/WelcomePost';
+import Post from '@/Components/Post';
 
 export default function Dashboard(props) {
     const [welcomePosts, setWelcomePosts] = useState([]);
-    const [showWelcomePosts, setShowWelcomePosts] = useState(true);
 
     useEffect(() => {
         console.log(showWelcomePosts)
         axios.get('/posts')
         .then(response => setWelcomePosts(response.data.posts));
     }, [])
-
-    function toggleShowWelcomePosts() {
-        setShowWelcomePosts(!showWelcomePosts);
-    }
 
     return (
         <Authenticated
@@ -25,11 +20,10 @@ export default function Dashboard(props) {
         >
             <Head title="Dashboard" />
 
-            {showWelcomePosts ? (
-                welcomePosts.map(post => (
-                    <WelcomePost key={post.id} post={post} toggleShowWelcomePosts={toggleShowWelcomePosts} />
-                ))
-                ) : (<div></div>)}
+            {welcomePosts.map(post => (
+                <Post key={post.id} post={post} />
+            ))}
+
         </Authenticated>
     );
 }

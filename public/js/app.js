@@ -4763,7 +4763,7 @@ function Post(_ref) {
         className: "inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2 cursor-pointer transition ease-in-out delay-110 hover:-translate-y-1 hover:scale-110 hover:bg-sage hover:text-white duration-300",
         children: [post.comments.length, " comments"]
       })]
-    }), console.log(showComments), showComments ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)(_CommentsContainer__WEBPACK_IMPORTED_MODULE_1__["default"], {
+    }), showComments ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)(_CommentsContainer__WEBPACK_IMPORTED_MODULE_1__["default"], {
       comments: post.comments
     }) : /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("div", {})]
   });

@@ -27,8 +27,6 @@ function Post({ post }) {
             <span onClick={toggleSetShowComment} className="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2 cursor-pointer transition ease-in-out delay-110 hover:-translate-y-1 hover:scale-110 hover:bg-sage hover:text-white duration-300">{post.comments.length} comments</span>
         </div>
 
-        {console.log(showComments)}
-
         {showComments ? (
             <CommentsContainer comments={post.comments} />
         ) : (<div></div>)}

@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import CommentsContainer from './CommentsContainer';
+import CommentsContainer from './CommentsContainer'
 
 function Post({ post }) {
     const [showComments, setShowComments] = useState(false);

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Comment;
+use App\Models\User;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -78,6 +79,16 @@ class CommentsController extends Controller {
             'status'  => 'Success',
             'code'    => 200,
             'message' => 'Comment updated!'
+        ]);
+    }
+
+    public function getUserFromComment($id): JsonResponse {
+        $user = User::find($id)->toArray();
+
+        return response()->json([
+            'status' => 'Success',
+            'code'   => 200,
+            'user'   => $user
         ]);
     }
 }

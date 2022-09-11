@@ -37,6 +37,7 @@ Route::prefix('comments')->group(function() {
     Route::post('create', [CommentsController::class, 'createComment']);
     Route::delete('delete', [CommentsController::class, 'deleteComment']);
     Route::post('update', [CommentsController::class, 'updateComment']);
+    Route::get('user/{id}', [CommentsController::class, 'getUserFromComment']);
 });
 
 require __DIR__.'/auth.php';

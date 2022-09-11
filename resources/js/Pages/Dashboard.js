@@ -8,7 +8,6 @@ export default function Dashboard(props) {
     const [welcomePosts, setWelcomePosts] = useState([]);
 
     useEffect(() => {
-        console.log(showWelcomePosts)
         axios.get('/posts')
         .then(response => setWelcomePosts(response.data.posts));
     }, [])

@@ -13255,9 +13255,20 @@ function CommentsContainer(_ref) {
       post_id: post_id,
       setPosts: setPosts
     }), comments.map(function (comment) {
-      return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_Comment__WEBPACK_IMPORTED_MODULE_1__["default"], {
-        comment: comment
-      }, comment.id);
+      return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
+        className: "bg-sage/25 m-3 p-3 rounded",
+        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("p", {
+          className: "text-gray-700 text-sm",
+          children: new Date(comment.created_at).toLocaleDateString('en-us', {
+            weekday: "long",
+            year: "numeric",
+            month: "short",
+            day: "numeric"
+          })
+        }, comment.created_at), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_Comment__WEBPACK_IMPORTED_MODULE_1__["default"], {
+          comment: comment
+        }, comment.id)]
+      });
     })]
   });
 }

@@ -7,15 +7,17 @@ use App\Models\User;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Redirect;
+use Inertia\Inertia;
 
 class CommentsController extends Controller {
     public function createComment(Request $request) {
         $request->validate([
-            'comment' => 'required|string',
+            'comment_body' => 'required|string',
         ]);
 
         $comment          = new Comment();
-        $comment->comment = $request->comment;
+        $comment->comment = $request->comment_body;
         $comment->post_id = $request->post_id;
         $comment->user_id = Auth::user()->id;
 
@@ -27,11 +29,7 @@ class CommentsController extends Controller {
             ]);
         }
 
-        return response()->json([
-            'status'  => 'Success',
-            'code'    => 201,
-            'message' => 'Comment added successfully!'
-        ]);
+        return Redirect::route('dashboard');
     }
 
     public function deleteComment(int $id): JsonResponse {

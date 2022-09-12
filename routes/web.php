@@ -34,7 +34,7 @@ Route::prefix('posts')->group(function() {
 //Need to add auth middleware once front end complete
 //Also need to reinstate CSRF
 Route::prefix('comments')->group(function() {
-    Route::post('create', [CommentsController::class, 'createComment']);
+    Route::post('create', [CommentsController::class, 'createComment'])->name('post-comment');
     Route::delete('delete', [CommentsController::class, 'deleteComment']);
     Route::post('update', [CommentsController::class, 'updateComment']);
     Route::get('user/{id}', [CommentsController::class, 'getUserFromComment']);

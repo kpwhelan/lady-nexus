@@ -9,6 +9,7 @@ export default function Input({
     required,
     isFocused,
     handleChange,
+    placeholder,
 }) {
     const input = useRef();
 
@@ -20,7 +21,22 @@ export default function Input({
 
     return (
         <div className="flex flex-col items-start">
-            <input
+            {type === 'textarea' ? (
+                <textarea
+                name={name}
+                value={value}
+                className={
+                    `border-gray-300 focus:border-sage focus:ring focus:ring-sage focus:ring-opacity-50 rounded-md shadow-sm ` +
+                    className
+                }
+                ref={input}
+                autoComplete={autoComplete}
+                required={required}
+                onChange={(e) => handleChange(e)}
+                placeholder={placeholder}
+                ></textarea>
+            ) :
+            (<input
                 type={type}
                 name={name}
                 value={value}
@@ -32,7 +48,7 @@ export default function Input({
                 autoComplete={autoComplete}
                 required={required}
                 onChange={(e) => handleChange(e)}
-            />
+            />)}
         </div>
     );
 }

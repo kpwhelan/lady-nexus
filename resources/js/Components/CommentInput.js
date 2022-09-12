@@ -1,6 +1,6 @@
 import { useForm } from '@inertiajs/inertia-react';
 import { data } from 'autoprefixer'
-import React from 'react'
+import React, { useState } from 'react'
 import Input from './Input'
 import Button from './Button';
 
@@ -9,6 +9,8 @@ function CommentInput({ setPosts, post_id }) {
         comment_body: '',
         post_id: post_id
     });
+    const [ serverError, setServerError ] = useState('');
+    const [ displayServerError, setDisplayServerError ] = useState(false);
 
     const onHandleChange = (event) => {
         setData(event.target.name, event.target.type === 'checkbox' ? event.target.checked : event.target.value);
@@ -21,6 +23,14 @@ function CommentInput({ setPosts, post_id }) {
             onSuccess: () => {
                 setPosts();
                 data.comment_body = '';
+            },
+            onError: error => {
+                setServerError(error.message);
+                setDisplayServerError(true);
+
+                setTimeout(() => {
+                    setDisplayServerError(false)
+                }, 5000);
             }
         });
     };
@@ -43,6 +53,10 @@ function CommentInput({ setPosts, post_id }) {
             <Button className="mt-1" processing={processing}>
                 Post
             </Button>
+
+            {displayServerError &&
+                <p className='bg-red-500/75 text-white mt-2 w-fit'>{serverError}</p>
+            }
         </form>
     </div>
   )

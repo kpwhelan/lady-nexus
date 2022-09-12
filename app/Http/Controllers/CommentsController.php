@@ -22,11 +22,7 @@ class CommentsController extends Controller {
         $comment->user_id = Auth::user()->id;
 
         if (!$comment->save()) {
-            return response()->json([
-                'status' => 'Failed',
-                'code'   => 500,
-                'message' => 'Something went wrong, please try again',
-            ]);
+            return back()->withErrors(['message' => 'Something went wrong, please try again.']);
         }
 
         return Redirect::route('dashboard');

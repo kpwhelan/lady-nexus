@@ -826,6 +826,11 @@ select {
 .w-3\/4 {
   width: 75%;
 }
+.w-fit {
+  width: -webkit-fit-content;
+  width: -moz-fit-content;
+  width: fit-content;
+}
 .max-w-xl {
   max-width: 36rem;
 }
@@ -1008,6 +1013,15 @@ select {
 }
 .bg-sage\/25 {
   background-color: rgb(95 125 84 / 0.25);
+}
+.bg-red-500\/25 {
+  background-color: rgb(239 68 68 / 0.25);
+}
+.bg-red-500\/50 {
+  background-color: rgb(239 68 68 / 0.5);
+}
+.bg-red-500\/75 {
+  background-color: rgb(239 68 68 / 0.75);
 }
 .p-6 {
   padding: 1.5rem;

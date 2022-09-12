@@ -4,9 +4,10 @@ import React from 'react'
 import Input from './Input'
 import Button from './Button';
 
-function CommentInput() {
+function CommentInput({ setPosts, post_id }) {
     const { data, setData, post, processing, errors, reset } = useForm({
         comment_body: '',
+        post_id: post_id
     });
 
     const onHandleChange = (event) => {
@@ -16,7 +17,12 @@ function CommentInput() {
     const submit = (e) => {
         e.preventDefault();
 
-        post(route('comment/create'));
+        post(route('post-comment'), {
+            onSuccess: () => {
+                setPosts();
+                data.comment_body = '';
+            }
+        });
     };
 
   return (

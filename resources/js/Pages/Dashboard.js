@@ -5,11 +5,15 @@ import axios from 'axios';
 import Post from '@/Components/Post';
 
 export default function Dashboard(props) {
-    const [welcomePosts, setWelcomePosts] = useState([]);
+    const [posts, setPosts] = useState([]);
+
+    const fetchPosts = () => {
+        axios.get('/posts')
+        .then(response => setPosts(response.data.posts));
+    }
 
     useEffect(() => {
-        axios.get('/posts')
-        .then(response => setWelcomePosts(response.data.posts));
+        fetchPosts();
     }, [])
 
     return (
@@ -19,8 +23,8 @@ export default function Dashboard(props) {
         >
             <Head title="Dashboard" />
 
-            {welcomePosts.map(post => (
-                <Post key={post.id} post={post} />
+            {posts.map(post => (
+                <Post key={post.id} post={post} setPosts={fetchPosts} />
             ))}
 
         </Authenticated>

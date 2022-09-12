@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import CommentsContainer from './CommentsContainer'
 
-function Post({ post }) {
+function Post({ post, setPosts }) {
     const [showComments, setShowComments] = useState(false);
 
     function toggleSetShowComment() {
@@ -29,7 +29,7 @@ function Post({ post }) {
 
         {showComments ? (
             <>
-                <CommentsContainer comments={post.comments} />
+                <CommentsContainer comments={post.comments} setPosts={setPosts} post_id={post.id}/>
                 <button className='bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 ml-6 mb-2 cursor-pointer transition ease-in-out delay-110 hover:-translate-y-1 hover:scale-110 hover:bg-sage hover:text-white duration-300"' onClick={toggleSetShowComment}>Hide Comments</button>
             </>
         ) : (<div></div>)}

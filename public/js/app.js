@@ -13169,9 +13169,13 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-function CommentInput() {
+function CommentInput(_ref) {
+  var setPosts = _ref.setPosts,
+      post_id = _ref.post_id;
+
   var _useForm = (0,_inertiajs_inertia_react__WEBPACK_IMPORTED_MODULE_0__.useForm)({
-    comment_body: ''
+    comment_body: '',
+    post_id: post_id
   }),
       data = _useForm.data,
       setData = _useForm.setData,
@@ -13186,7 +13190,12 @@ function CommentInput() {
 
   var submit = function submit(e) {
     e.preventDefault();
-    post(route('comment/create'));
+    post(route('post-comment'), {
+      onSuccess: function onSuccess() {
+        setPosts();
+        data.comment_body = '';
+      }
+    });
   };
 
   return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("div", {
@@ -13238,9 +13247,14 @@ __webpack_require__.r(__webpack_exports__);
 
 
 function CommentsContainer(_ref) {
-  var comments = _ref.comments;
+  var comments = _ref.comments,
+      setPosts = _ref.setPosts,
+      post_id = _ref.post_id;
   return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
-    children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_CommentInput__WEBPACK_IMPORTED_MODULE_2__["default"], {}), comments.map(function (comment) {
+    children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_CommentInput__WEBPACK_IMPORTED_MODULE_2__["default"], {
+      post_id: post_id,
+      setPosts: setPosts
+    }), comments.map(function (comment) {
       return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_Comment__WEBPACK_IMPORTED_MODULE_1__["default"], {
         comment: comment
       }, comment.id);
@@ -13594,7 +13608,8 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
 
 function Post(_ref) {
-  var post = _ref.post;
+  var post = _ref.post,
+      setPosts = _ref.setPosts;
 
   var _useState = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(false),
       _useState2 = _slicedToArray(_useState, 2),
@@ -13632,7 +13647,9 @@ function Post(_ref) {
       })]
     }), showComments ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)(react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.Fragment, {
       children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)(_CommentsContainer__WEBPACK_IMPORTED_MODULE_1__["default"], {
-        comments: post.comments
+        comments: post.comments,
+        setPosts: setPosts,
+        post_id: post.id
       }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("button", {
         className: "bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 ml-6 mb-2 cursor-pointer transition ease-in-out delay-110 hover:-translate-y-1 hover:scale-110 hover:bg-sage hover:text-white duration-300\"",
         onClick: toggleSetShowComment,
@@ -14773,22 +14790,27 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 function Dashboard(props) {
   var _useState = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)([]),
       _useState2 = _slicedToArray(_useState, 2),
-      welcomePosts = _useState2[0],
-      setWelcomePosts = _useState2[1];
+      posts = _useState2[0],
+      setPosts = _useState2[1];
+
+  var fetchPosts = function fetchPosts() {
+    axios__WEBPACK_IMPORTED_MODULE_3___default().get('/posts').then(function (response) {
+      return setPosts(response.data.posts);
+    });
+  };
 
   (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(function () {
-    axios__WEBPACK_IMPORTED_MODULE_3___default().get('/posts').then(function (response) {
-      return setWelcomePosts(response.data.posts);
-    });
+    fetchPosts();
   }, []);
   return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxs)(_Layouts_Authenticated__WEBPACK_IMPORTED_MODULE_1__["default"], {
     auth: props.auth,
     errors: props.errors,
     children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)(_inertiajs_inertia_react__WEBPACK_IMPORTED_MODULE_2__.Head, {
       title: "Dashboard"
-    }), welcomePosts.map(function (post) {
+    }), posts.map(function (post) {
       return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)(_Components_Post__WEBPACK_IMPORTED_MODULE_4__["default"], {
-        post: post
+        post: post,
+        setPosts: fetchPosts
       }, post.id);
     })]
   });

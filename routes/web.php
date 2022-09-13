@@ -35,8 +35,8 @@ Route::prefix('posts')->group(function() {
 //Also need to reinstate CSRF
 Route::prefix('comments')->group(function() {
     Route::post('create', [CommentsController::class, 'createComment'])->name('post-comment');
-    Route::delete('delete', [CommentsController::class, 'deleteComment']);
-    Route::post('update', [CommentsController::class, 'updateComment']);
+    Route::delete('delete/{id}', [CommentsController::class, 'deleteComment'])->name('delete-comment');
+    Route::post('update', [CommentsController::class, 'updateComment'])->name('post-update-comment');
     Route::get('user/{id}', [CommentsController::class, 'getUserFromComment']);
 });
 

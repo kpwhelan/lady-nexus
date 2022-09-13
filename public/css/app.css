@@ -715,6 +715,9 @@ select {
 .ml-6 {
   margin-left: 1.5rem;
 }
+.mr-1 {
+  margin-right: 0.25rem;
+}
 .block {
   display: block;
 }
@@ -759,6 +762,21 @@ select {
 }
 .h-10 {
   height: 2.5rem;
+}
+.max-h-8 {
+  max-height: 2rem;
+}
+.max-h-14 {
+  max-height: 3.5rem;
+}
+.max-h-16 {
+  max-height: 4rem;
+}
+.max-h-80 {
+  max-height: 20rem;
+}
+.max-h-96 {
+  max-height: 24rem;
 }
 .min-h-screen {
   min-height: 100vh;
@@ -825,6 +843,11 @@ select {
 }
 .w-3\/4 {
   width: 75%;
+}
+.w-fit {
+  width: -webkit-fit-content;
+  width: -moz-fit-content;
+  width: fit-content;
 }
 .max-w-xl {
   max-width: 36rem;
@@ -930,6 +953,12 @@ select {
 .rounded-full {
   border-radius: 9999px;
 }
+.rounded-sm {
+  border-radius: 0.125rem;
+}
+.rounded-lg {
+  border-radius: 0.5rem;
+}
 .rounded-l-md {
   border-top-left-radius: 0.375rem;
   border-bottom-left-radius: 0.375rem;
@@ -1008,6 +1037,15 @@ select {
 }
 .bg-sage\/25 {
   background-color: rgb(95 125 84 / 0.25);
+}
+.bg-red-500\/25 {
+  background-color: rgb(239 68 68 / 0.25);
+}
+.bg-red-500\/50 {
+  background-color: rgb(239 68 68 / 0.5);
+}
+.bg-red-500\/75 {
+  background-color: rgb(239 68 68 / 0.75);
 }
 .p-6 {
   padding: 1.5rem;

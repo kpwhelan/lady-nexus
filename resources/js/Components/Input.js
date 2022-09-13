@@ -10,6 +10,7 @@ export default function Input({
     isFocused,
     handleChange,
     placeholder,
+    id
 }) {
     const input = useRef();
 
@@ -34,6 +35,7 @@ export default function Input({
                 required={required}
                 onChange={(e) => handleChange(e)}
                 placeholder={placeholder}
+                id={id}
                 ></textarea>
             ) :
             (<input

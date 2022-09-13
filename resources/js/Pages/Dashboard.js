@@ -24,7 +24,7 @@ export default function Dashboard(props) {
             <Head title="Dashboard" />
 
             {posts.map(post => (
-                <Post key={post.id} post={post} setPosts={fetchPosts} />
+                <Post key={post.id} post={post} currentUser={props.auth.user} setPosts={fetchPosts} />
             ))}
 
         </Authenticated>

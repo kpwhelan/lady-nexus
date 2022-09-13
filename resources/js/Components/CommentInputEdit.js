@@ -3,11 +3,12 @@ import React, { useEffect, useState, useRef } from 'react'
 import Input from './Input'
 import Button from './Button';
 
-function CommentInput({ setPosts, post_id }) {
+function CommentInput({ setPosts, existingComment, commentId, toggleSetDisplayEditBox }) {
     const { data, setData, post, processing, errors, reset } = useForm({
         comment_body: '',
-        post_id: post_id
+        comment_id: commentId
     });
+
     const [ serverError, setServerError ] = useState('');
     const [ displayServerError, setDisplayServerError ] = useState(false);
 
@@ -15,13 +16,20 @@ function CommentInput({ setPosts, post_id }) {
         setData(event.target.name, event.target.type === 'checkbox' ? event.target.checked : event.target.value);
     };
 
+    useEffect(() => {
+        if (existingComment) {
+            const commentEditBox = document.querySelector(`#commend_edit_${commentId}`);
+            commentEditBox, commentEditBox.textContent = existingComment
+        }
+    }, [])
+
     const submit = (e) => {
         e.preventDefault();
 
-        post(route('post-comment'), {
+        post(route('post-update-comment'), {
             onSuccess: () => {
                 setPosts();
-                data.comment_body = '';
+                toggleSetDisplayEditBox(false);
             },
             onError: error => {
                 setServerError(error.message);
@@ -32,6 +40,7 @@ function CommentInput({ setPosts, post_id }) {
                 }, 5000);
             }
         });
+
     };
 
   return (
@@ -47,6 +56,7 @@ function CommentInput({ setPosts, post_id }) {
                 handleChange={onHandleChange}
                 placeholder="Comment..."
                 required
+                id={`commend_edit_${commentId}`}
             />
 
             <Button className="mt-1" processing={processing}>

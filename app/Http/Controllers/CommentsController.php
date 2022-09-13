@@ -8,7 +8,6 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
-use Inertia\Inertia;
 
 class CommentsController extends Controller {
     public function createComment(Request $request) {
@@ -48,32 +47,20 @@ class CommentsController extends Controller {
         ]);
     }
 
-    public function updateComment(Request $request): JsonResponse {
-        $comment = Comment::find($request->id);
+    public function updateComment(Request $request) {
+        $comment = Comment::find($request->comment_id);
 
         if (!$comment) {
-            return response()->json([
-                'status'  => 'Not Found',
-                'code'    => 404,
-                'message' => 'Hmmm we can\'t seem to find that comment...',
-            ]);
+            return back()->withErrors(['message' => 'Hmmm we can\'t seem to find that comment...']);
         }
 
-        $comment->comment = $request->comment;
+        $comment->comment = $request->comment_body;
 
         if (!$comment->save()) {
-            return response()->json([
-                'status'  => 'Failed',
-                'code'    => 500,
-                'message' => 'Something went wrong, please try again',
-            ]);
+            return back()->withErrors(['message' => 'Something went wrong, please try again.']);
         }
 
-        return response()->json([
-            'status'  => 'Success',
-            'code'    => 200,
-            'message' => 'Comment updated!'
-        ]);
+        return Redirect::route('dashboard');
     }
 
     public function getUserFromComment($id): JsonResponse {

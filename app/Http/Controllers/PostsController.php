@@ -7,6 +7,7 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Redirect;
 
 class PostsController extends Controller {
     public function getPosts(): JsonResponse {
@@ -32,28 +33,22 @@ class PostsController extends Controller {
         ]);
     }
 
-    public function createPost(Request $request): JsonResponse {
-        $request->validate([
-            'post' => 'required|string',
+    public function createPost(Request $request) {
+        $validated = $request->validate([
+            'post_body' => 'required',
+            'category_id' => 'required'
         ]);
 
-        $post          = new Post();
-        $post->post    = $request->post;
-        $post->user_id = Auth::user()->id;
+        $post             = new Post();
+        $post->post       = $request->post_body;
+        $post->category_id = $request->category_id;
+        $post->user_id    = Auth::user()->id;
 
         if (!$post->save()) {
-            return response()->json([
-                'status'  => 'Failed',
-                'code'    => 500,
-                'message' => 'Something went wrong, please try again',
-            ]);
+            return back()->withErrors(['message' => 'Something went wrong, please try again.']);
         }
 
-        return response()->json([
-            'status'  => 'Success',
-            'code'    => 201,
-            'message' => 'Post created',
-        ]);
+        return Redirect::route('dashboard');
     }
 
     public function deletePost(int $id): JsonResponse {

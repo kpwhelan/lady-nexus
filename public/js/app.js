@@ -5185,7 +5185,8 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
 
 function PostForm(_ref) {
-  var categories = _ref.categories;
+  var categories = _ref.categories,
+      className = _ref.className;
 
   var _useForm = (0,_inertiajs_inertia_react__WEBPACK_IMPORTED_MODULE_1__.useForm)({
     post_body: '',
@@ -5286,6 +5287,7 @@ function PostForm(_ref) {
   };
 
   return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxs)("form", {
+    className: className,
     onSubmit: submit,
     children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)(_Label__WEBPACK_IMPORTED_MODULE_4__["default"], {
       forInput: "post_body",
@@ -6551,9 +6553,15 @@ function MyPosts(props) {
       user = _useState4[0],
       setUser = _useState4[1];
 
+  var _useState5 = (0,react__WEBPACK_IMPORTED_MODULE_4__.useState)([]),
+      _useState6 = _slicedToArray(_useState5, 2),
+      categories = _useState6[0],
+      setCategories = _useState6[1];
+
   (0,react__WEBPACK_IMPORTED_MODULE_4__.useEffect)(function () {
     setPosts(props.posts);
     setUser(props.auth.user);
+    setCategories(props.categories);
   }, []);
   return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxs)(_Layouts_Authenticated__WEBPACK_IMPORTED_MODULE_2__["default"], {
     auth: props.auth,
@@ -6573,8 +6581,10 @@ function MyPosts(props) {
       }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxs)("div", {
         className: "flex-initial w-1/3 mr-2 mt-5",
         children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxs)("p", {
+          className: "bg-white rounded-xl p-2 max-w-fit mb-1",
           children: [user.first_name, " ", user.last_name]
         }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxs)("p", {
+          className: "bg-white rounded-xl p-2 max-w-fit mb-1",
           children: ["Joined: ", new Date(user.created_at).toLocaleDateString('en-us', {
             weekday: "long",
             year: "numeric",
@@ -6582,16 +6592,23 @@ function MyPosts(props) {
             day: "numeric"
           })]
         }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxs)("p", {
+          className: "bg-white rounded-xl p-2 max-w-fit mb-1",
           children: [props.posts.length, " posts"]
         }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxs)("p", {
+          className: "bg-white rounded-xl p-2 max-w-fit mb-1",
           children: [props.comment_count, " comments"]
+        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)(_Components_PostForm__WEBPACK_IMPORTED_MODULE_1__["default"], {
+          className: "mt-4",
+          categories: categories
         })]
       })]
     }) : /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxs)("div", {
       children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("p", {
         className: "text-lg mx-auto",
         children: "You haven't posted anything yet..."
-      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)(_Components_PostForm__WEBPACK_IMPORTED_MODULE_1__["default"], {})]
+      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)(_Components_PostForm__WEBPACK_IMPORTED_MODULE_1__["default"], {
+        categories: categories
+      })]
     })]
   });
 }

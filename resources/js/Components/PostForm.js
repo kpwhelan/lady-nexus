@@ -4,7 +4,7 @@ import Input from './Input';
 import Button from './Button';
 import Label from './Label';
 
-function PostForm({ categories }) {
+function PostForm({ categories, className }) {
     const { data, setData, post, processing, errors, reset } = useForm({
         post_body: '',
         category_id: ''
@@ -85,7 +85,7 @@ function PostForm({ categories }) {
     };
 
   return (
-        <form onSubmit={submit}>
+        <form className={className} onSubmit={submit}>
             <Label forInput="post_body" value="Post Something Awesome" className={"text-lg"}/>
             <Input
                 type="textarea"

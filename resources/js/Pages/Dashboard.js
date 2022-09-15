@@ -33,7 +33,6 @@ export default function Dashboard(props) {
                 <div className='flex-initial w-1/3 mr-2 mt-5'>
                     <PostForm categories={props.categories} />
                 </div>
-
             </div>
 
         </Authenticated>

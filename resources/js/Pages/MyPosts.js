@@ -7,10 +7,12 @@ import React, { useEffect, useState } from 'react'
 function MyPosts(props) {
     const [posts, setPosts] = useState([]);
     const [user, setUser] = useState([]);
+    const [categories, setCategories] = useState([]);
 
     useEffect(() => {
         setPosts(props.posts)
         setUser(props.auth.user)
+        setCategories(props.categories)
     },[]);
 
   return (
@@ -29,10 +31,12 @@ function MyPosts(props) {
                     </div>
 
                     <div className='flex-initial w-1/3 mr-2 mt-5'>
-                        <p>{user.first_name} {user.last_name}</p>
-                        <p>Joined: {new Date(user.created_at).toLocaleDateString('en-us', { weekday:"long", year:"numeric", month:"short", day:"numeric"})}</p>
-                        <p>{props.posts.length} posts</p>
-                        <p>{props.comment_count} comments</p>
+                        <p className='bg-white rounded-xl p-2 max-w-fit mb-1'>{user.first_name} {user.last_name}</p>
+                        <p className='bg-white rounded-xl p-2 max-w-fit mb-1'>Joined: {new Date(user.created_at).toLocaleDateString('en-us', { weekday:"long", year:"numeric", month:"short", day:"numeric"})}</p>
+                        <p className='bg-white rounded-xl p-2 max-w-fit mb-1'>{props.posts.length} posts</p>
+                        <p className='bg-white rounded-xl p-2 max-w-fit mb-1'>{props.comment_count} comments</p>
+
+                        <PostForm className="mt-4" categories={categories} />
                     </div>
                 </div>
             )
@@ -40,9 +44,11 @@ function MyPosts(props) {
             (
                 <div>
                     <p className='text-lg mx-auto'>You haven't posted anything yet...</p>
-                    <PostForm />
+                    <PostForm categories={categories} />
                 </div>
             )
+
+
         }
     </Authenticated>
   )

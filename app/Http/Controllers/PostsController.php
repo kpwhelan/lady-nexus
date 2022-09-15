@@ -2,12 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Category;
+use App\Models\Comment;
 use App\Models\Post;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redirect;
+use Inertia\Inertia;
 
 class PostsController extends Controller {
     public function getPosts(): JsonResponse {
@@ -34,7 +37,7 @@ class PostsController extends Controller {
     }
 
     public function createPost(Request $request) {
-        $validated = $request->validate([
+        $request->validate([
             'post_body' => 'required',
             'category_id' => 'required'
         ]);
@@ -48,7 +51,7 @@ class PostsController extends Controller {
             return back()->withErrors(['message' => 'Something went wrong, please try again.']);
         }
 
-        return Redirect::route('dashboard');
+        return Redirect::route('my-posts');
     }
 
     public function deletePost(int $id): JsonResponse {
@@ -98,6 +101,18 @@ class PostsController extends Controller {
             'status'  => 'Success',
             'code'    => 200,
             'message' => 'Post updated!'
+        ]);
+    }
+
+    public function getMyPosts() {
+        $my_posts = Post::where('user_id', Auth::user()->id)->with(['user', 'category', 'comments'])->get();
+        $categories = Category::all();
+        $my_comment_count = Comment::where('user_id', Auth::user()->id)->count();
+
+        return Inertia::render('MyPosts', [
+            'posts' => $my_posts,
+            'categories' => $categories,
+            'comment_count' => $my_comment_count,
         ]);
     }
 }

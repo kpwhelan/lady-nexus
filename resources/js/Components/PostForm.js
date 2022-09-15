@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react'
-import { useForm, usePage } from '@inertiajs/inertia-react';
+import { useForm } from '@inertiajs/inertia-react';
 import Input from './Input';
 import Button from './Button';
 import Label from './Label';
@@ -9,10 +9,6 @@ function PostForm({ categories }) {
         post_body: '',
         category_id: ''
     });
-
-    const { validationErrors } = usePage().props
-
-    console.log(validationErrors)
 
     const [isCategorySelected, setIsCategorySelected] = useState(false);
     const [categoryId, setCategoryId] = useState(null);
@@ -89,7 +85,6 @@ function PostForm({ categories }) {
     };
 
   return (
-    <div className='flex-initial w-1/3 mr-2 mt-5'>
         <form onSubmit={submit}>
             <Label forInput="post_body" value="Post Something Awesome" className={"text-lg"}/>
             <Input
@@ -117,8 +112,6 @@ function PostForm({ categories }) {
                 <p className='bg-red-500/75 text-white mt-2 p-2 w-fit'>{serverError}</p>
             }
         </form>
-
-    </div>
   )
 }
 

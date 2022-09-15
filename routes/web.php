@@ -29,6 +29,7 @@ Route::prefix('posts')->group(function() {
     Route::post('create', [PostsController::class, 'createPost'])->name('create-post');
     Route::delete('delete/{id}', [PostsController::class, 'deletePost']);
     Route::post('update', [PostsController::class, 'updatePost']);
+    Route::get('my-posts', [PostsController::class, 'getMyPosts'])->name('my-posts');
 });
 
 //Need to add auth middleware once front end complete

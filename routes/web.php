@@ -19,16 +19,17 @@ Route::get('/', function () {
 Route::get('/dashboard', function () {
     $categories = Category::all();
 
-    return Inertia::render('Dashboard', ['category_count' => $categories]);
+    return Inertia::render('Dashboard', ['categories' => $categories]);
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 //Need to add auth middleware once front end complete
 //Also need to reinstate CSRF
 Route::prefix('posts')->group(function() {
     Route::get('/', [PostsController::class, 'getPosts'])->middleware(['auth']);
-    Route::post('create', [PostsController::class, 'createPost']);
+    Route::post('create', [PostsController::class, 'createPost'])->name('create-post');
     Route::delete('delete/{id}', [PostsController::class, 'deletePost']);
     Route::post('update', [PostsController::class, 'updatePost']);
+    Route::get('my-posts', [PostsController::class, 'getMyPosts'])->name('my-posts');
 });
 
 //Need to add auth middleware once front end complete

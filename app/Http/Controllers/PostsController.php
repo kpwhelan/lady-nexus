@@ -2,11 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Category;
+use App\Models\Comment;
 use App\Models\Post;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Redirect;
+use Inertia\Inertia;
 
 class PostsController extends Controller {
     public function getPosts(): JsonResponse {
@@ -32,28 +36,22 @@ class PostsController extends Controller {
         ]);
     }
 
-    public function createPost(Request $request): JsonResponse {
+    public function createPost(Request $request) {
         $request->validate([
-            'post' => 'required|string',
+            'post_body' => 'required',
+            'category_id' => 'required'
         ]);
 
-        $post          = new Post();
-        $post->post    = $request->post;
-        $post->user_id = Auth::user()->id;
+        $post             = new Post();
+        $post->post       = $request->post_body;
+        $post->category_id = $request->category_id;
+        $post->user_id    = Auth::user()->id;
 
         if (!$post->save()) {
-            return response()->json([
-                'status'  => 'Failed',
-                'code'    => 500,
-                'message' => 'Something went wrong, please try again',
-            ]);
+            return back()->withErrors(['message' => 'Something went wrong, please try again.']);
         }
 
-        return response()->json([
-            'status'  => 'Success',
-            'code'    => 201,
-            'message' => 'Post created',
-        ]);
+        return Redirect::route('my-posts');
     }
 
     public function deletePost(int $id): JsonResponse {
@@ -103,6 +101,18 @@ class PostsController extends Controller {
             'status'  => 'Success',
             'code'    => 200,
             'message' => 'Post updated!'
+        ]);
+    }
+
+    public function getMyPosts() {
+        $my_posts = Post::where('user_id', Auth::user()->id)->with(['user', 'category', 'comments'])->get();
+        $categories = Category::all();
+        $my_comment_count = Comment::where('user_id', Auth::user()->id)->count();
+
+        return Inertia::render('MyPosts', [
+            'posts' => $my_posts,
+            'categories' => $categories,
+            'comment_count' => $my_comment_count,
         ]);
     }
 }

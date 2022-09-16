@@ -14,20 +14,7 @@ use Inertia\Inertia;
 
 class PostsController extends Controller {
     public function getPosts(): JsonResponse {
-        // $posts = DB::table('posts')
-        // ->select('*', 'posts.id as post_id', 'categories.name as category_name', 'users.id as user_table_id', 'categories.id as category_table_id')
-        // ->leftJoin('users', 'user_id', '=', 'users.id')
-        // ->leftJoin('categories', 'category_id', '=', 'categories.id')
-        // ->take(100)
-        // ->orderBy('posts.created_at', 'desc')
-        // ->get();
-
         $posts = Post::with(['user', 'category', 'comments'])->take(100)->orderBy('created_at', 'desc')->get();
-
-        // foreach ($posts as $post) {
-        //     $post->comment_count = Post::find($post->post_id)->comments()->count();
-        // }
-
 
         return response()->json([
             'status' => 'Success',
@@ -54,14 +41,15 @@ class PostsController extends Controller {
         return Redirect::route('my-posts');
     }
 
-    public function deletePost(int $id): JsonResponse {
+    public function deletePost(int $id) {
         $post = Post::find($id);
 
         if (!$post) {
             return response()->json([
                 'status'  => 'Not Found',
                 'code'    => 404,
-                'message' => 'Hmmm we can\'t seem to find that post...',
+                'message' => 'Hmmm we\'re having trouble deleting that post...',
+                'post_id' => $id
             ]);
         }
 
@@ -104,13 +92,21 @@ class PostsController extends Controller {
         ]);
     }
 
+    public function retrieveMyPosts() {
+        $my_posts = Post::where('user_id', Auth::user()->id)->with(['user', 'category', 'comments'])->orderBy('created_at', 'desc')->get();
+
+        return response()->json([
+            'status' => 'Success',
+            'code'   => 200,
+            'posts'  => $my_posts,
+        ]);
+    }
+
     public function getMyPosts() {
-        $my_posts = Post::where('user_id', Auth::user()->id)->with(['user', 'category', 'comments'])->get();
         $categories = Category::all();
         $my_comment_count = Comment::where('user_id', Auth::user()->id)->count();
 
         return Inertia::render('MyPosts', [
-            'posts' => $my_posts,
             'categories' => $categories,
             'comment_count' => $my_comment_count,
         ]);

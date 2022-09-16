@@ -4554,7 +4554,7 @@ function CommentInput(_ref) {
         placeholder: "Comment...",
         required: true
       }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_Button__WEBPACK_IMPORTED_MODULE_3__["default"], {
-        className: "mt-1",
+        className: "my-1",
         processing: processing,
         children: "Post"
       }), displayServerError && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("p", {
@@ -5092,12 +5092,31 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 function Post(_ref) {
   var post = _ref.post,
       setPosts = _ref.setPosts,
-      currentUser = _ref.currentUser;
+      currentUser = _ref.currentUser,
+      fetchPosts = _ref.fetchPosts;
 
   var _useState = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(false),
       _useState2 = _slicedToArray(_useState, 2),
       showComments = _useState2[0],
       setShowComments = _useState2[1];
+
+  var _useState3 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(false),
+      _useState4 = _slicedToArray(_useState3, 2),
+      displayEditBox = _useState4[0],
+      setDisplayEditBox = _useState4[1];
+
+  var _useState5 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(false),
+      _useState6 = _slicedToArray(_useState5, 2),
+      displayError = _useState6[0],
+      setDisplayError = _useState6[1];
+
+  var toggleSetDisplayEditBox = function toggleSetDisplayEditBox() {
+    if (displayEditBox) {
+      setDisplayEditBox(false);
+    } else if (!displayEditBox) {
+      setDisplayEditBox(true);
+    }
+  };
 
   function toggleSetShowComment() {
     if (!showComments) {
@@ -5107,16 +5126,61 @@ function Post(_ref) {
     }
   }
 
+  var deletePost = function deletePost() {
+    axios["delete"]("/posts/delete/".concat(post.id)).then(function (response) {
+      if (response.status == 200) {
+        // setPosts()
+        if (fetchPosts) {
+          fetchPosts();
+        } else if (setPosts) {
+          setPosts();
+        }
+      } else if (response.status == 404) {
+        setError(response.message);
+        setDisplayError(true);
+        setTimeout(function () {
+          setDisplayError(false);
+        }, 5000);
+      }
+    });
+  };
+
   return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("div", {
     className: "max-h-96 w-100 bg-white rounded overflow-scroll shadow-lg m-5 transition ease-in-out delay-110 hover:-translate-y-2 hover:scale-102",
     children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("div", {
       className: "px-6 py-4",
       children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("div", {
         className: "font-bold text-xl mb-2",
-        children: [post.user.first_name, " ", post.user.last_name]
+        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("p", {
+          children: [post.user.first_name, " ", post.user.last_name]
+        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("p", {
+          className: "text-sm font-normal",
+          children: new Date(post.created_at).toLocaleDateString('en-us', {
+            weekday: "long",
+            year: "numeric",
+            month: "short",
+            day: "numeric"
+          })
+        })]
       }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("p", {
         className: "text-gray-700 text-base",
         children: post.post
+      }), currentUser.id === post.user_id && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("div", {
+        className: "mt-2",
+        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("button", {
+          id: post.id,
+          onClick: toggleSetDisplayEditBox,
+          className: "text-sm mr-1",
+          children: "Edit"
+        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("button", {
+          id: post.id,
+          onClick: deletePost,
+          className: "text-sm ml-1",
+          children: "Delete"
+        })]
+      }), displayError && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("p", {
+        className: "bg-red-500/75 text-white mt-2 w-fit",
+        children: serverError
       })]
     }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("div", {
       className: "px-6 pt-4 pb-2",
@@ -6558,8 +6622,14 @@ function MyPosts(props) {
       categories = _useState6[0],
       setCategories = _useState6[1];
 
+  var fetchPosts = function fetchPosts() {
+    axios.get('/posts/fetch-my-posts').then(function (response) {
+      return setPosts(response.data.posts);
+    });
+  };
+
   (0,react__WEBPACK_IMPORTED_MODULE_4__.useEffect)(function () {
-    setPosts(props.posts);
+    fetchPosts();
     setUser(props.auth.user);
     setCategories(props.categories);
   }, []);
@@ -6575,7 +6645,8 @@ function MyPosts(props) {
         children: posts.map(function (post) {
           return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)(_Components_Post__WEBPACK_IMPORTED_MODULE_0__["default"], {
             post: post,
-            currentUser: props.auth.user
+            currentUser: props.auth.user,
+            fetchPosts: fetchPosts
           }, post.id);
         })
       }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxs)("div", {
@@ -6593,7 +6664,7 @@ function MyPosts(props) {
           })]
         }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxs)("p", {
           className: "bg-white rounded-xl p-2 max-w-fit mb-1",
-          children: [props.posts.length, " posts"]
+          children: [posts.length, " posts"]
         }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxs)("p", {
           className: "bg-white rounded-xl p-2 max-w-fit mb-1",
           children: [props.comment_count, " comments"]

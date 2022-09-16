@@ -49,7 +49,7 @@ function CommentInput({ setPosts, post_id }) {
                 required
             />
 
-            <Button className="mt-1" processing={processing}>
+            <Button className="my-1" processing={processing}>
                 Post
             </Button>
 

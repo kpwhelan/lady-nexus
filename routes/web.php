@@ -24,17 +24,18 @@ Route::get('/dashboard', function () {
 
 //Need to add auth middleware once front end complete
 //Also need to reinstate CSRF
-Route::prefix('posts')->group(function() {
+Route::prefix('posts')->middleware(['auth', 'verified'])->group(function() {
     Route::get('/', [PostsController::class, 'getPosts'])->middleware(['auth']);
     Route::post('create', [PostsController::class, 'createPost'])->name('create-post');
-    Route::delete('delete/{id}', [PostsController::class, 'deletePost']);
+    Route::delete('delete/{id}', [PostsController::class, 'deletePost'])->name('delete-post');
     Route::post('update', [PostsController::class, 'updatePost']);
     Route::get('my-posts', [PostsController::class, 'getMyPosts'])->name('my-posts');
+    Route::get('fetch-my-posts', [PostsController::class, 'retrieveMyPosts']);
 });
 
 //Need to add auth middleware once front end complete
 //Also need to reinstate CSRF
-Route::prefix('comments')->group(function() {
+Route::prefix('comments')->middleware(['auth', 'verified'])->group(function() {
     Route::post('create', [CommentsController::class, 'createComment'])->name('post-comment');
     Route::delete('delete/{id}', [CommentsController::class, 'deleteComment'])->name('delete-comment');
     Route::post('update', [CommentsController::class, 'updateComment'])->name('post-update-comment');

@@ -62,7 +62,7 @@ function Post({ post, setPosts, currentUser, fetchPosts, categories }) {
                 </div>
             }
 
-            {displayEditBox && <PostFormEdit postData={post} categories={categories} previousCategoryId={post.category.id} toggleSetDisplayEditBox={toggleSetDisplayEditBox} setPosts={setPosts}/>}
+            {displayEditBox && <PostFormEdit postData={post} categories={categories} previousCategoryId={post.category.id} toggleSetDisplayEditBox={toggleSetDisplayEditBox} setPosts={setPosts} fetchPosts={fetchPosts}/>}
 
             {displayError &&
                 <p className='bg-red-500/75 text-white mt-2 w-fit'>{serverError}</p>

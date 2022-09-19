@@ -31,7 +31,7 @@ function MyPosts(props) {
                 <div className='flex justify-around'>
                     <div className='flex-initial w-2/3 max-h-screen overflow-scroll'>
                         {posts.map(post => (
-                            <Post key={post.id} post={post} currentUser={props.auth.user} fetchPosts={fetchPosts}/>
+                            <Post key={post.id} post={post} currentUser={props.auth.user} fetchPosts={fetchPosts} categories={props.categories} />
                         ))}
                     </div>
 

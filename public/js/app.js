@@ -5185,7 +5185,8 @@ function Post(_ref) {
         categories: categories,
         previousCategoryId: post.category.id,
         toggleSetDisplayEditBox: toggleSetDisplayEditBox,
-        setPosts: setPosts
+        setPosts: setPosts,
+        fetchPosts: fetchPosts
       }), displayError && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("p", {
         className: "bg-red-500/75 text-white mt-2 w-fit",
         children: serverError
@@ -5445,7 +5446,8 @@ function PostFormEdit(_ref) {
       categories = _ref.categories,
       previousCategoryId = _ref.previousCategoryId,
       toggleSetDisplayEditBox = _ref.toggleSetDisplayEditBox,
-      setPosts = _ref.setPosts;
+      setPosts = _ref.setPosts,
+      fetchPosts = _ref.fetchPosts;
 
   //variable 'post' here refers to the post body of the form, not the user's post
   var _useForm = (0,_inertiajs_inertia_react__WEBPACK_IMPORTED_MODULE_0__.useForm)({
@@ -5534,7 +5536,14 @@ function PostFormEdit(_ref) {
     post(route('post-update-post'), {
       onSuccess: function onSuccess() {
         toggleSetDisplayEditBox(false);
-        setPosts();
+
+        if (setPosts) {
+          setPosts();
+        }
+
+        if (fetchPosts) {
+          fetchPosts();
+        }
       },
       onError: function onError(error) {
         setServerError(error.message);
@@ -6839,7 +6848,8 @@ function MyPosts(props) {
           return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)(_Components_Post__WEBPACK_IMPORTED_MODULE_0__["default"], {
             post: post,
             currentUser: props.auth.user,
-            fetchPosts: fetchPosts
+            fetchPosts: fetchPosts,
+            categories: props.categories
           }, post.id);
         })
       }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxs)("div", {

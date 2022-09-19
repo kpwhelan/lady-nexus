@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react'
 import Input from './Input';
 import Button from './Button';
 
-function PostFormEdit({ className, postData, categories, previousCategoryId, toggleSetDisplayEditBox, setPosts }) {
+function PostFormEdit({ className, postData, categories, previousCategoryId, toggleSetDisplayEditBox, setPosts, fetchPosts }) {
     //variable 'post' here refers to the post body of the form, not the user's post
     const { data, setData, post, processing, errors, reset } = useForm({
         post_body: postData.post,
@@ -76,7 +76,9 @@ function PostFormEdit({ className, postData, categories, previousCategoryId, tog
         post(route('post-update-post'), {
             onSuccess: () => {
                 toggleSetDisplayEditBox(false);
-                setPosts();
+
+                if (setPosts) {setPosts()}
+                if (fetchPosts) {fetchPosts()}
             },
             onError: error => {
                 setServerError(error.message);

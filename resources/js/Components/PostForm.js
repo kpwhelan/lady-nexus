@@ -12,8 +12,8 @@ function PostForm({ categories, className }) {
 
     const [isCategorySelected, setIsCategorySelected] = useState(false);
     const [categoryId, setCategoryId] = useState(null);
-    const [ serverError, setServerError ] = useState('');
-    const [ displayServerError, setDisplayServerError ] = useState(false);
+    const [ error, setError ] = useState('');
+    const [ displayError, setDisplayError ] = useState(false);
 
     const onHandleChange = (event) => {
         setData(event.target.name, event.target.type === 'checkbox' ? event.target.checked : event.target.value);
@@ -70,15 +70,15 @@ function PostForm({ categories, className }) {
         post(route('create-post'), {
             onError: error => {
                 if (error.message) {
-                    setServerError(error.message);
-                    setDisplayServerError(true);
+                    setError(error.message);
+                    setDisplayError(true);
                 } else if (error.category_id) {
-                    setServerError('You have to select a category!')
-                    setDisplayServerError(true);
+                    setError('You have to select a category!')
+                    setDisplayError(true);
                 }
 
                 setTimeout(() => {
-                    setDisplayServerError(false)
+                    setDisplayError(false)
                 }, 5000);
             }
         });
@@ -108,8 +108,8 @@ function PostForm({ categories, className }) {
                 Post
             </Button>
 
-            {displayServerError &&
-                <p className='bg-red-500/75 text-white mt-2 p-2 w-fit'>{serverError}</p>
+            {displayError &&
+                <p className='bg-red-500/75 text-white mt-2 p-2 w-fit'>{error}</p>
             }
         </form>
   )

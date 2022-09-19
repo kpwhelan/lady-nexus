@@ -64,6 +64,11 @@ class PostsController extends Controller {
     }
 
     public function updatePost(Request $request) {
+        $request->validate([
+            'post_body' => 'required',
+            'category_id' => 'required'
+        ]);
+
         $post = Post::find($request->post_id);
 
         if (!$post) {

@@ -5284,13 +5284,13 @@ function PostForm(_ref) {
 
   var _useState5 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(''),
       _useState6 = _slicedToArray(_useState5, 2),
-      serverError = _useState6[0],
-      setServerError = _useState6[1];
+      error = _useState6[0],
+      setError = _useState6[1];
 
   var _useState7 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(false),
       _useState8 = _slicedToArray(_useState7, 2),
-      displayServerError = _useState8[0],
-      setDisplayServerError = _useState8[1];
+      displayError = _useState8[0],
+      setDisplayError = _useState8[1];
 
   var onHandleChange = function onHandleChange(event) {
     setData(event.target.name, event.target.type === 'checkbox' ? event.target.checked : event.target.value);
@@ -5345,15 +5345,15 @@ function PostForm(_ref) {
     post(route('create-post'), {
       onError: function onError(error) {
         if (error.message) {
-          setServerError(error.message);
-          setDisplayServerError(true);
+          setError(error.message);
+          setDisplayError(true);
         } else if (error.category_id) {
-          setServerError('You have to select a category!');
-          setDisplayServerError(true);
+          setError('You have to select a category!');
+          setDisplayError(true);
         }
 
         setTimeout(function () {
-          setDisplayServerError(false);
+          setDisplayError(false);
         }, 5000);
       }
     });
@@ -5394,9 +5394,9 @@ function PostForm(_ref) {
       className: "mt-1",
       processing: processing,
       children: "Post"
-    }), displayServerError && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("p", {
+    }), displayError && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("p", {
       className: "bg-red-500/75 text-white mt-2 p-2 w-fit",
-      children: serverError
+      children: error
     })]
   });
 }
@@ -5464,18 +5464,23 @@ function PostFormEdit(_ref) {
 
   var _useState = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)(false),
       _useState2 = _slicedToArray(_useState, 2),
-      displayServerError = _useState2[0],
-      setDisplayServerError = _useState2[1];
+      displayError = _useState2[0],
+      setDisplayError = _useState2[1];
 
-  var _useState3 = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)(false),
+  var _useState3 = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)(''),
       _useState4 = _slicedToArray(_useState3, 2),
-      isCategorySelected = _useState4[0],
-      setIsCategorySelected = _useState4[1];
+      error = _useState4[0],
+      setError = _useState4[1];
 
-  var _useState5 = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)(null),
+  var _useState5 = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)(false),
       _useState6 = _slicedToArray(_useState5, 2),
-      categoryId = _useState6[0],
-      setCategoryId = _useState6[1];
+      isCategorySelected = _useState6[0],
+      setIsCategorySelected = _useState6[1];
+
+  var _useState7 = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)(null),
+      _useState8 = _slicedToArray(_useState7, 2),
+      categoryId = _useState8[0],
+      setCategoryId = _useState8[1];
 
   var onHandleChange = function onHandleChange(event) {
     setData(event.target.name, event.target.type === 'checkbox' ? event.target.checked : event.target.value);
@@ -5546,10 +5551,16 @@ function PostFormEdit(_ref) {
         }
       },
       onError: function onError(error) {
-        setServerError(error.message);
-        setDisplayServerError(true);
+        if (error.message) {
+          setError(error.message);
+          setDisplayError(true);
+        } else if (error.category_id) {
+          setError('You have to select a category!');
+          setDisplayError(true);
+        }
+
         setTimeout(function () {
-          setDisplayServerError(false);
+          setDisplayError(false);
         }, 5000);
       }
     });
@@ -5586,9 +5597,9 @@ function PostFormEdit(_ref) {
       className: "mt-1 mr-1",
       processing: processing,
       children: "Post"
-    }), displayServerError && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("p", {
+    }), displayError && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("p", {
       className: "bg-red-500/75 text-white mt-2 p-2 w-fit",
-      children: serverError
+      children: error
     })]
   });
 }

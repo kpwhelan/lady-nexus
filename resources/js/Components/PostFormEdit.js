@@ -10,7 +10,8 @@ function PostFormEdit({ className, postData, categories, previousCategoryId, tog
         post_id: postData.id,
         category_id: previousCategoryId
     });
-    const [displayServerError, setDisplayServerError] = useState(false);
+    const [displayError, setDisplayError] = useState(false);
+    const [ error, setError ] = useState('');
     const [isCategorySelected, setIsCategorySelected] = useState(false);
     const [categoryId, setCategoryId] = useState(null);
 
@@ -81,11 +82,16 @@ function PostFormEdit({ className, postData, categories, previousCategoryId, tog
                 if (fetchPosts) {fetchPosts()}
             },
             onError: error => {
-                setServerError(error.message);
-                setDisplayServerError(true);
+                if (error.message) {
+                    setError(error.message);
+                    setDisplayError(true);
+                } else if (error.category_id) {
+                    setError('You have to select a category!')
+                    setDisplayError(true);
+                }
 
                 setTimeout(() => {
-                    setDisplayServerError(false)
+                    setDisplayError(false)
                 }, 5000);
             }
         });
@@ -114,8 +120,8 @@ function PostFormEdit({ className, postData, categories, previousCategoryId, tog
                 Post
             </Button>
 
-            {displayServerError &&
-                <p className='bg-red-500/75 text-white mt-2 p-2 w-fit'>{serverError}</p>
+            {displayError &&
+                <p className='bg-red-500/75 text-white mt-2 p-2 w-fit'>{error}</p>
             }
         </form>
   )

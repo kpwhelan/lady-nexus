@@ -19,7 +19,7 @@ function CommentInput({ setPosts, existingComment, commentId, toggleSetDisplayEd
     useEffect(() => {
         if (existingComment) {
             const commentEditBox = document.querySelector(`#commend_edit_${commentId}`);
-            commentEditBox, commentEditBox.textContent = existingComment
+            commentEditBox.textContent = existingComment
         }
     }, [])
 

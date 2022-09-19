@@ -1,10 +1,11 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import CommentsContainer from './CommentsContainer'
+import PostFormEdit from './PostFormEdit';
 
-function Post({ post, setPosts, currentUser, fetchPosts }) {
+function Post({ post, setPosts, currentUser, fetchPosts, categories }) {
     const [showComments, setShowComments] = useState(false);
     const [displayEditBox, setDisplayEditBox] = useState(false);
-    const [ displayError, setDisplayError ] = useState(false);
+    const [displayError, setDisplayError] = useState(false);
 
     const toggleSetDisplayEditBox = () => {
         if (displayEditBox) {
@@ -26,7 +27,6 @@ function Post({ post, setPosts, currentUser, fetchPosts }) {
         axios.delete(`/posts/delete/${post.id}`)
         .then(response => {
             if (response.status == 200) {
-                // setPosts()
                 if (fetchPosts) {
                     fetchPosts()
                 } else if (setPosts) {
@@ -61,6 +61,8 @@ function Post({ post, setPosts, currentUser, fetchPosts }) {
                     <button id={post.id} onClick={deletePost} className='text-sm ml-1'>Delete</button>
                 </div>
             }
+
+            {displayEditBox && <PostFormEdit postData={post} categories={categories} previousCategoryId={post.category.id} toggleSetDisplayEditBox={toggleSetDisplayEditBox} setPosts={setPosts}/>}
 
             {displayError &&
                 <p className='bg-red-500/75 text-white mt-2 w-fit'>{serverError}</p>

@@ -8,7 +8,6 @@ use App\Models\Post;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redirect;
 use Inertia\Inertia;
 
@@ -64,28 +63,23 @@ class PostsController extends Controller {
         ]);
     }
 
-    public function updatePost(Request $request): JsonResponse {
-        $post = Post::find($request->id);
+    public function updatePost(Request $request) {
+        $post = Post::find($request->post_id);
 
         if (!$post) {
-            return response()->json([
-                'status' => 'Not Found',
-                'code'   => 404,
-                'message' => 'Hmmm we can\'t seem to find that post...',
-            ]);
+            if (!$post->save()) {
+                return back()->withErrors(['message' => 'Something went wrong, please try again.']);
+            }
         }
 
-        $post->post = $request->post;
+        $post->post = $request->post_body;
+        $post->category_id = $request->category_id;
 
         if (!$post->save()) {
-            return response()->json([
-                'status'  => 'Failed',
-                'code'    => 500,
-                'message' => 'Something went wrong, please try again'
-            ]);
+            return back()->withErrors(['message' => 'Something went wrong, please try again.']);
         }
 
-        return response()->json([
+        return back()->with([
             'status'  => 'Success',
             'code'    => 200,
             'message' => 'Post updated!'

@@ -28,7 +28,7 @@ Route::prefix('posts')->middleware(['auth', 'verified'])->group(function() {
     Route::get('/', [PostsController::class, 'getPosts'])->middleware(['auth']);
     Route::post('create', [PostsController::class, 'createPost'])->name('create-post');
     Route::delete('delete/{id}', [PostsController::class, 'deletePost'])->name('delete-post');
-    Route::post('update', [PostsController::class, 'updatePost']);
+    Route::post('update', [PostsController::class, 'updatePost'])->name('post-update-post');
     Route::get('my-posts', [PostsController::class, 'getMyPosts'])->name('my-posts');
     Route::get('fetch-my-posts', [PostsController::class, 'retrieveMyPosts']);
 });

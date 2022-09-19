@@ -9,8 +9,13 @@ function MyPosts(props) {
     const [user, setUser] = useState([]);
     const [categories, setCategories] = useState([]);
 
+    const fetchPosts = () => {
+        axios.get('/posts/fetch-my-posts')
+        .then(response => setPosts(response.data.posts));
+    }
+
     useEffect(() => {
-        setPosts(props.posts)
+        fetchPosts();
         setUser(props.auth.user)
         setCategories(props.categories)
     },[]);
@@ -26,14 +31,14 @@ function MyPosts(props) {
                 <div className='flex justify-around'>
                     <div className='flex-initial w-2/3 max-h-screen overflow-scroll'>
                         {posts.map(post => (
-                            <Post key={post.id} post={post} currentUser={props.auth.user} />
+                            <Post key={post.id} post={post} currentUser={props.auth.user} fetchPosts={fetchPosts} categories={props.categories} />
                         ))}
                     </div>
 
                     <div className='flex-initial w-1/3 mr-2 mt-5'>
                         <p className='bg-white rounded-xl p-2 max-w-fit mb-1'>{user.first_name} {user.last_name}</p>
                         <p className='bg-white rounded-xl p-2 max-w-fit mb-1'>Joined: {new Date(user.created_at).toLocaleDateString('en-us', { weekday:"long", year:"numeric", month:"short", day:"numeric"})}</p>
-                        <p className='bg-white rounded-xl p-2 max-w-fit mb-1'>{props.posts.length} posts</p>
+                        <p className='bg-white rounded-xl p-2 max-w-fit mb-1'>{posts.length} posts</p>
                         <p className='bg-white rounded-xl p-2 max-w-fit mb-1'>{props.comment_count} comments</p>
 
                         <PostForm className="mt-4" categories={categories} />

@@ -26,7 +26,7 @@ export default function Dashboard(props) {
             <div className='flex justify-around'>
                 <div className='flex-initial w-2/3 max-h-screen overflow-scroll'>
                     {posts.map(post => (
-                        <Post key={post.id} post={post} currentUser={props.auth.user} setPosts={fetchPosts} />
+                        <Post key={post.id} post={post} currentUser={props.auth.user} setPosts={fetchPosts} categories={props.categories}/>
                     ))}
                 </div>
 

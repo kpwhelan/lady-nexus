@@ -4370,11 +4370,14 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
 
 
+
 function Comment(_ref) {
   var comment = _ref.comment,
       currentUser = _ref.currentUser,
       setPosts = _ref.setPosts,
-      post_id = _ref.post_id;
+      toggleSetModalOpen = _ref.toggleSetModalOpen,
+      commentIdToDelete = _ref.commentIdToDelete,
+      deleteCommentError = _ref.deleteCommentError;
 
   var _useState = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)([]),
       _useState2 = _slicedToArray(_useState, 2),
@@ -4396,6 +4399,13 @@ function Comment(_ref) {
       displayError = _useState8[0],
       setDisplayError = _useState8[1];
 
+  (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(function () {
+    if (deleteCommentError && comment.id == commentIdToDelete) {
+      setError(deleteCommentError);
+      setDisplayError(true);
+    }
+  }, [deleteCommentError]);
+
   var toggleSetDisplayEditBox = function toggleSetDisplayEditBox() {
     if (displayEditBox) {
       setDisplayEditBox(false);
@@ -4404,53 +4414,42 @@ function Comment(_ref) {
     }
   };
 
-  var deleteComment = function deleteComment() {
-    axios__WEBPACK_IMPORTED_MODULE_1___default()["delete"]("/comments/delete/".concat(comment.id)).then(function (response) {
-      if (response.status == 200) {
-        setPosts();
-      } else if (response.status == 404) {
-        setError(response.message);
-        setDisplayError(true);
-        setTimeout(function () {
-          setDisplayError(false);
-        }, 5000);
-      }
-    });
-  };
-
   (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(function () {
     axios__WEBPACK_IMPORTED_MODULE_1___default().get("/comments/user/".concat(comment.user_id)).then(function (response) {
       return setUser(response.data.user);
     });
   }, []);
-  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
-    className: "px-6 py-4",
-    children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("p", {
-      children: [user.first_name, " ", user.last_name]
-    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("p", {
-      className: "text-gray-700 text-base",
-      children: comment.comment
-    }), currentUser.id === comment.user_id && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
-      children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("button", {
-        id: comment.id,
-        onClick: toggleSetDisplayEditBox,
-        className: "text-sm mr-1",
-        children: "Edit"
-      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("button", {
-        id: comment.id,
-        onClick: deleteComment,
-        className: "text-sm ml-1",
-        children: "Delete"
-      }), displayError && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("p", {
-        className: "bg-red-500/75 text-white mt-2 w-fit",
-        children: serverError
+  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.Fragment, {
+    children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
+      className: "px-6 py-4",
+      children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("p", {
+        children: [user.first_name, " ", user.last_name]
+      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("p", {
+        className: "text-gray-700 text-base",
+        children: comment.comment
+      }), currentUser.id === comment.user_id && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
+        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("button", {
+          id: comment.id,
+          onClick: toggleSetDisplayEditBox,
+          className: "text-sm mr-1",
+          children: "Edit"
+        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("button", {
+          id: comment.id,
+          "data-type": "comment",
+          onClick: toggleSetModalOpen,
+          className: "text-sm ml-1",
+          children: "Delete"
+        }), displayError && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("p", {
+          className: "bg-red-500/75 text-white mt-2 p-2 w-fit rounded-lg",
+          children: error
+        })]
+      }), displayEditBox && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_CommentInputEdit__WEBPACK_IMPORTED_MODULE_2__["default"], {
+        existingComment: comment.comment,
+        setPosts: setPosts,
+        commentId: comment.id,
+        toggleSetDisplayEditBox: toggleSetDisplayEditBox
       })]
-    }), displayEditBox && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_CommentInputEdit__WEBPACK_IMPORTED_MODULE_2__["default"], {
-      existingComment: comment.comment,
-      setPosts: setPosts,
-      commentId: comment.id,
-      toggleSetDisplayEditBox: toggleSetDisplayEditBox
-    })]
+    })
   });
 }
 
@@ -4558,7 +4557,7 @@ function CommentInput(_ref) {
         processing: processing,
         children: "Post"
       }), displayServerError && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("p", {
-        className: "bg-red-500/75 text-white mt-2 w-fit",
+        className: "bg-red-500/75 text-white mt-2 w-fit rounded-lg",
         children: serverError
       })]
     })
@@ -4679,7 +4678,7 @@ function CommentInput(_ref) {
         processing: processing,
         children: "Post"
       }), displayServerError && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("p", {
-        className: "bg-red-500/75 text-white mt-2 w-fit",
+        className: "bg-red-500/75 text-white mt-2 w-fit rounded-lg",
         children: serverError
       })]
     })
@@ -4715,7 +4714,10 @@ function CommentsContainer(_ref) {
   var comments = _ref.comments,
       setPosts = _ref.setPosts,
       post_id = _ref.post_id,
-      currentUser = _ref.currentUser;
+      currentUser = _ref.currentUser,
+      toggleSetModalOpen = _ref.toggleSetModalOpen,
+      deleteCommentError = _ref.deleteCommentError,
+      commentIdToDelete = _ref.commentIdToDelete;
   return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
     children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_CommentInput__WEBPACK_IMPORTED_MODULE_2__["default"], {
       post_id: post_id,
@@ -4735,7 +4737,10 @@ function CommentsContainer(_ref) {
           currentUser: currentUser,
           comment: comment,
           setPosts: setPosts,
-          post_id: post_id
+          post_id: post_id,
+          toggleSetModalOpen: toggleSetModalOpen,
+          deleteCommentError: deleteCommentError,
+          commentIdToDelete: commentIdToDelete
         })]
       }, comment.id);
     })]
@@ -5027,6 +5032,109 @@ function LandingPageHeaderBar() {
 
 /***/ }),
 
+/***/ "./resources/js/Components/Modal.js":
+/*!******************************************!*\
+  !*** ./resources/js/Components/Modal.js ***!
+  \******************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
+
+
+
+
+function Modal(_ref) {
+  var toggleModal = _ref.toggleModal,
+      deletePost = _ref.deletePost,
+      deleteComment = _ref.deleteComment,
+      whatWeAreDeleting = _ref.whatWeAreDeleting;
+
+  var deleteItem = function deleteItem() {
+    if (deletePost) {
+      deletePost();
+    } else if (deleteComment) {
+      deleteComment();
+    }
+  };
+
+  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsxs)("div", {
+    className: "absolute inset-0 h-screen z-10",
+    "aria-labelledby": "modal-title",
+    role: "confirmation",
+    "aria-modal": "true",
+    children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("div", {
+      className: "fixed inset-0 min-h-full w-full bg-gray-500 bg-opacity-75 transition-opacity"
+    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("div", {
+      className: "fixed inset-0 w-full min-h-full overflow-visible",
+      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("div", {
+        className: "flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0",
+        children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsxs)("div", {
+          className: "transform rounded-lg bg-white text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg",
+          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("div", {
+            className: "bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4",
+            children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsxs)("div", {
+              className: "sm:flex sm:items-start",
+              children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("div", {
+                className: "mx-auto flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full bg-red-100 sm:mx-0 sm:h-10 sm:w-10",
+                children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("svg", {
+                  className: "h-6 w-6 text-red-600",
+                  xmlns: "http://www.w3.org/2000/svg",
+                  fill: "none",
+                  viewBox: "0 0 24 24",
+                  strokeWidth: "1.5",
+                  stroke: "currentColor",
+                  "aria-hidden": "true",
+                  children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("path", {
+                    strokeLinecap: "round",
+                    strokeLinejoin: "round",
+                    d: "M12 10.5v3.75m-9.303 3.376C1.83 19.126 2.914 21 4.645 21h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 4.88c-.866-1.501-3.032-1.501-3.898 0L2.697 17.626zM12 17.25h.007v.008H12v-.008z"
+                  })
+                })
+              }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsxs)("div", {
+                className: "mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left",
+                children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("h3", {
+                  className: "text-lg font-medium leading-6 text-gray-900",
+                  id: "modal-title",
+                  children: "Hold up..."
+                }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("div", {
+                  className: "mt-2",
+                  children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsxs)("p", {
+                    className: "text-sm text-gray-500",
+                    children: ["Are you sure you want to delete your ", whatWeAreDeleting, "?"]
+                  })
+                })]
+              })]
+            })
+          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsxs)("div", {
+            className: "bg-gray-50 px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6",
+            children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("button", {
+              type: "button",
+              onClick: deleteItem,
+              className: "inline-flex w-full justify-center rounded-md border border-transparent bg-red-600 px-4 py-2 text-base font-medium text-white shadow-sm hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 sm:ml-3 sm:w-auto sm:text-sm",
+              children: "Delete"
+            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("button", {
+              type: "button",
+              onClick: toggleModal,
+              className: "mt-3 inline-flex w-full justify-center rounded-md border border-gray-300 bg-white px-4 py-2 text-base font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm",
+              children: "Cancel"
+            })]
+          })]
+        })
+      })
+    })]
+  });
+}
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (Modal);
+
+/***/ }),
+
 /***/ "./resources/js/Components/NavLink.js":
 /*!********************************************!*\
   !*** ./resources/js/Components/NavLink.js ***!
@@ -5070,8 +5178,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 /* harmony import */ var _CommentsContainer__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./CommentsContainer */ "./resources/js/Components/CommentsContainer.js");
-/* harmony import */ var _PostFormEdit__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./PostFormEdit */ "./resources/js/Components/PostFormEdit.js");
-/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
+/* harmony import */ var _Modal__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./Modal */ "./resources/js/Components/Modal.js");
+/* harmony import */ var _PostFormEdit__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./PostFormEdit */ "./resources/js/Components/PostFormEdit.js");
+/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
 function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
 
 function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
@@ -5083,6 +5192,7 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
 function _iterableToArrayLimit(arr, i) { var _i = arr == null ? null : typeof Symbol !== "undefined" && arr[Symbol.iterator] || arr["@@iterator"]; if (_i == null) return; var _arr = []; var _n = true; var _d = false; var _s, _e; try { for (_i = _i.call(arr); !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
 
 function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
+
 
 
 
@@ -5113,6 +5223,41 @@ function Post(_ref) {
       displayError = _useState6[0],
       setDisplayError = _useState6[1];
 
+  var _useState7 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(false),
+      _useState8 = _slicedToArray(_useState7, 2),
+      modalOpen = _useState8[0],
+      setModalOpen = _useState8[1];
+
+  var _useState9 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(null),
+      _useState10 = _slicedToArray(_useState9, 2),
+      whatWeAreDeleting = _useState10[0],
+      setWhatAreWeDeleting = _useState10[1];
+
+  var _useState11 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(null),
+      _useState12 = _slicedToArray(_useState11, 2),
+      commentIdToDelete = _useState12[0],
+      setCommentIdToDelete = _useState12[1];
+
+  var _useState13 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(null),
+      _useState14 = _slicedToArray(_useState13, 2),
+      deleteCommentError = _useState14[0],
+      setDeleteCommentError = _useState14[1];
+
+  var toggleSetModalOpen = function toggleSetModalOpen(event) {
+    if (modalOpen) {
+      setWhatAreWeDeleting(null);
+      setModalOpen(false);
+
+      if (event.target && event.target.dataset.type == 'comment') {
+        setCommentIdToDelete(null);
+      }
+    } else if (!modalOpen) {
+      setWhatAreWeDeleting(event.target.dataset.type);
+      setModalOpen(true);
+      setCommentIdToDelete(event.target.id);
+    }
+  };
+
   var toggleSetDisplayEditBox = function toggleSetDisplayEditBox() {
     if (displayEditBox) {
       setDisplayEditBox(false);
@@ -5131,88 +5276,123 @@ function Post(_ref) {
 
   var deletePost = function deletePost() {
     axios["delete"]("/posts/delete/".concat(post.id)).then(function (response) {
-      if (response.status == 200) {
+      if (response.data.code == 404) {
+        setError(response.message);
+        setDisplayError(true);
+        toggleSetModalOpen(false);
+        setTimeout(function () {
+          setDisplayError(false);
+        }, 5000);
+      } else {
         if (fetchPosts) {
           fetchPosts();
         } else if (setPosts) {
           setPosts();
         }
-      } else if (response.status == 404) {
-        setError(response.message);
-        setDisplayError(true);
-        setTimeout(function () {
-          setDisplayError(false);
-        }, 5000);
       }
     });
   };
 
-  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
-    className: "max-h-96 w-100 bg-white rounded overflow-scroll shadow-lg m-5 transition ease-in-out delay-110 hover:-translate-y-2 hover:scale-102",
-    children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
-      className: "px-6 py-4",
-      children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
-        className: "font-bold text-xl mb-2",
-        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("p", {
-          children: [post.user.first_name, " ", post.user.last_name]
-        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("p", {
-          className: "text-sm font-normal",
-          children: new Date(post.created_at).toLocaleDateString('en-us', {
-            weekday: "long",
-            year: "numeric",
-            month: "short",
-            day: "numeric"
-          })
+  var deleteComment = function deleteComment() {
+    axios["delete"]("/comments/delete/".concat(commentIdToDelete)).then(function (response) {
+      if (response.data.code == 404) {
+        setDeleteCommentError(response.data.message);
+        toggleSetModalOpen(false);
+        setTimeout(function () {
+          setDisplayError(false);
+        }, 5000);
+      } else {
+        if (fetchPosts) {
+          fetchPosts();
+        } else if (setPosts) {
+          setPosts();
+        }
+
+        toggleSetModalOpen(false);
+      }
+    });
+  };
+
+  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)(react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.Fragment, {
+    children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("div", {
+      className: "max-h-96 w-100 bg-white rounded overflow-scroll shadow-lg m-5 transition ease-in-out delay-110 hover:-translate-y-2 hover:scale-102",
+      children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("div", {
+        className: "px-6 py-4",
+        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("div", {
+          className: "font-bold text-xl mb-2",
+          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("p", {
+            children: [post.user.first_name, " ", post.user.last_name]
+          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("p", {
+            className: "text-sm font-normal",
+            children: new Date(post.created_at).toLocaleDateString('en-us', {
+              weekday: "long",
+              year: "numeric",
+              month: "short",
+              day: "numeric"
+            })
+          })]
+        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("p", {
+          className: "text-gray-700 text-base",
+          children: post.post
+        }), currentUser.id === post.user_id && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("div", {
+          className: "mt-2",
+          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("button", {
+            id: post.id,
+            onClick: toggleSetDisplayEditBox,
+            className: "text-sm mr-1",
+            children: "Edit"
+          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("button", {
+            id: post.id,
+            "data-type": "post",
+            onClick: toggleSetModalOpen,
+            className: "text-sm ml-1",
+            children: "Delete"
+          })]
+        }), displayEditBox && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_PostFormEdit__WEBPACK_IMPORTED_MODULE_3__["default"], {
+          postData: post,
+          categories: categories,
+          previousCategoryId: post.category.id,
+          toggleSetDisplayEditBox: toggleSetDisplayEditBox,
+          setPosts: setPosts,
+          fetchPosts: fetchPosts
+        }), displayError && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("p", {
+          className: "bg-red-500/75 text-white mt-2 w-fit rounded-lg",
+          children: serverError
         })]
-      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("p", {
-        className: "text-gray-700 text-base",
-        children: post.post
-      }), currentUser.id === post.user_id && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
-        className: "mt-2",
-        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("button", {
-          id: post.id,
-          onClick: toggleSetDisplayEditBox,
-          className: "text-sm mr-1",
-          children: "Edit"
-        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("button", {
-          id: post.id,
-          onClick: deletePost,
-          className: "text-sm ml-1",
-          children: "Delete"
+      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("div", {
+        className: "px-6 pt-4 pb-2",
+        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("span", {
+          className: "inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2 cursor-default",
+          children: ["#", post.category.name]
+        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("span", {
+          onClick: toggleSetShowComment,
+          className: "inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2 cursor-pointer transition ease-in-out delay-110 hover:-translate-y-1 hover:scale-110 hover:bg-sage hover:text-white duration-300",
+          children: [post.comments.length, " ", post.comments.length == 1 ? 'comment' : 'comments']
         })]
-      }), displayEditBox && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_PostFormEdit__WEBPACK_IMPORTED_MODULE_2__["default"], {
-        postData: post,
-        categories: categories,
-        previousCategoryId: post.category.id,
-        toggleSetDisplayEditBox: toggleSetDisplayEditBox,
-        setPosts: setPosts,
-        fetchPosts: fetchPosts
-      }), displayError && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("p", {
-        className: "bg-red-500/75 text-white mt-2 w-fit",
-        children: serverError
-      })]
-    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
-      className: "px-6 pt-4 pb-2",
-      children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("span", {
-        className: "inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2 cursor-default",
-        children: ["#", post.category.name]
-      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("span", {
-        onClick: toggleSetShowComment,
-        className: "inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2 cursor-pointer transition ease-in-out delay-110 hover:-translate-y-1 hover:scale-110 hover:bg-sage hover:text-white duration-300",
-        children: [post.comments.length, " comments"]
-      })]
-    }), showComments ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)(react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.Fragment, {
-      children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_CommentsContainer__WEBPACK_IMPORTED_MODULE_1__["default"], {
-        comments: post.comments,
-        setPosts: setPosts,
-        post_id: post.id,
-        currentUser: currentUser
-      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("button", {
-        className: "bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 ml-6 mb-2 cursor-pointer transition ease-in-out delay-110 hover:-translate-y-1 hover:scale-110 hover:bg-sage hover:text-white duration-300\"",
-        onClick: toggleSetShowComment,
-        children: "Hide Comments"
-      })]
-    }) : /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("div", {})]
+      }), showComments ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)(react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.Fragment, {
+        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_CommentsContainer__WEBPACK_IMPORTED_MODULE_1__["default"], {
+          comments: post.comments,
+          setPosts: setPosts,
+          post_id: post.id,
+          currentUser: currentUser,
+          toggleSetModalOpen: toggleSetModalOpen,
+          deleteCommentError: deleteCommentError,
+          commentIdToDelete: commentIdToDelete
+        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("button", {
+          className: "bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 ml-6 mb-2 cursor-pointer transition ease-in-out delay-110 hover:-translate-y-1 hover:scale-110 hover:bg-sage hover:text-white duration-300\"",
+          onClick: toggleSetShowComment,
+          children: "Hide Comments"
+        })]
+      }) : /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("div", {})]
+    }), modalOpen && (whatWeAreDeleting == 'post' ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_Modal__WEBPACK_IMPORTED_MODULE_2__["default"], {
+      toggleModal: toggleSetModalOpen,
+      deletePost: deletePost,
+      whatWeAreDeleting: whatWeAreDeleting
+    }) : /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_Modal__WEBPACK_IMPORTED_MODULE_2__["default"], {
+      toggleModal: toggleSetModalOpen,
+      deleteComment: deleteComment,
+      whatWeAreDeleting: whatWeAreDeleting
+    }))]
   });
 }
 
@@ -5348,7 +5528,7 @@ function PostForm(_ref) {
           setError(error.message);
           setDisplayError(true);
         } else if (error.category_id) {
-          setError('You have to select a category!');
+          setDError('You have to select a category!');
           setDisplayError(true);
         }
 
@@ -5395,7 +5575,7 @@ function PostForm(_ref) {
       processing: processing,
       children: "Post"
     }), displayError && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("p", {
-      className: "bg-red-500/75 text-white mt-2 p-2 w-fit",
+      className: "bg-red-500/75 text-white mt-2 p-2 w-fit rounded-lg",
       children: error
     })]
   });
@@ -5598,7 +5778,7 @@ function PostFormEdit(_ref) {
       processing: processing,
       children: "Post"
     }), displayError && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("p", {
-      className: "bg-red-500/75 text-white mt-2 p-2 w-fit",
+      className: "bg-red-500/75 text-white mt-2 p-2 w-fit rounded-lg",
       children: error
     })]
   });
@@ -6835,6 +7015,19 @@ function MyPosts(props) {
       categories = _useState6[0],
       setCategories = _useState6[1];
 
+  var _useState7 = (0,react__WEBPACK_IMPORTED_MODULE_4__.useState)(false),
+      _useState8 = _slicedToArray(_useState7, 2),
+      modalOpen = _useState8[0],
+      setModalOpen = _useState8[1];
+
+  var toggleSetModalOpen = function toggleSetModalOpen() {
+    if (modalOpen) {
+      setModalOpen(false);
+    } else if (!modalOpen) {
+      setModalOpen(true);
+    }
+  };
+
   var fetchPosts = function fetchPosts() {
     axios.get('/posts/fetch-my-posts').then(function (response) {
       return setPosts(response.data.posts);
@@ -6886,13 +7079,25 @@ function MyPosts(props) {
           className: "mt-4",
           categories: categories
         })]
+      }), modalOpen && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)(Modal, {
+        toggleModal: toggleSetModalOpen,
+        deletePost: deletePost,
+        whatWeAreDelting: "post"
       })]
     }) : /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxs)("div", {
-      children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("p", {
-        className: "text-lg mx-auto",
-        children: "You haven't posted anything yet..."
-      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)(_Components_PostForm__WEBPACK_IMPORTED_MODULE_1__["default"], {
-        categories: categories
+      className: "flex justify-around",
+      children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("div", {
+        className: "flex-initial w-2/3 max-h-screen overflow-scroll",
+        children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("p", {
+          children: "No posts yet..."
+        })
+      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxs)("div", {
+        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("p", {
+          className: "text-lg mx-auto",
+          children: "You haven't posted anything yet..."
+        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)(_Components_PostForm__WEBPACK_IMPORTED_MODULE_1__["default"], {
+          categories: categories
+        })]
       })]
     })]
   });

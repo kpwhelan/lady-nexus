@@ -12,8 +12,8 @@ function PostForm({ categories, className }) {
 
     const [isCategorySelected, setIsCategorySelected] = useState(false);
     const [categoryId, setCategoryId] = useState(null);
-    const [ error, setError ] = useState('');
-    const [ displayError, setDisplayError ] = useState(false);
+    const [error, setError] = useState('');
+    const [displayError, setDisplayError] = useState(false);
 
     const onHandleChange = (event) => {
         setData(event.target.name, event.target.type === 'checkbox' ? event.target.checked : event.target.value);
@@ -73,7 +73,7 @@ function PostForm({ categories, className }) {
                     setError(error.message);
                     setDisplayError(true);
                 } else if (error.category_id) {
-                    setError('You have to select a category!')
+                    setDError ('You have to select a category!')
                     setDisplayError(true);
                 }
 
@@ -109,7 +109,7 @@ function PostForm({ categories, className }) {
             </Button>
 
             {displayError &&
-                <p className='bg-red-500/75 text-white mt-2 p-2 w-fit'>{error}</p>
+                <p className='bg-red-500/75 text-white mt-2 p-2 w-fit rounded-lg'>{error}</p>
             }
         </form>
   )

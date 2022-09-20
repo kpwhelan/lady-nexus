@@ -8,6 +8,15 @@ function MyPosts(props) {
     const [posts, setPosts] = useState([]);
     const [user, setUser] = useState([]);
     const [categories, setCategories] = useState([]);
+    const [modalOpen, setModalOpen] = useState(false);
+
+    const toggleSetModalOpen = () => {
+        if (modalOpen) {
+            setModalOpen(false)
+        } else if (!modalOpen) {
+            setModalOpen(true)
+        }
+    }
 
     const fetchPosts = () => {
         axios.get('/posts/fetch-my-posts')
@@ -43,13 +52,20 @@ function MyPosts(props) {
 
                         <PostForm className="mt-4" categories={categories} />
                     </div>
+
+                    {modalOpen && <Modal toggleModal={toggleSetModalOpen} deletePost={deletePost} whatWeAreDelting='post' />}
                 </div>
             )
             :
             (
-                <div>
-                    <p className='text-lg mx-auto'>You haven't posted anything yet...</p>
-                    <PostForm categories={categories} />
+                <div className='flex justify-around'>
+                    <div className='flex-initial w-2/3 max-h-screen overflow-scroll'>
+                            <p>No posts yet...</p>
+                    </div>
+                    <div>
+                        <p className='text-lg mx-auto'>You haven't posted anything yet...</p>
+                        <PostForm categories={categories} />
+                    </div>
                 </div>
             )
 

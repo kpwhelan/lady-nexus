@@ -90,7 +90,7 @@ function Post({ post, setPosts, currentUser, fetchPosts, categories }) {
         <div className="max-h-96 w-100 bg-white rounded overflow-scroll shadow-lg m-5 transition ease-in-out delay-110 hover:-translate-y-2 hover:scale-102">
             <div className="px-6 py-4">
                 <div className="font-bold text-xl mb-2">
-                    <p>{post.user.first_name} {post.user.last_name}</p>
+                    <p>{post.user.username}</p>
                     <p className='text-sm font-normal'>{new Date(post.created_at).toLocaleDateString('en-us', { weekday:"long", year:"numeric", month:"short", day:"numeric"})}</p>
                 </div>
 

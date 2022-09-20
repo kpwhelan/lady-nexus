@@ -64,7 +64,7 @@ function CommentInput({ setPosts, existingComment, commentId, toggleSetDisplayEd
             </Button>
 
             {displayServerError &&
-                <p className='bg-red-500/75 text-white mt-2 w-fit'>{serverError}</p>
+                <p className='bg-red-500/75 text-white mt-2 w-fit rounded-lg'>{serverError}</p>
             }
         </form>
     </div>

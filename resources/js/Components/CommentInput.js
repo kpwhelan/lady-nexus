@@ -1,9 +1,9 @@
 import { useForm } from '@inertiajs/inertia-react';
-import React, { useEffect, useState, useRef } from 'react'
+import React, { useState } from 'react'
 import Input from './Input'
 import Button from './Button';
 
-function CommentInput({ setPosts, post_id }) {
+function CommentInput({ setPosts, post_id  }) {
     const { data, setData, post, processing, errors, reset } = useForm({
         comment_body: '',
         post_id: post_id
@@ -54,7 +54,7 @@ function CommentInput({ setPosts, post_id }) {
             </Button>
 
             {displayServerError &&
-                <p className='bg-red-500/75 text-white mt-2 w-fit'>{serverError}</p>
+                <p className='bg-red-500/75 text-white mt-2 w-fit rounded-lg'>{serverError}</p>
             }
         </form>
     </div>

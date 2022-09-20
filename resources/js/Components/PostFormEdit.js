@@ -121,7 +121,7 @@ function PostFormEdit({ className, postData, categories, previousCategoryId, tog
             </Button>
 
             {displayError &&
-                <p className='bg-red-500/75 text-white mt-2 p-2 w-fit'>{error}</p>
+                <p className='bg-red-500/75 text-white mt-2 p-2 w-fit rounded-lg'>{error}</p>
             }
         </form>
   )

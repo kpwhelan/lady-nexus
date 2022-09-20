@@ -31,7 +31,7 @@ function Comment({ comment, currentUser, setPosts, toggleSetModalOpen, commentId
   return (
     <>
     <div className="px-6 py-4">
-        <p>{user.first_name} {user.last_name}</p>
+        <p>{user.username}</p>
         <p className="text-gray-700 text-base">{comment.comment}</p>
 
         {currentUser.id === comment.user_id &&

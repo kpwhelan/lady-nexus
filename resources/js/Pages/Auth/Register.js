@@ -10,6 +10,7 @@ export default function Register() {
     const { data, setData, post, processing, errors, reset } = useForm({
         first_name: '',
         last_name: '',
+        username: '',
         email: '',
         password: '',
         password_confirmation: '',
@@ -60,6 +61,21 @@ export default function Register() {
                         type="text"
                         name="last_name"
                         value={data.last_name}
+                        className="mt-1 block w-full"
+                        autoComplete="name"
+                        isFocused={true}
+                        handleChange={onHandleChange}
+                        required
+                    />
+                </div>
+
+                <div>
+                    <Label forInput="username" value="Username" />
+
+                    <Input
+                        type="text"
+                        name="username"
+                        value={data.username}
                         className="mt-1 block w-full"
                         autoComplete="name"
                         isFocused={true}

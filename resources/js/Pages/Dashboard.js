@@ -7,10 +7,21 @@ import PostForm from '@/Components/PostForm';
 
 export default function Dashboard(props) {
     const [posts, setPosts] = useState([]);
+    const [offset, setOffset] = useState(0);
 
     const fetchPosts = () => {
-        axios.get('/posts')
-        .then(response => setPosts(response.data.posts));
+        axios.get(`/posts/${offset}`)
+        .then(response => {
+            let newOffset = offset + 20;
+            setOffset(newOffset)
+            setPosts(posts => [...posts, ...response.data.posts]);
+        });
+    }
+
+    const handleScroll = (e) => {
+        if (e.target.scrollHeight - e.target.scrollTop === e.target.clientHeight) {
+            fetchPosts();
+        }
     }
 
     useEffect(() => {
@@ -24,9 +35,9 @@ export default function Dashboard(props) {
         >
             <Head title="Dashboard" />
             <div className='flex justify-around'>
-                <div className='flex-initial w-2/3 max-h-screen overflow-scroll'>
+                <div className='flex-initial w-2/3 max-h-screen overflow-scroll' onScroll={handleScroll}>
                     {posts.map(post => (
-                        <Post key={post.id} post={post} currentUser={props.auth.user} setPosts={fetchPosts} categories={props.categories} />
+                        <Post key={`post_${post.id}`} post={post} currentUser={props.auth.user} setPosts={fetchPosts} categories={props.categories} />
                     ))}
                 </div>
 

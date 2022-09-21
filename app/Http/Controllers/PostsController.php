@@ -12,8 +12,12 @@ use Illuminate\Support\Facades\Redirect;
 use Inertia\Inertia;
 
 class PostsController extends Controller {
-    public function getPosts(): JsonResponse {
-        $posts = Post::with(['user', 'category', 'comments'])->take(100)->orderBy('created_at', 'desc')->get();
+    public function getPosts($offset): JsonResponse {
+        $posts = Post::with(['user', 'category', 'comments'])
+            ->offset($offset)
+            ->limit(20)
+            ->orderBy('id', 'desc')
+            ->get();
 
         return response()->json([
             'status' => 'Success',

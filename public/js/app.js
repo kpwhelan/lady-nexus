@@ -5557,7 +5557,7 @@ function PostForm(_ref) {
       placeholder: "What's on your mind...?",
       required: true
     }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("div", {
-      className: "flex flex-wrap mt-1",
+      className: "flex flex-wrap mt-2",
       children: categories.map(function (category) {
         return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("span", {
           data: category.id,
@@ -6076,7 +6076,7 @@ function Authenticated(_ref) {
             children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("div", {
               className: "shrink-0 flex items-center",
               children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)(_inertiajs_inertia_react__WEBPACK_IMPORTED_MODULE_5__.Link, {
-                href: "/",
+                href: "/dashboard",
                 children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)(_Components_ApplicationLogo__WEBPACK_IMPORTED_MODULE_1__["default"], {
                   className: "block h-16 w-auto rounded-full"
                 })
@@ -6913,6 +6913,14 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _Components_Post__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @/Components/Post */ "./resources/js/Components/Post.js");
 /* harmony import */ var _Components_PostForm__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @/Components/PostForm */ "./resources/js/Components/PostForm.js");
 /* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
+function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }
+
+function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+
+function _iterableToArray(iter) { if (typeof Symbol !== "undefined" && iter[Symbol.iterator] != null || iter["@@iterator"] != null) return Array.from(iter); }
+
+function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) return _arrayLikeToArray(arr); }
+
 function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
 
 function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
@@ -6939,10 +6947,25 @@ function Dashboard(props) {
       posts = _useState2[0],
       setPosts = _useState2[1];
 
+  var _useState3 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(0),
+      _useState4 = _slicedToArray(_useState3, 2),
+      offset = _useState4[0],
+      setOffset = _useState4[1];
+
   var fetchPosts = function fetchPosts() {
-    axios__WEBPACK_IMPORTED_MODULE_3___default().get('/posts').then(function (response) {
-      return setPosts(response.data.posts);
+    axios__WEBPACK_IMPORTED_MODULE_3___default().get("/posts/".concat(offset)).then(function (response) {
+      var newOffset = offset + 20;
+      setOffset(newOffset);
+      setPosts(function (posts) {
+        return [].concat(_toConsumableArray(posts), _toConsumableArray(response.data.posts));
+      });
     });
+  };
+
+  var handleScroll = function handleScroll(e) {
+    if (e.target.scrollHeight - e.target.scrollTop === e.target.clientHeight) {
+      fetchPosts();
+    }
   };
 
   (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(function () {
@@ -6957,13 +6980,14 @@ function Dashboard(props) {
       className: "flex justify-around",
       children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("div", {
         className: "flex-initial w-2/3 max-h-screen overflow-scroll",
+        onScroll: handleScroll,
         children: posts.map(function (post) {
           return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)(_Components_Post__WEBPACK_IMPORTED_MODULE_4__["default"], {
             post: post,
             currentUser: props.auth.user,
             setPosts: fetchPosts,
             categories: props.categories
-          }, post.id);
+          }, "post_".concat(post.id));
         })
       }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("div", {
         className: "flex-initial w-1/3 mr-2 mt-5",
@@ -7086,10 +7110,10 @@ function MyPosts(props) {
           })]
         }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxs)("p", {
           className: "bg-white rounded-xl p-2 max-w-fit mb-1",
-          children: [posts.length, " posts"]
+          children: [posts.length, " ", posts.length == 1 ? 'post' : 'posts']
         }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxs)("p", {
           className: "bg-white rounded-xl p-2 max-w-fit mb-1",
-          children: [props.comment_count, " comments"]
+          children: [props.comment_count, " ", props.comment_count == 1 ? 'comment' : 'comments']
         }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)(_Components_PostForm__WEBPACK_IMPORTED_MODULE_1__["default"], {
           className: "mt-4",
           categories: categories

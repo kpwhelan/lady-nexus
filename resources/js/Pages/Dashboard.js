@@ -10,7 +10,9 @@ export default function Dashboard(props) {
     const [offset, setOffset] = useState(0);
 
     const fetchPosts = () => {
-        axios.get(`/posts/${offset}`)
+        axios.get(`/posts`, {params: {
+            offset: offset
+        }})
         .then(response => {
             let newOffset = offset + 20;
             setOffset(newOffset)

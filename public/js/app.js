@@ -6953,7 +6953,11 @@ function Dashboard(props) {
       setOffset = _useState4[1];
 
   var fetchPosts = function fetchPosts() {
-    axios__WEBPACK_IMPORTED_MODULE_3___default().get("/posts/".concat(offset)).then(function (response) {
+    axios__WEBPACK_IMPORTED_MODULE_3___default().get("/posts", {
+      params: {
+        offset: offset
+      }
+    }).then(function (response) {
       var newOffset = offset + 20;
       setOffset(newOffset);
       setPosts(function (posts) {

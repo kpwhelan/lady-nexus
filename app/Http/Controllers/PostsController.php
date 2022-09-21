@@ -12,7 +12,9 @@ use Illuminate\Support\Facades\Redirect;
 use Inertia\Inertia;
 
 class PostsController extends Controller {
-    public function getPosts($offset): JsonResponse {
+    public function getPosts(Request $request): JsonResponse {
+        $offset = $request->offset;
+
         $posts = Post::with(['user', 'category', 'comments'])
             ->offset($offset)
             ->limit(20)

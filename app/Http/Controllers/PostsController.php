@@ -97,8 +97,15 @@ class PostsController extends Controller {
         ]);
     }
 
-    public function retrieveMyPosts() {
-        $my_posts = Post::where('user_id', Auth::user()->id)->with(['user', 'category', 'comments'])->orderBy('created_at', 'desc')->get();
+    public function retrieveMyPosts(Request $request) {
+        $offset = $request->offset;
+
+        $my_posts = Post::where('user_id', Auth::user()->id)
+            ->with(['user', 'category', 'comments'])
+            ->offset($offset)
+            ->limit(20)
+            ->orderBy('id', 'desc')
+            ->get();
 
         return response()->json([
             'status' => 'Success',

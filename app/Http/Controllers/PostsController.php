@@ -12,7 +12,9 @@ use Illuminate\Support\Facades\Redirect;
 use Inertia\Inertia;
 
 class PostsController extends Controller {
-    public function getPosts($offset): JsonResponse {
+    public function getPosts(Request $request): JsonResponse {
+        $offset = $request->offset;
+
         $posts = Post::with(['user', 'category', 'comments'])
             ->offset($offset)
             ->limit(20)
@@ -95,8 +97,15 @@ class PostsController extends Controller {
         ]);
     }
 
-    public function retrieveMyPosts() {
-        $my_posts = Post::where('user_id', Auth::user()->id)->with(['user', 'category', 'comments'])->orderBy('created_at', 'desc')->get();
+    public function retrieveMyPosts(Request $request) {
+        $offset = $request->offset;
+
+        $my_posts = Post::where('user_id', Auth::user()->id)
+            ->with(['user', 'category', 'comments'])
+            ->offset($offset)
+            ->limit(20)
+            ->orderBy('id', 'desc')
+            ->get();
 
         return response()->json([
             'status' => 'Success',

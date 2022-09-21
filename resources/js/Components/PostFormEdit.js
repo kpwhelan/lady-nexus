@@ -33,6 +33,7 @@ function PostFormEdit({ className, postData, categories, previousCategoryId, tog
     const selectCategory = (categoryId) => {
         if (categoryId) {
             const category_element = document.querySelector(`#category_${categoryId}`);
+            const remainingCategories = document.querySelectorAll('.categories-post-form-edit');
 
             if (isCategorySelected) {
                 data.category_id = categoryId;
@@ -41,7 +42,6 @@ function PostFormEdit({ className, postData, categories, previousCategoryId, tog
                 category_element.classList.add('text-white')
                 category_element.classList.remove('bg-gray-200');
 
-                const remainingCategories = document.querySelectorAll('.categories');
                 remainingCategories.forEach(element => {
                     if (element.attributes.data.value != categoryId) {
                         element.style.display = 'none';
@@ -52,7 +52,6 @@ function PostFormEdit({ className, postData, categories, previousCategoryId, tog
                 category_element.classList.remove('bg-sage');
                 category_element.classList.remove('text-white')
                 category_element.classList.add('bg-gray-200');
-                const remainingCategories = document.querySelectorAll('.categories');
 
                 remainingCategories.forEach(element => {
                     if (element.attributes.data.value != categoryId) {
@@ -113,7 +112,7 @@ function PostFormEdit({ className, postData, categories, previousCategoryId, tog
 
             <div className='flex flex-wrap mt-1'>
                 {categories.map(category => (
-                    <span key={category.id} data={category.id} id={`category_${category.id}`} onClick={() => {toggleIsCategorySelected(); setCategoryId(category.id)}} className="categories inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2 cursor-pointer transition ease-in-out delay-110 hover:-translate-y-1 hover:scale-110 hover:bg-sage hover:text-white duration-300">{category.name}</span>
+                    <span key={category.id} data={category.id} id={`category_${category.id}`} onClick={() => {toggleIsCategorySelected(); setCategoryId(category.id)}} className="categories-post-form-edit inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2 cursor-pointer transition ease-in-out delay-110 hover:-translate-y-1 hover:scale-110 hover:bg-sage hover:text-white duration-300">{category.name}</span>
                 ))}
             </div>
              <Button className="mt-1 mr-1" processing={processing}>

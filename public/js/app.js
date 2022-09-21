@@ -5679,13 +5679,13 @@ function PostFormEdit(_ref) {
   var selectCategory = function selectCategory(categoryId) {
     if (categoryId) {
       var category_element = document.querySelector("#category_".concat(categoryId));
+      var remainingCategories = document.querySelectorAll('.categories-post-form-edit');
 
       if (isCategorySelected) {
         data.category_id = categoryId;
         category_element.classList.add('bg-sage');
         category_element.classList.add('text-white');
         category_element.classList.remove('bg-gray-200');
-        var remainingCategories = document.querySelectorAll('.categories');
         remainingCategories.forEach(function (element) {
           if (element.attributes.data.value != categoryId) {
             element.style.display = 'none';
@@ -5696,10 +5696,7 @@ function PostFormEdit(_ref) {
         category_element.classList.remove('bg-sage');
         category_element.classList.remove('text-white');
         category_element.classList.add('bg-gray-200');
-
-        var _remainingCategories = document.querySelectorAll('.categories');
-
-        _remainingCategories.forEach(function (element) {
+        remainingCategories.forEach(function (element) {
           if (element.attributes.data.value != categoryId) {
             element.style.display = 'inline';
           }
@@ -5769,7 +5766,7 @@ function PostFormEdit(_ref) {
             toggleIsCategorySelected();
             setCategoryId(category.id);
           },
-          className: "categories inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2 cursor-pointer transition ease-in-out delay-110 hover:-translate-y-1 hover:scale-110 hover:bg-sage hover:text-white duration-300",
+          className: "categories-post-form-edit inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2 cursor-pointer transition ease-in-out delay-110 hover:-translate-y-1 hover:scale-110 hover:bg-sage hover:text-white duration-300",
           children: category.name
         }, category.id);
       })
@@ -6953,7 +6950,11 @@ function Dashboard(props) {
       setOffset = _useState4[1];
 
   var fetchPosts = function fetchPosts() {
-    axios__WEBPACK_IMPORTED_MODULE_3___default().get("/posts/".concat(offset)).then(function (response) {
+    axios__WEBPACK_IMPORTED_MODULE_3___default().get("/posts", {
+      params: {
+        offset: offset
+      }
+    }).then(function (response) {
       var newOffset = offset + 20;
       setOffset(newOffset);
       setPosts(function (posts) {
@@ -7018,6 +7019,14 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _inertiajs_inertia_react__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @inertiajs/inertia-react */ "./node_modules/@inertiajs/inertia-react/dist/index.js");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 /* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
+function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }
+
+function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+
+function _iterableToArray(iter) { if (typeof Symbol !== "undefined" && iter[Symbol.iterator] != null || iter["@@iterator"] != null) return Array.from(iter); }
+
+function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) return _arrayLikeToArray(arr); }
+
 function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
 
 function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
@@ -7059,6 +7068,11 @@ function MyPosts(props) {
       modalOpen = _useState8[0],
       setModalOpen = _useState8[1];
 
+  var _useState9 = (0,react__WEBPACK_IMPORTED_MODULE_4__.useState)(0),
+      _useState10 = _slicedToArray(_useState9, 2),
+      offset = _useState10[0],
+      setOffset = _useState10[1];
+
   var toggleSetModalOpen = function toggleSetModalOpen() {
     if (modalOpen) {
       setModalOpen(false);
@@ -7068,8 +7082,16 @@ function MyPosts(props) {
   };
 
   var fetchPosts = function fetchPosts() {
-    axios.get('/posts/fetch-my-posts').then(function (response) {
-      return setPosts(response.data.posts);
+    axios.get('/posts/fetch-my-posts', {
+      params: {
+        offset: offset
+      }
+    }).then(function (response) {
+      var newOffset = offset + 20;
+      setOffset(newOffset);
+      setPosts(function (posts) {
+        return [].concat(_toConsumableArray(posts), _toConsumableArray(response.data.posts));
+      });
     });
   };
 
@@ -7078,6 +7100,13 @@ function MyPosts(props) {
     setUser(props.auth.user);
     setCategories(props.categories);
   }, []);
+
+  var handleScroll = function handleScroll(e) {
+    if (e.target.scrollHeight - e.target.scrollTop === e.target.clientHeight) {
+      fetchPosts();
+    }
+  };
+
   return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxs)(_Layouts_Authenticated__WEBPACK_IMPORTED_MODULE_2__["default"], {
     auth: props.auth,
     errors: props.errors,
@@ -7087,6 +7116,7 @@ function MyPosts(props) {
       className: "flex justify-around",
       children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("div", {
         className: "flex-initial w-2/3 max-h-screen overflow-scroll",
+        onScroll: handleScroll,
         children: posts.map(function (post) {
           return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)(_Components_Post__WEBPACK_IMPORTED_MODULE_0__["default"], {
             post: post,

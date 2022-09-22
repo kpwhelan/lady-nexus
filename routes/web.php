@@ -31,6 +31,7 @@ Route::prefix('posts')->middleware(['auth', 'verified'])->group(function() {
     Route::post('update', [PostsController::class, 'updatePost'])->name('post-update-post');
     Route::get('my-posts', [PostsController::class, 'getMyPosts'])->name('my-posts');
     Route::get('fetch-my-posts', [PostsController::class, 'retrieveMyPosts']);
+    Route::post('/toggle-like', [PostsController::class, 'toggleLike']);
 });
 
 //Need to add auth middleware once front end complete

@@ -27,4 +27,8 @@ class Post extends Model {
     public function category(): BelongsTo {
         return $this->belongsTo(Category::class);
     }
+
+    public function post_likes(): HasMany {
+        return $this->hasMany(PostLike::class)->where('active', true);
+    }
 }

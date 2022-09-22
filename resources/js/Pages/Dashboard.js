@@ -14,6 +14,7 @@ export default function Dashboard(props) {
             offset: offset
         }})
         .then(response => {
+            console.log(response.data.posts)
             let newOffset = offset + 20;
             setOffset(newOffset)
             setPosts(posts => [...posts, ...response.data.posts]);

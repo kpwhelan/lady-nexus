@@ -1,4 +1,8 @@
-import React, { useState } from 'react'
+import { faHeart } from '@fortawesome/free-regular-svg-icons';
+import { faHeart as faHeartSolid } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import axios from 'axios';
+import React, { useEffect, useState } from 'react'
 import CommentsContainer from './CommentsContainer'
 import Modal from './Modal';
 import PostFormEdit from './PostFormEdit';
@@ -11,6 +15,16 @@ function Post({ post, setPosts, currentUser, fetchPosts, categories }) {
     const [whatWeAreDeleting, setWhatAreWeDeleting] = useState(null);
     const [commentIdToDelete, setCommentIdToDelete] = useState(null);
     const [deleteCommentError, setDeleteCommentError] = useState(null);
+    const [isPostLikeByUser, setIsPostLikedByUser] = useState(false);
+    const [likeCount, setLikeCount] = useState(0);
+
+    useEffect(() => {
+        if (post.post_likes.find(like => like.user_id == currentUser.id)) {
+            setIsPostLikedByUser(true)
+        }
+
+        setLikeCount(post.post_likes.length)
+    }, [])
 
     const toggleSetModalOpen = (event) => {
         if (modalOpen) {
@@ -85,6 +99,18 @@ function Post({ post, setPosts, currentUser, fetchPosts, categories }) {
         })
     }
 
+    const toggleLikePost = () => {
+        axios.post('/posts/toggle-like', {
+            is_post_liked_by_user: isPostLikeByUser,
+            post_id: post.id
+        })
+        .then(() => {
+            const newLikeCount = isPostLikeByUser ? likeCount - 1 : likeCount + 1;
+            setIsPostLikedByUser(isPostLikeByUser ? false : true)
+            setLikeCount(newLikeCount)
+        });
+    }
+
     return (
         <>
         <div className="max-h-96 w-100 bg-white rounded overflow-scroll shadow-lg m-5 transition ease-in-out delay-110 hover:-translate-y-2 hover:scale-102">
@@ -114,6 +140,17 @@ function Post({ post, setPosts, currentUser, fetchPosts, categories }) {
             <div className="px-6 pt-4 pb-2">
                 <span className="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2 cursor-default">#{post.category.name}</span>
                 <span onClick={toggleSetShowComment} className="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2 cursor-pointer transition ease-in-out delay-110 hover:-translate-y-1 hover:scale-110 hover:bg-sage hover:text-white duration-300">{post.comments.length} {post.comments.length == 1 ? 'comment' : 'comments'}</span>
+                <span onClick={toggleLikePost} className='cursor-pointer'>
+                    {isPostLikeByUser ? (
+                            <FontAwesomeIcon icon={faHeartSolid} />
+                        )
+                        :
+                        (
+                            <FontAwesomeIcon icon={faHeart} />
+                        )
+                    }
+                    {likeCount > 0 ? <sub>{likeCount}</sub> : null}
+                </span>
             </div>
 
             {showComments ? (

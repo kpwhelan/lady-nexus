@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Category;
 use App\Models\Comment;
 use App\Models\Post;
+use App\Models\PostLike;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -15,7 +16,7 @@ class PostsController extends Controller {
     public function getPosts(Request $request): JsonResponse {
         $offset = $request->offset;
 
-        $posts = Post::with(['user', 'category', 'comments'])
+        $posts = Post::with(['user', 'category', 'comments', 'post_likes'])
             ->offset($offset)
             ->limit(20)
             ->orderBy('id', 'desc')
@@ -101,7 +102,7 @@ class PostsController extends Controller {
         $offset = $request->offset;
 
         $my_posts = Post::where('user_id', Auth::user()->id)
-            ->with(['user', 'category', 'comments'])
+            ->with(['user', 'category', 'comments', 'post_likes'])
             ->offset($offset)
             ->limit(20)
             ->orderBy('id', 'desc')
@@ -122,5 +123,33 @@ class PostsController extends Controller {
             'categories' => $categories,
             'comment_count' => $my_comment_count,
         ]);
+    }
+
+    public function toggleLike(Request $request) {
+        $user_id = Auth::user()->id;
+        $post_id = $request->post_id;
+        $is_post_liked_by_user = $request->is_post_liked_by_user;
+
+        $post_like = PostLike::where([
+            ['user_id', $user_id],
+            ['post_id', $post_id]
+        ])
+        ->first();
+
+        if ($post_like) {
+            $post_like->update([
+                'active' => $is_post_liked_by_user ? false : true
+            ]);
+        } elseif (!$post_like) {
+            $post_like = new PostLike();
+
+            $post_like->user_id = $user_id;
+            $post_like->post_id = $post_id;
+            $post_like->active  = true;
+
+            $post_like->save();
+        }
+
+        return response()->json();
     }
 }

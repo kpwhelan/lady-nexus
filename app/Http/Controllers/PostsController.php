@@ -33,6 +33,10 @@ class PostsController extends Controller {
         $request->validate([
             'post_body' => 'required',
             'category_id' => 'required'
+        ],
+        [
+            'post_body.required' => 'You have to write something first...',
+            'category_id.required' => 'You have to select a category!'
         ]);
 
         $post             = new Post();

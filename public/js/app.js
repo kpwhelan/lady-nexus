@@ -6021,11 +6021,13 @@ function PostForm(_ref) {
     e.preventDefault();
     post(route('create-post'), {
       onError: function onError(error) {
+        console.log(error);
+
         if (error.message) {
           setError(error.message);
           setDisplayError(true);
         } else if (error.category_id) {
-          setDError('You have to select a category!');
+          setError(error.category_id);
           setDisplayError(true);
         }
 

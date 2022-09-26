@@ -1,9 +1,9 @@
 import { useForm } from '@inertiajs/inertia-react';
-import React, { useEffect, useState, useRef } from 'react'
+import React, { useEffect, useState } from 'react'
 import Input from './Input'
 import Button from './Button';
 
-function CommentInput({ setPosts, existingComment, commentId, toggleSetDisplayEditBox }) {
+function CommentInputEdit({ posts, updatePosts, updatePostsForMyPosts, existingComment, commentId, toggleSetDisplayEditBox }) {
     const { data, setData, post, processing, errors, reset } = useForm({
         comment_body: '',
         comment_id: commentId
@@ -26,22 +26,54 @@ function CommentInput({ setPosts, existingComment, commentId, toggleSetDisplayEd
     const submit = (e) => {
         e.preventDefault();
 
-        post(route('post-update-comment'), {
-            onSuccess: () => {
-                setPosts();
-                toggleSetDisplayEditBox(false);
-            },
-            onError: error => {
-                setServerError(error.message);
+        axios.post(route('post-update-comment'), {
+            comment_body: data.comment_body,
+            comment_id: data.comment_id
+        })
+        .then(response => {
+            if (response.status == 200) {
+                let postIndex = posts.findIndex(post => post.id == response.data.comment.post_id);
+                let commentIndex = posts[postIndex].comments.findIndex(comment => comment.id == commentId);
+
+                posts[postIndex].comments[commentIndex].comment = response.data.comment.comment;
+                posts[postIndex].comments.reverse()
+
+                if (updatePosts) {updatePosts(posts)}
+                if (updatePostsForMyPosts) {updatePostsForMyPosts(posts)}
+                toggleSetDisplayEditBox(false)
+            }
+        })
+        .catch(error => {
+            if (error.response) {
+                setServerError(error.response.data.message);
                 setDisplayServerError(true);
 
                 setTimeout(() => {
                     setDisplayServerError(false)
                 }, 5000);
             }
-        });
-
+        })
     };
+
+    // const submit = (e) => {
+    //     e.preventDefault();
+
+    //     post(route('post-update-comment'), {
+    //         onSuccess: () => {
+    //             setPosts();
+    //             toggleSetDisplayEditBox(false);
+    //         },
+    //         onError: error => {
+    //             setServerError(error.message);
+    //             setDisplayServerError(true);
+
+    //             setTimeout(() => {
+    //                 setDisplayServerError(false)
+    //             }, 5000);
+    //         }
+    //     });
+
+    // };
 
   return (
     <div className='mx-6'>
@@ -71,4 +103,4 @@ function CommentInput({ setPosts, existingComment, commentId, toggleSetDisplayEd
   )
 }
 
-export default CommentInput
+export default CommentInputEdit

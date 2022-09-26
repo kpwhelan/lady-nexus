@@ -11,6 +11,10 @@ function MyPosts(props) {
     const [modalOpen, setModalOpen] = useState(false);
     const [offset, setOffset] = useState(0);
 
+    const updatePosts = newPosts => {
+        setPosts([...newPosts])
+    }
+
     const toggleSetModalOpen = () => {
         if (modalOpen) {
             setModalOpen(false)
@@ -19,7 +23,7 @@ function MyPosts(props) {
         }
     }
 
-    const fetchPosts = () => {
+    const fetchMorePosts = () => {
         axios.get('/posts/fetch-my-posts', {params: {
             offset: offset
         }})
@@ -31,14 +35,16 @@ function MyPosts(props) {
     }
 
     useEffect(() => {
-        fetchPosts();
+        if (posts.length === 0) {
+            setPosts(props.posts)
+        }
         setUser(props.auth.user)
         setCategories(props.categories)
     },[]);
 
     const handleScroll = (e) => {
         if (e.target.scrollHeight - e.target.scrollTop === e.target.clientHeight) {
-            fetchPosts();
+            fetchMorePosts();
         }
     }
 
@@ -53,7 +59,7 @@ function MyPosts(props) {
                 <div className='flex justify-around'>
                     <div className='flex-initial w-2/3 max-h-screen overflow-scroll' onScroll={handleScroll}>
                         {posts.map(post => (
-                            <Post key={post.id} post={post} currentUser={props.auth.user} fetchPosts={fetchPosts} categories={props.categories} />
+                            <Post key={post.id} post={post} myPosts={posts} currentUser={props.auth.user} updatePostsForMyPosts={updatePosts} categories={props.categories} />
                         ))}
                     </div>
 

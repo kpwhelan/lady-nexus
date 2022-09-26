@@ -3,6 +3,7 @@
 use App\Http\Controllers\CommentsController;
 use App\Http\Controllers\PostsController;
 use App\Models\Category;
+use App\Models\Post;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -18,8 +19,13 @@ Route::get('/', function () {
 
 Route::get('/dashboard', function () {
     $categories = Category::all();
+    $posts = Post::with(['user', 'category', 'comments', 'post_likes'])
+            ->offset(0)
+            ->limit(20)
+            ->orderBy('id', 'desc')
+            ->get();
 
-    return Inertia::render('Dashboard', ['categories' => $categories]);
+    return Inertia::render('Dashboard', ['categories' => $categories, 'posts' => $posts]);
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 //Need to add auth middleware once front end complete
@@ -29,8 +35,8 @@ Route::prefix('posts')->middleware(['auth', 'verified'])->group(function() {
     Route::post('create', [PostsController::class, 'createPost'])->name('create-post');
     Route::delete('delete/{id}', [PostsController::class, 'deletePost'])->name('delete-post');
     Route::post('update', [PostsController::class, 'updatePost'])->name('post-update-post');
-    Route::get('my-posts', [PostsController::class, 'getMyPosts'])->name('my-posts');
-    Route::get('fetch-my-posts', [PostsController::class, 'retrieveMyPosts']);
+    Route::get('my-posts', [PostsController::class, 'getMyPostsPage'])->name('my-posts');
+    Route::get('fetch-more-posts', [PostsController::class, 'retrieveMorePosts']);
     Route::post('/toggle-like', [PostsController::class, 'toggleLike']);
 });
 

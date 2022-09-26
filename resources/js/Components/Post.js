@@ -7,7 +7,7 @@ import CommentsContainer from './CommentsContainer'
 import Modal from './Modal';
 import PostFormEdit from './PostFormEdit';
 
-function Post({ post, setPosts, currentUser, fetchPosts, categories }) {
+function Post({ post, dashboardPosts, myPosts, updatePosts, currentUser, updatePostsForMyPosts, categories }) {
     const [showComments, setShowComments] = useState(false);
     const [displayEditBox, setDisplayEditBox] = useState(false);
     const [displayError, setDisplayError] = useState(false);
@@ -131,7 +131,7 @@ function Post({ post, setPosts, currentUser, fetchPosts, categories }) {
                     </div>
                 }
 
-                {displayEditBox && <PostFormEdit postData={post} categories={categories} previousCategoryId={post.category.id} toggleSetDisplayEditBox={toggleSetDisplayEditBox} setPosts={setPosts} fetchPosts={fetchPosts}/>}
+                {displayEditBox && <PostFormEdit myPosts={myPosts} dashboardPosts={dashboardPosts} postData={post} categories={categories} previousCategoryId={post.category.id} toggleSetDisplayEditBox={toggleSetDisplayEditBox} updatePostsForDashboard={updatePosts} updatePostsForMyPosts={updatePostsForMyPosts}/>}
 
                 {displayError &&
                     <p className='bg-red-500/75 text-white mt-2 w-fit rounded-lg'>{serverError}</p>
@@ -155,7 +155,7 @@ function Post({ post, setPosts, currentUser, fetchPosts, categories }) {
 
             {showComments ? (
                 <>
-                    <CommentsContainer comments={post.comments} setPosts={setPosts} post_id={post.id} currentUser={currentUser} toggleSetModalOpen={toggleSetModalOpen} deleteCommentError={deleteCommentError} commentIdToDelete={commentIdToDelete}/>
+                    <CommentsContainer posts={dashboardPosts ? dashboardPosts : myPosts} comments={post.comments} updatePosts={updatePosts} updatePostsForMyPosts={updatePostsForMyPosts} post_id={post.id} currentUser={currentUser} toggleSetModalOpen={toggleSetModalOpen} deleteCommentError={deleteCommentError} commentIdToDelete={commentIdToDelete}/>
                     <button className='bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 ml-6 mb-2 cursor-pointer transition ease-in-out delay-110 hover:-translate-y-1 hover:scale-110 hover:bg-sage hover:text-white duration-300"' onClick={toggleSetShowComment}>Hide Comments</button>
                 </>
             ) : (<div></div>)}

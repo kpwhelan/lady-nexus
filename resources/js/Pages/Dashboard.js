@@ -7,14 +7,17 @@ import PostForm from '@/Components/PostForm';
 
 export default function Dashboard(props) {
     const [posts, setPosts] = useState([]);
-    const [offset, setOffset] = useState(0);
+    const [offset, setOffset] = useState(20);
 
-    const fetchPosts = () => {
+    const updatePosts = newPosts => {
+        setPosts([...newPosts])
+    }
+
+    const fetchMorePosts = () => {
         axios.get(`/posts`, {params: {
             offset: offset
         }})
         .then(response => {
-            console.log(response.data.posts)
             let newOffset = offset + 20;
             setOffset(newOffset)
             setPosts(posts => [...posts, ...response.data.posts]);
@@ -23,12 +26,14 @@ export default function Dashboard(props) {
 
     const handleScroll = (e) => {
         if (e.target.scrollHeight - e.target.scrollTop === e.target.clientHeight) {
-            fetchPosts();
+            fetchMorePosts();
         }
     }
 
     useEffect(() => {
-        fetchPosts();
+        if (posts.length === 0) {
+            setPosts(props.posts)
+        }
     }, [])
 
     return (
@@ -40,7 +45,7 @@ export default function Dashboard(props) {
             <div className='flex justify-around'>
                 <div className='flex-initial w-2/3 max-h-screen overflow-scroll' onScroll={handleScroll}>
                     {posts.map(post => (
-                        <Post key={`post_${post.id}`} post={post} currentUser={props.auth.user} setPosts={fetchPosts} categories={props.categories} />
+                        <Post key={`post_${post.id}`} dashboardPosts={posts} post={post} updatePosts={updatePosts} currentUser={props.auth.user} categories={props.categories} />
                     ))}
                 </div>
 

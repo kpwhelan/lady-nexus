@@ -21,10 +21,12 @@ class CommentsController extends Controller {
         $comment->user_id = Auth::user()->id;
 
         if (!$comment->save()) {
-            return back()->withErrors(['message' => 'Something went wrong, please try again.']);
+            return response()->json(['message' => 'Something went wrong, please try again.'], 500);
         }
 
-        return Redirect::route('dashboard');
+        return response()->json([
+            'comment' => $comment
+        ]);
     }
 
     public function deleteComment(int $id): JsonResponse {
@@ -57,10 +59,12 @@ class CommentsController extends Controller {
         $comment->comment = $request->comment_body;
 
         if (!$comment->save()) {
-            return back()->withErrors(['message' => 'Something went wrong, please try again.']);
+            return response()->json(['message' => 'Something went wrong, please try again.'], 500);
         }
 
-        return Redirect::route('dashboard');
+        return response()->json([
+            'comment' => $comment
+        ]);
     }
 
     public function getUserFromComment($id): JsonResponse {

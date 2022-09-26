@@ -78,34 +78,34 @@ class PostsController extends Controller {
         $request->validate([
             'post_body' => 'required',
             'category_id' => 'required'
+        ],
+        [
+            'post_body.required' => 'You have to write something first...',
+            'category_id.required' => 'You have to select a category!'
         ]);
 
-        $post = Post::find($request->post_id);
+        $post = Post::with(['user', 'category', 'comments', 'post_likes'])->find($request->post_id);
 
         if (!$post) {
-            if (!$post->save()) {
-                return back()->withErrors(['message' => 'Something went wrong, please try again.']);
-            }
+            return response()->json(['message' => 'Something went wrong, please try again.'], 404);
         }
 
         $post->post = $request->post_body;
         $post->category_id = $request->category_id;
 
         if (!$post->save()) {
-            return back()->withErrors(['message' => 'Something went wrong, please try again.']);
+            return response()->json(['message' => 'Something went wrong, please try again.'], 500);
         }
 
-        return back()->with([
-            'status'  => 'Success',
-            'code'    => 200,
-            'message' => 'Post updated!'
+        return response()->json([
+            'post' => $post
         ]);
     }
 
-    public function retrieveMyPosts(Request $request) {
+    public function retrieveMorePosts(Request $request) {
         $offset = $request->offset;
 
-        $my_posts = Post::where('user_id', Auth::user()->id)
+        $posts = Post::where('user_id', Auth::user()->id)
             ->with(['user', 'category', 'comments', 'post_likes'])
             ->offset($offset)
             ->limit(20)
@@ -113,17 +113,22 @@ class PostsController extends Controller {
             ->get();
 
         return response()->json([
-            'status' => 'Success',
-            'code'   => 200,
-            'posts'  => $my_posts,
+            'posts'  => $posts,
         ]);
     }
 
-    public function getMyPosts() {
+    public function getMyPostsPage(Request $request) {
         $categories = Category::all();
         $my_comment_count = Comment::where('user_id', Auth::user()->id)->count();
+        $posts = Post::where('user_id', Auth::user()->id)
+            ->with(['user', 'category', 'comments', 'post_likes'])
+            ->offset($request->offset ? $request->offset : 0)
+            ->limit(20)
+            ->orderBy('id', 'desc')
+            ->get();
 
         return Inertia::render('MyPosts', [
+            'posts' => $posts,
             'categories' => $categories,
             'comment_count' => $my_comment_count,
         ]);

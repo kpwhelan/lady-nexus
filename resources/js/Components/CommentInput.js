@@ -3,7 +3,7 @@ import React, { useState } from 'react'
 import Input from './Input'
 import Button from './Button';
 
-function CommentInput({ setPosts, post_id  }) {
+function CommentInput({ posts, updatePosts, updatePostsForMyPosts, post_id }) {
     const { data, setData, post, processing, errors, reset } = useForm({
         comment_body: '',
         post_id: post_id
@@ -18,20 +18,30 @@ function CommentInput({ setPosts, post_id  }) {
     const submit = (e) => {
         e.preventDefault();
 
-        post(route('post-comment'), {
-            onSuccess: () => {
-                setPosts();
-                data.comment_body = '';
-            },
-            onError: error => {
-                setServerError(error.message);
+        axios.post(route('post-comment'), {
+            comment_body: data.comment_body,
+            post_id: data.post_id
+        })
+        .then(response => {
+            if (response.status == 200) {
+                let postIndex = posts.findIndex(post => post.id == post_id);
+                posts[postIndex].comments.push(response.data.comment);
+
+                if (updatePosts) {updatePosts(posts)}
+                if (updatePostsForMyPosts) {updatePostsForMyPosts(posts)}
+                reset()
+            }
+        })
+        .catch(error => {
+            if (error.response) {
+                setServerError(error.response.data.message);
                 setDisplayServerError(true);
 
                 setTimeout(() => {
                     setDisplayServerError(false)
                 }, 5000);
             }
-        });
+        })
     };
 
   return (
@@ -54,7 +64,7 @@ function CommentInput({ setPosts, post_id  }) {
             </Button>
 
             {displayServerError &&
-                <p className='bg-red-500/75 text-white mt-2 w-fit rounded-lg'>{serverError}</p>
+                <p className='bg-red-500/75 text-white mt-2 w-fit rounded-lg p-2'>{serverError}</p>
             }
         </form>
     </div>

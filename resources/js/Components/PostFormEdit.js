@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react'
 import Input from './Input';
 import Button from './Button';
 
-function PostFormEdit({ className, postData, categories, previousCategoryId, toggleSetDisplayEditBox, setPosts, fetchPosts }) {
+function PostFormEdit({ className, postData, categories, previousCategoryId, toggleSetDisplayEditBox, updatePostsForDashboard, updatePostsForMyPosts, dashboardPosts, myPosts }) {
     //variable 'post' here refers to the post body of the form, not the user's post
     const { data, setData, post, processing, errors, reset } = useForm({
         post_body: postData.post,
@@ -11,7 +11,7 @@ function PostFormEdit({ className, postData, categories, previousCategoryId, tog
         category_id: previousCategoryId
     });
     const [displayError, setDisplayError] = useState(false);
-    const [ error, setError ] = useState('');
+    const [error, setError] = useState('');
     const [isCategorySelected, setIsCategorySelected] = useState(false);
     const [categoryId, setCategoryId] = useState(null);
 
@@ -73,29 +73,42 @@ function PostFormEdit({ className, postData, categories, previousCategoryId, tog
     const submit = (e) => {
         e.preventDefault();
 
-        post(route('post-update-post'), {
-            onSuccess: () => {
-                toggleSetDisplayEditBox(false);
+        axios.post(route('post-update-post'), {
+            post_body: data.post_body,
+            post_id: data.post_id,
+            category_id: data.category_id
+        })
+        .then(response => {
+            if (response.status == 200) {
+                if (dashboardPosts) {
+                    let postIndex = dashboardPosts.findIndex(post => post.id == response.data.post.id);
 
-                if (setPosts) {setPosts()}
-                if (fetchPosts) {fetchPosts()}
-            },
-            onError: error => {
-                if (error.message) {
-                    setError(error.message);
-                    setDisplayError(true);
-                } else if (error.category_id) {
-                    setError('You have to select a category!')
-                    setDisplayError(true);
+                    dashboardPosts[postIndex] = response.data.post;
+                } else if (myPosts) {
+                    let postIndex = myPosts.findIndex(post => post.id == response.data.post.id);
+
+                    myPosts[postIndex] = response.data.post;
                 }
+
+
+                toggleSetDisplayEditBox(false)
+
+                if (updatePostsForDashboard) {updatePostsForDashboard(dashboardPosts)}
+                if (updatePostsForMyPosts) {updatePostsForMyPosts(myPosts)}
+            }
+        })
+        .catch(error => {
+            if (error.response) {
+                setError(error.response.data.message);
+                setDisplayError(true);
 
                 setTimeout(() => {
                     setDisplayError(false)
                 }, 5000);
             }
-        });
-
+        })
     };
+
   return (
     <form className={className} onSubmit={submit}>
             <Input

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import axios from 'axios'
 import CommentInputEdit from './CommentInputEdit';
 
-function Comment({ comment, currentUser, setPosts, toggleSetModalOpen, commentIdToDelete, deleteCommentError }) {
+function Comment({ posts, comment, currentUser, updatePosts, updatePostsForMyPosts, toggleSetModalOpen, commentIdToDelete, deleteCommentError }) {
     const [user, setUser] = useState([]);
     const [displayEditBox, setDisplayEditBox] = useState(false);
     const [error, setError] = useState('');
@@ -43,7 +43,7 @@ function Comment({ comment, currentUser, setPosts, toggleSetModalOpen, commentId
             }
         </div>
         }
-        {displayEditBox && <CommentInputEdit existingComment={comment.comment} setPosts={setPosts} commentId={comment.id} toggleSetDisplayEditBox={toggleSetDisplayEditBox} />}
+        {displayEditBox && <CommentInputEdit posts={posts} existingComment={comment.comment} updatePosts={updatePosts} updatePostsForMyPosts={updatePostsForMyPosts} commentId={comment.id} toggleSetDisplayEditBox={toggleSetDisplayEditBox} />}
     </div>
     </>
   )

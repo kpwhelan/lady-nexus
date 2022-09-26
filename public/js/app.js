@@ -4819,9 +4819,11 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
 
 function Comment(_ref) {
-  var comment = _ref.comment,
+  var posts = _ref.posts,
+      comment = _ref.comment,
       currentUser = _ref.currentUser,
-      setPosts = _ref.setPosts,
+      updatePosts = _ref.updatePosts,
+      updatePostsForMyPosts = _ref.updatePostsForMyPosts,
       toggleSetModalOpen = _ref.toggleSetModalOpen,
       commentIdToDelete = _ref.commentIdToDelete,
       deleteCommentError = _ref.deleteCommentError;
@@ -4891,8 +4893,10 @@ function Comment(_ref) {
           children: error
         })]
       }), displayEditBox && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_CommentInputEdit__WEBPACK_IMPORTED_MODULE_2__["default"], {
+        posts: posts,
         existingComment: comment.comment,
-        setPosts: setPosts,
+        updatePosts: updatePosts,
+        updatePostsForMyPosts: updatePostsForMyPosts,
         commentId: comment.id,
         toggleSetDisplayEditBox: toggleSetDisplayEditBox
       })]
@@ -4940,7 +4944,9 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
 
 function CommentInput(_ref) {
-  var setPosts = _ref.setPosts,
+  var posts = _ref.posts,
+      updatePosts = _ref.updatePosts,
+      updatePostsForMyPosts = _ref.updatePostsForMyPosts,
       post_id = _ref.post_id;
 
   var _useForm = (0,_inertiajs_inertia_react__WEBPACK_IMPORTED_MODULE_0__.useForm)({
@@ -4970,13 +4976,29 @@ function CommentInput(_ref) {
 
   var submit = function submit(e) {
     e.preventDefault();
-    post(route('post-comment'), {
-      onSuccess: function onSuccess() {
-        setPosts();
-        data.comment_body = '';
-      },
-      onError: function onError(error) {
-        setServerError(error.message);
+    axios.post(route('post-comment'), {
+      comment_body: data.comment_body,
+      post_id: data.post_id
+    }).then(function (response) {
+      if (response.status == 200) {
+        var postIndex = posts.findIndex(function (post) {
+          return post.id == post_id;
+        });
+        posts[postIndex].comments.push(response.data.comment);
+
+        if (updatePosts) {
+          updatePosts(posts);
+        }
+
+        if (updatePostsForMyPosts) {
+          updatePostsForMyPosts(posts);
+        }
+
+        reset();
+      }
+    })["catch"](function (error) {
+      if (error.response) {
+        setServerError(error.response.data.message);
         setDisplayServerError(true);
         setTimeout(function () {
           setDisplayServerError(false);
@@ -5004,7 +5026,7 @@ function CommentInput(_ref) {
         processing: processing,
         children: "Post"
       }), displayServerError && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("p", {
-        className: "bg-red-500/75 text-white mt-2 w-fit rounded-lg",
+        className: "bg-red-500/75 text-white mt-2 w-fit rounded-lg p-2",
         children: serverError
       })]
     })
@@ -5050,8 +5072,10 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
 
 
-function CommentInput(_ref) {
-  var setPosts = _ref.setPosts,
+function CommentInputEdit(_ref) {
+  var posts = _ref.posts,
+      updatePosts = _ref.updatePosts,
+      updatePostsForMyPosts = _ref.updatePostsForMyPosts,
       existingComment = _ref.existingComment,
       commentId = _ref.commentId,
       toggleSetDisplayEditBox = _ref.toggleSetDisplayEditBox;
@@ -5090,13 +5114,33 @@ function CommentInput(_ref) {
 
   var submit = function submit(e) {
     e.preventDefault();
-    post(route('post-update-comment'), {
-      onSuccess: function onSuccess() {
-        setPosts();
+    axios.post(route('post-update-comment'), {
+      comment_body: data.comment_body,
+      comment_id: data.comment_id
+    }).then(function (response) {
+      if (response.status == 200) {
+        var postIndex = posts.findIndex(function (post) {
+          return post.id == response.data.comment.post_id;
+        });
+        var commentIndex = posts[postIndex].comments.findIndex(function (comment) {
+          return comment.id == commentId;
+        });
+        posts[postIndex].comments[commentIndex].comment = response.data.comment.comment;
+        posts[postIndex].comments.reverse();
+
+        if (updatePosts) {
+          updatePosts(posts);
+        }
+
+        if (updatePostsForMyPosts) {
+          updatePostsForMyPosts(posts);
+        }
+
         toggleSetDisplayEditBox(false);
-      },
-      onError: function onError(error) {
-        setServerError(error.message);
+      }
+    })["catch"](function (error) {
+      if (error.response) {
+        setServerError(error.response.data.message);
         setDisplayServerError(true);
         setTimeout(function () {
           setDisplayServerError(false);
@@ -5132,7 +5176,7 @@ function CommentInput(_ref) {
   });
 }
 
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (CommentInput);
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (CommentInputEdit);
 
 /***/ }),
 
@@ -5158,8 +5202,10 @@ __webpack_require__.r(__webpack_exports__);
 
 
 function CommentsContainer(_ref) {
-  var comments = _ref.comments,
-      setPosts = _ref.setPosts,
+  var posts = _ref.posts,
+      comments = _ref.comments,
+      updatePosts = _ref.updatePosts,
+      updatePostsForMyPosts = _ref.updatePostsForMyPosts,
       post_id = _ref.post_id,
       currentUser = _ref.currentUser,
       toggleSetModalOpen = _ref.toggleSetModalOpen,
@@ -5167,8 +5213,10 @@ function CommentsContainer(_ref) {
       commentIdToDelete = _ref.commentIdToDelete;
   return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
     children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_CommentInput__WEBPACK_IMPORTED_MODULE_2__["default"], {
+      posts: posts,
       post_id: post_id,
-      setPosts: setPosts
+      updatePosts: updatePosts,
+      updatePostsForMyPosts: updatePostsForMyPosts
     }), comments.reverse().map(function (comment) {
       return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
         className: "bg-sage/25 m-3 p-3 rounded-lg",
@@ -5181,9 +5229,11 @@ function CommentsContainer(_ref) {
             day: "numeric"
           })
         }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_Comment__WEBPACK_IMPORTED_MODULE_1__["default"], {
+          posts: posts,
           currentUser: currentUser,
           comment: comment,
-          setPosts: setPosts,
+          updatePosts: updatePosts,
+          updatePostsForMyPosts: updatePostsForMyPosts,
           post_id: post_id,
           toggleSetModalOpen: toggleSetModalOpen,
           deleteCommentError: deleteCommentError,
@@ -5659,9 +5709,11 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
 function Post(_ref) {
   var post = _ref.post,
-      setPosts = _ref.setPosts,
+      dashboardPosts = _ref.dashboardPosts,
+      myPosts = _ref.myPosts,
+      updatePosts = _ref.updatePosts,
       currentUser = _ref.currentUser,
-      fetchPosts = _ref.fetchPosts,
+      updatePostsForMyPosts = _ref.updatePostsForMyPosts,
       categories = _ref.categories;
 
   var _useState = (0,react__WEBPACK_IMPORTED_MODULE_2__.useState)(false),
@@ -5836,12 +5888,14 @@ function Post(_ref) {
             children: "Delete"
           })]
         }), displayEditBox && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)(_PostFormEdit__WEBPACK_IMPORTED_MODULE_5__["default"], {
+          myPosts: myPosts,
+          dashboardPosts: dashboardPosts,
           postData: post,
           categories: categories,
           previousCategoryId: post.category.id,
           toggleSetDisplayEditBox: toggleSetDisplayEditBox,
-          setPosts: setPosts,
-          fetchPosts: fetchPosts
+          updatePostsForDashboard: updatePosts,
+          updatePostsForMyPosts: updatePostsForMyPosts
         }), displayError && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("p", {
           className: "bg-red-500/75 text-white mt-2 w-fit rounded-lg",
           children: serverError
@@ -5868,8 +5922,10 @@ function Post(_ref) {
         })]
       }), showComments ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsxs)(react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.Fragment, {
         children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)(_CommentsContainer__WEBPACK_IMPORTED_MODULE_3__["default"], {
+          posts: dashboardPosts ? dashboardPosts : myPosts,
           comments: post.comments,
-          setPosts: setPosts,
+          updatePosts: updatePosts,
+          updatePostsForMyPosts: updatePostsForMyPosts,
           post_id: post.id,
           currentUser: currentUser,
           toggleSetModalOpen: toggleSetModalOpen,
@@ -6125,8 +6181,10 @@ function PostFormEdit(_ref) {
       categories = _ref.categories,
       previousCategoryId = _ref.previousCategoryId,
       toggleSetDisplayEditBox = _ref.toggleSetDisplayEditBox,
-      setPosts = _ref.setPosts,
-      fetchPosts = _ref.fetchPosts;
+      updatePostsForDashboard = _ref.updatePostsForDashboard,
+      updatePostsForMyPosts = _ref.updatePostsForMyPosts,
+      dashboardPosts = _ref.dashboardPosts,
+      myPosts = _ref.myPosts;
 
   //variable 'post' here refers to the post body of the form, not the user's post
   var _useForm = (0,_inertiajs_inertia_react__WEBPACK_IMPORTED_MODULE_0__.useForm)({
@@ -6214,27 +6272,39 @@ function PostFormEdit(_ref) {
 
   var submit = function submit(e) {
     e.preventDefault();
-    post(route('post-update-post'), {
-      onSuccess: function onSuccess() {
+    axios.post(route('post-update-post'), {
+      post_body: data.post_body,
+      post_id: data.post_id,
+      category_id: data.category_id
+    }).then(function (response) {
+      if (response.status == 200) {
+        if (dashboardPosts) {
+          var postIndex = dashboardPosts.findIndex(function (post) {
+            return post.id == response.data.post.id;
+          });
+          dashboardPosts[postIndex] = response.data.post;
+        } else if (myPosts) {
+          var _postIndex = myPosts.findIndex(function (post) {
+            return post.id == response.data.post.id;
+          });
+
+          myPosts[_postIndex] = response.data.post;
+        }
+
         toggleSetDisplayEditBox(false);
 
-        if (setPosts) {
-          setPosts();
+        if (updatePostsForDashboard) {
+          updatePostsForDashboard(dashboardPosts);
         }
 
-        if (fetchPosts) {
-          fetchPosts();
+        if (updatePostsForMyPosts) {
+          updatePostsForMyPosts(myPosts);
         }
-      },
-      onError: function onError(error) {
-        if (error.message) {
-          setError(error.message);
-          setDisplayError(true);
-        } else if (error.category_id) {
-          setError('You have to select a category!');
-          setDisplayError(true);
-        }
-
+      }
+    })["catch"](function (error) {
+      if (error.response) {
+        setError(error.response.data.message);
+        setDisplayError(true);
         setTimeout(function () {
           setDisplayError(false);
         }, 5000);
@@ -7443,18 +7513,21 @@ function Dashboard(props) {
       posts = _useState2[0],
       setPosts = _useState2[1];
 
-  var _useState3 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(0),
+  var _useState3 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(20),
       _useState4 = _slicedToArray(_useState3, 2),
       offset = _useState4[0],
       setOffset = _useState4[1];
 
-  var fetchPosts = function fetchPosts() {
+  var updatePosts = function updatePosts(newPosts) {
+    setPosts(_toConsumableArray(newPosts));
+  };
+
+  var fetchMorePosts = function fetchMorePosts() {
     axios__WEBPACK_IMPORTED_MODULE_3___default().get("/posts", {
       params: {
         offset: offset
       }
     }).then(function (response) {
-      console.log(response.data.posts);
       var newOffset = offset + 20;
       setOffset(newOffset);
       setPosts(function (posts) {
@@ -7465,12 +7538,14 @@ function Dashboard(props) {
 
   var handleScroll = function handleScroll(e) {
     if (e.target.scrollHeight - e.target.scrollTop === e.target.clientHeight) {
-      fetchPosts();
+      fetchMorePosts();
     }
   };
 
   (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(function () {
-    fetchPosts();
+    if (posts.length === 0) {
+      setPosts(props.posts);
+    }
   }, []);
   return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsxs)(_Layouts_Authenticated__WEBPACK_IMPORTED_MODULE_1__["default"], {
     auth: props.auth,
@@ -7484,9 +7559,10 @@ function Dashboard(props) {
         onScroll: handleScroll,
         children: posts.map(function (post) {
           return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)(_Components_Post__WEBPACK_IMPORTED_MODULE_4__["default"], {
+            dashboardPosts: posts,
             post: post,
+            updatePosts: updatePosts,
             currentUser: props.auth.user,
-            setPosts: fetchPosts,
             categories: props.categories
           }, "post_".concat(post.id));
         })
@@ -7573,6 +7649,10 @@ function MyPosts(props) {
       offset = _useState10[0],
       setOffset = _useState10[1];
 
+  var updatePosts = function updatePosts(newPosts) {
+    setPosts(_toConsumableArray(newPosts));
+  };
+
   var toggleSetModalOpen = function toggleSetModalOpen() {
     if (modalOpen) {
       setModalOpen(false);
@@ -7581,7 +7661,7 @@ function MyPosts(props) {
     }
   };
 
-  var fetchPosts = function fetchPosts() {
+  var fetchMorePosts = function fetchMorePosts() {
     axios.get('/posts/fetch-my-posts', {
       params: {
         offset: offset
@@ -7596,14 +7676,17 @@ function MyPosts(props) {
   };
 
   (0,react__WEBPACK_IMPORTED_MODULE_4__.useEffect)(function () {
-    fetchPosts();
+    if (posts.length === 0) {
+      setPosts(props.posts);
+    }
+
     setUser(props.auth.user);
     setCategories(props.categories);
   }, []);
 
   var handleScroll = function handleScroll(e) {
     if (e.target.scrollHeight - e.target.scrollTop === e.target.clientHeight) {
-      fetchPosts();
+      fetchMorePosts();
     }
   };
 
@@ -7620,8 +7703,9 @@ function MyPosts(props) {
         children: posts.map(function (post) {
           return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)(_Components_Post__WEBPACK_IMPORTED_MODULE_0__["default"], {
             post: post,
+            myPosts: posts,
             currentUser: props.auth.user,
-            fetchPosts: fetchPosts,
+            updatePostsForMyPosts: updatePosts,
             categories: props.categories
           }, post.id);
         })

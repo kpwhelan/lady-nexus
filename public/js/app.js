@@ -5147,23 +5147,7 @@ function CommentInputEdit(_ref) {
         }, 5000);
       }
     });
-  }; // const submit = (e) => {
-  //     e.preventDefault();
-  //     post(route('post-update-comment'), {
-  //         onSuccess: () => {
-  //             setPosts();
-  //             toggleSetDisplayEditBox(false);
-  //         },
-  //         onError: error => {
-  //             setServerError(error.message);
-  //             setDisplayServerError(true);
-  //             setTimeout(() => {
-  //                 setDisplayServerError(false)
-  //             }, 5000);
-  //         }
-  //     });
-  // };
-
+  };
 
   return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("div", {
     className: "mx-6",

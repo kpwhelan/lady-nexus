@@ -55,26 +55,6 @@ function CommentInputEdit({ posts, updatePosts, updatePostsForMyPosts, existingC
         })
     };
 
-    // const submit = (e) => {
-    //     e.preventDefault();
-
-    //     post(route('post-update-comment'), {
-    //         onSuccess: () => {
-    //             setPosts();
-    //             toggleSetDisplayEditBox(false);
-    //         },
-    //         onError: error => {
-    //             setServerError(error.message);
-    //             setDisplayServerError(true);
-
-    //             setTimeout(() => {
-    //                 setDisplayServerError(false)
-    //             }, 5000);
-    //         }
-    //     });
-
-    // };
-
   return (
     <div className='mx-6'>
         <form onSubmit={submit}>

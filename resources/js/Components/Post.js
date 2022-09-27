@@ -17,6 +17,7 @@ function Post({ post, dashboardPosts, myPosts, updatePosts, currentUser, updateP
     const [deleteCommentError, setDeleteCommentError] = useState(null);
     const [isPostLikeByUser, setIsPostLikedByUser] = useState(false);
     const [likeCount, setLikeCount] = useState(0);
+    const [error, setError] = useState(null);
 
     useEffect(() => {
         if (post.post_likes.find(like => like.user_id == currentUser.id)) {
@@ -60,41 +61,48 @@ function Post({ post, dashboardPosts, myPosts, updatePosts, currentUser, updateP
     const deletePost = () => {
         axios.delete(`/posts/delete/${post.id}`)
         .then(response => {
-            if (response.data.code == 404) {
-                setError(response.message);
-                setDisplayError(true);
+            if (response.status == 200) {
+                let posts = dashboardPosts ? dashboardPosts : myPosts;
+                let postIndex = posts.findIndex(post => post.id == response.data.post_id);
+                posts.splice(postIndex, 1);
+
                 toggleSetModalOpen(false);
+                if (updatePosts) {updatePosts(posts)}
+                if (updatePostsForMyPosts) {updatePostsForMyPosts(posts)}
+            }
+        }).catch(error => {
+            if (error.response) {
+                setError(error.response.data.message);
+                setDisplayError(true);
 
                 setTimeout(() => {
                     setDisplayError(false)
                 }, 5000);
-            } else {
-                if (fetchPosts) {
-                    fetchPosts()
-                } else if (setPosts) {
-                    setPosts()
-                }
             }
         })
     }
-
+    //NEED TO FIX DELETE COMMENT NOW
     const deleteComment = () => {
         axios.delete(`/comments/delete/${commentIdToDelete}`)
         .then(response => {
-            if (response.data.code == 404) {
-                setDeleteCommentError(response.data.message);
-                toggleSetModalOpen(false)
+            if (response.status == 200) {
+                let posts = dashboardPosts ? dashboardPosts : myPosts;
+                let postIndex = posts.findIndex(post => post.id == response.data.post_id);
+                let commentIndex = posts[postIndex].comments.findIndex(comment => comment.id == response.data.comment_id);
+                posts[postIndex].comments.splice(commentIndex, 1);
+
+                toggleSetModalOpen(false);
+                if (updatePosts) {updatePosts(posts)}
+                if (updatePostsForMyPosts) {updatePostsForMyPosts(posts)}
+            }
+        }).catch(error => {
+            if (error.response) {
+                setError(error.response.data.message);
+                setDisplayError(true);
 
                 setTimeout(() => {
                     setDisplayError(false)
                 }, 5000);
-            } else {
-                if (fetchPosts) {
-                    fetchPosts()
-                } else if (setPosts) {
-                    setPosts()
-                }
-                toggleSetModalOpen(false)
             }
         })
     }
@@ -134,7 +142,7 @@ function Post({ post, dashboardPosts, myPosts, updatePosts, currentUser, updateP
                 {displayEditBox && <PostFormEdit myPosts={myPosts} dashboardPosts={dashboardPosts} postData={post} categories={categories} previousCategoryId={post.category.id} toggleSetDisplayEditBox={toggleSetDisplayEditBox} updatePostsForDashboard={updatePosts} updatePostsForMyPosts={updatePostsForMyPosts}/>}
 
                 {displayError &&
-                    <p className='bg-red-500/75 text-white mt-2 w-fit rounded-lg'>{serverError}</p>
+                    <p className='bg-red-500/75 text-white mt-2 w-fit rounded-lg'>{error}</p>
                 }
             </div>
             <div className="px-6 pt-4 pb-2">

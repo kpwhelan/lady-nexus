@@ -25,13 +25,17 @@ class CommentsController extends Controller {
             return response()->json(['message' => 'Something went wrong, please try again.'], 500);
         }
 
+        $comment->comment_likes = $comment->comment_likes;
+
         return response()->json([
             'comment' => $comment
         ]);
     }
 
-    public function deleteComment(int $id): JsonResponse {
-        $comment = Comment::find($id);
+    public function deleteComment($id): JsonResponse {
+        $comment_id = $id;
+        $comment = Comment::find($comment_id);
+        $post_id = $comment->post->id;
 
         if (!$comment) {
             return response()->json([
@@ -44,9 +48,9 @@ class CommentsController extends Controller {
         $comment->delete();
 
         return response()->json([
-            'status'  => 'Success',
-            'code'    => 200,
-            'message' => 'Comment deleted'
+            'comment_id' => $comment_id,
+            'post_id' => $post_id,
+            'message' => 'Comment deleted',
         ]);
     }
 

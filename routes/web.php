@@ -19,7 +19,7 @@ Route::get('/', function () {
 
 Route::get('/dashboard', function () {
     $categories = Category::all();
-    $posts = Post::with(['user', 'category', 'comments', 'post_likes'])
+    $posts = Post::with(['user', 'category', 'comments', 'comments.comment_likes', 'post_likes'])
             ->offset(0)
             ->limit(20)
             ->orderBy('id', 'desc')
@@ -47,6 +47,7 @@ Route::prefix('comments')->middleware(['auth', 'verified'])->group(function() {
     Route::delete('delete/{id}', [CommentsController::class, 'deleteComment'])->name('delete-comment');
     Route::post('update', [CommentsController::class, 'updateComment'])->name('post-update-comment');
     Route::get('user/{id}', [CommentsController::class, 'getUserFromComment']);
+    Route::post('/toggle-like', [CommentsController::class, 'toggleLike']);
 });
 
 require __DIR__.'/auth.php';

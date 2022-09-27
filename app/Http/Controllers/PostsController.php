@@ -16,7 +16,7 @@ class PostsController extends Controller {
     public function getPosts(Request $request): JsonResponse {
         $offset = $request->offset;
 
-        $posts = Post::with(['user', 'category', 'comments', 'post_likes'])
+        $posts = Post::with(['user', 'category', 'comments', 'comment.comment_likes', 'post_likes'])
             ->offset($offset)
             ->limit(20)
             ->orderBy('id', 'desc')
@@ -121,7 +121,7 @@ class PostsController extends Controller {
         $categories = Category::all();
         $my_comment_count = Comment::where('user_id', Auth::user()->id)->count();
         $posts = Post::where('user_id', Auth::user()->id)
-            ->with(['user', 'category', 'comments', 'post_likes'])
+            ->with(['user', 'category', 'comments', 'comment.comment_likes', 'post_likes'])
             ->offset($request->offset ? $request->offset : 0)
             ->limit(20)
             ->orderBy('id', 'desc')

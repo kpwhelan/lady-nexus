@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 
 class Post extends Model {
     use HasFactory;
@@ -30,5 +31,9 @@ class Post extends Model {
 
     public function post_likes(): HasMany {
         return $this->hasMany(PostLike::class)->where('active', true);
+    }
+
+    public function comment_likes(): HasManyThrough {
+        return $this->hasManyThrough(CommentLike::class, Comment::class);
     }
 }

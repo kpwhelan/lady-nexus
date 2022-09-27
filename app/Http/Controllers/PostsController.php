@@ -69,7 +69,7 @@ class PostsController extends Controller {
         $post->delete();
 
         return response()->json([
-            'post_id' => $id,
+            'post_id' => $post_id,
             'message' => 'Post deleted',
         ]);
     }
@@ -84,7 +84,7 @@ class PostsController extends Controller {
             'category_id.required' => 'You have to select a category!'
         ]);
 
-        $post = Post::with(['user', 'category', 'comments', 'post_likes'])->find($request->post_id);
+        $post = Post::with(['user', 'category', 'comments', 'comments.comment_likes', 'post_likes'])->find($request->post_id);
 
         if (!$post) {
             return response()->json(['message' => 'Something went wrong, please try again.'], 404);

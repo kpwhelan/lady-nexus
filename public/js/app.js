@@ -5881,24 +5881,37 @@ function Post(_ref) {
         }, 5000);
       }
     });
-  };
+  }; //NEED TO FIX DELETE COMMENT NOW
+
 
   var deleteComment = function deleteComment() {
     axios__WEBPACK_IMPORTED_MODULE_1___default()["delete"]("/comments/delete/".concat(commentIdToDelete)).then(function (response) {
-      if (response.data.code == 404) {
-        setDeleteCommentError(response.data.message);
+      if (response.status == 200) {
+        var posts = dashboardPosts ? dashboardPosts : myPosts;
+        var postIndex = posts.findIndex(function (post) {
+          return post.id == response.data.post_id;
+        });
+        var commentIndex = posts[postIndex].comments.findIndex(function (comment) {
+          return comment.id == response.data.comment_id;
+        });
+        posts[postIndex].comments.splice(commentIndex, 1);
         toggleSetModalOpen(false);
+
+        if (updatePosts) {
+          updatePosts(posts);
+        }
+
+        if (updatePostsForMyPosts) {
+          updatePostsForMyPosts(posts);
+        }
+      }
+    })["catch"](function (error) {
+      if (error.response) {
+        setError(error.response.data.message);
+        setDisplayError(true);
         setTimeout(function () {
           setDisplayError(false);
         }, 5000);
-      } else {
-        if (fetchPosts) {
-          fetchPosts();
-        } else if (setPosts) {
-          setPosts();
-        }
-
-        toggleSetModalOpen(false);
       }
     });
   };

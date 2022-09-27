@@ -81,24 +81,28 @@ function Post({ post, dashboardPosts, myPosts, updatePosts, currentUser, updateP
             }
         })
     }
-
+    //NEED TO FIX DELETE COMMENT NOW
     const deleteComment = () => {
         axios.delete(`/comments/delete/${commentIdToDelete}`)
         .then(response => {
-            if (response.data.code == 404) {
-                setDeleteCommentError(response.data.message);
-                toggleSetModalOpen(false)
+            if (response.status == 200) {
+                let posts = dashboardPosts ? dashboardPosts : myPosts;
+                let postIndex = posts.findIndex(post => post.id == response.data.post_id);
+                let commentIndex = posts[postIndex].comments.findIndex(comment => comment.id == response.data.comment_id);
+                posts[postIndex].comments.splice(commentIndex, 1);
+
+                toggleSetModalOpen(false);
+                if (updatePosts) {updatePosts(posts)}
+                if (updatePostsForMyPosts) {updatePostsForMyPosts(posts)}
+            }
+        }).catch(error => {
+            if (error.response) {
+                setError(error.response.data.message);
+                setDisplayError(true);
 
                 setTimeout(() => {
                     setDisplayError(false)
                 }, 5000);
-            } else {
-                if (fetchPosts) {
-                    fetchPosts()
-                } else if (setPosts) {
-                    setPosts()
-                }
-                toggleSetModalOpen(false)
             }
         })
     }

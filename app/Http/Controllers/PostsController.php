@@ -134,6 +134,18 @@ class PostsController extends Controller {
         ]);
     }
 
+    public function getMyLikesPage() {
+        $categories = Category::all();
+        $posts = Post::with(['user', 'category', 'comments', 'comments.comment_likes', 'post_likes'])
+            ->whereRelation('post_likes', 'user_id', Auth::user()->id)
+            ->get();
+
+        return Inertia::render('MyLikes', [
+            'posts' => $posts,
+            'categories' => $categories
+        ]);
+    }
+
     public function toggleLike(Request $request) {
         $user_id = Auth::user()->id;
         $post_id = $request->post_id;

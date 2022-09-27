@@ -6732,6 +6732,10 @@ function Authenticated(_ref) {
                 href: route('my-posts'),
                 active: route().current('my-posts'),
                 children: "My Posts"
+              }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)(_Components_NavLink__WEBPACK_IMPORTED_MODULE_3__["default"], {
+                href: route('my-likes'),
+                active: route().current('my-likes'),
+                children: "My Likes"
               })]
             })]
           }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("div", {
@@ -7650,6 +7654,16 @@ function Dashboard(props) {
     })]
   });
 }
+
+/***/ }),
+
+/***/ "./resources/js/Pages/MyLikes.js":
+/*!***************************************!*\
+  !*** ./resources/js/Pages/MyLikes.js ***!
+  \***************************************/
+/***/ (() => {
+
+throw new Error("Module build failed (from ./node_modules/babel-loader/lib/index.js):\nSyntaxError: /Users/kevinwhelan/Desktop/ladynexus/lady-nexus/resources/js/Pages/MyLikes.js: Unexpected token (10:2)\n\n\u001b[0m \u001b[90m  8 |\u001b[39m \u001b[36mfunction\u001b[39m \u001b[33mMyLikes\u001b[39m(props) {\u001b[0m\n\u001b[0m \u001b[90m  9 |\u001b[39m\u001b[0m\n\u001b[0m\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 10 |\u001b[39m   )\u001b[0m\n\u001b[0m \u001b[90m    |\u001b[39m   \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\u001b[0m\n\u001b[0m \u001b[90m 11 |\u001b[39m }\u001b[0m\n\u001b[0m \u001b[90m 12 |\u001b[39m\u001b[0m\n\u001b[0m \u001b[90m 13 |\u001b[39m \u001b[36mexport\u001b[39m \u001b[36mdefault\u001b[39m \u001b[33mMyLikes\u001b[39m\u001b[0m\n    at instantiate (/Users/kevinwhelan/Desktop/ladynexus/lady-nexus/node_modules/@babel/parser/lib/index.js:72:32)\n    at constructor (/Users/kevinwhelan/Desktop/ladynexus/lady-nexus/node_modules/@babel/parser/lib/index.js:358:12)\n    at Object.raise (/Users/kevinwhelan/Desktop/ladynexus/lady-nexus/node_modules/@babel/parser/lib/index.js:3334:19)\n    at Object.unexpected (/Users/kevinwhelan/Desktop/ladynexus/lady-nexus/node_modules/@babel/parser/lib/index.js:3372:16)\n    at Object.parseExprAtom (/Users/kevinwhelan/Desktop/ladynexus/lady-nexus/node_modules/@babel/parser/lib/index.js:13014:22)\n    at Object.parseExprAtom (/Users/kevinwhelan/Desktop/ladynexus/lady-nexus/node_modules/@babel/parser/lib/index.js:8033:20)\n    at Object.parseExprSubscripts (/Users/kevinwhelan/Desktop/ladynexus/lady-nexus/node_modules/@babel/parser/lib/index.js:12539:23)\n    at Object.parseUpdate (/Users/kevinwhelan/Desktop/ladynexus/lady-nexus/node_modules/@babel/parser/lib/index.js:12518:21)\n    at Object.parseMaybeUnary (/Users/kevinwhelan/Desktop/ladynexus/lady-nexus/node_modules/@babel/parser/lib/index.js:12489:23)\n    at Object.parseMaybeUnaryOrPrivate (/Users/kevinwhelan/Desktop/ladynexus/lady-nexus/node_modules/@babel/parser/lib/index.js:12283:61)");
 
 /***/ }),
 
@@ -62174,6 +62188,8 @@ var map = {
 	"./Auth/VerifyEmail.js": "./resources/js/Pages/Auth/VerifyEmail.js",
 	"./Dashboard": "./resources/js/Pages/Dashboard.js",
 	"./Dashboard.js": "./resources/js/Pages/Dashboard.js",
+	"./MyLikes": "./resources/js/Pages/MyLikes.js",
+	"./MyLikes.js": "./resources/js/Pages/MyLikes.js",
 	"./MyPosts": "./resources/js/Pages/MyPosts.js",
 	"./MyPosts.js": "./resources/js/Pages/MyPosts.js",
 	"./Welcome": "./resources/js/Pages/Welcome.js",

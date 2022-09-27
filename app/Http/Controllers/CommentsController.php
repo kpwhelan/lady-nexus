@@ -25,6 +25,8 @@ class CommentsController extends Controller {
             return response()->json(['message' => 'Something went wrong, please try again.'], 500);
         }
 
+        $comment->comment_likes = $comment->comment_likes;
+
         return response()->json([
             'comment' => $comment
         ]);

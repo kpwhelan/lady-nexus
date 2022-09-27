@@ -16,7 +16,7 @@ class PostsController extends Controller {
     public function getPosts(Request $request): JsonResponse {
         $offset = $request->offset;
 
-        $posts = Post::with(['user', 'category', 'comments', 'comment.comment_likes', 'post_likes'])
+        $posts = Post::with(['user', 'category', 'comments', 'comments.comment_likes', 'post_likes'])
             ->offset($offset)
             ->limit(20)
             ->orderBy('id', 'desc')
@@ -51,15 +51,16 @@ class PostsController extends Controller {
         return Redirect::route('my-posts');
     }
 
-    public function deletePost(int $id) {
-        $post = Post::find($id);
+    public function deletePost($id) {
+        $post_id = $id;
+        $post = Post::find($post_id);
 
         if (!$post) {
             return response()->json([
                 'status'  => 'Not Found',
                 'code'    => 404,
-                'message' => 'Hmmm we\'re having trouble deleting that post...',
-                'post_id' => $id
+                'message' => 'Hmmm we\'re having trouble deleting that post...try again?',
+                'post_id' => $post_id
             ]);
         }
 
@@ -68,8 +69,7 @@ class PostsController extends Controller {
         $post->delete();
 
         return response()->json([
-            'status'  => 'Success',
-            'code'    => 200,
+            'post_id' => $id,
             'message' => 'Post deleted',
         ]);
     }
@@ -106,7 +106,7 @@ class PostsController extends Controller {
         $offset = $request->offset;
 
         $posts = Post::where('user_id', Auth::user()->id)
-            ->with(['user', 'category', 'comments', 'post_likes'])
+            ->with(['user', 'category', 'comments', 'comments.comment_likes', 'post_likes'])
             ->offset($offset)
             ->limit(20)
             ->orderBy('id', 'desc')
@@ -120,8 +120,8 @@ class PostsController extends Controller {
     public function getMyPostsPage(Request $request) {
         $categories = Category::all();
         $my_comment_count = Comment::where('user_id', Auth::user()->id)->count();
-        $posts = Post::where('user_id', Auth::user()->id)
-            ->with(['user', 'category', 'comments', 'comment.comment_likes', 'post_likes'])
+        $posts = Post::with(['user', 'category', 'comments', 'comments.comment_likes', 'post_likes'])
+            ->where('user_id', Auth::user()->id)
             ->offset($request->offset ? $request->offset : 0)
             ->limit(20)
             ->orderBy('id', 'desc')

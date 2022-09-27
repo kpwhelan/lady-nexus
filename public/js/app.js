@@ -5808,6 +5808,11 @@ function Post(_ref) {
       likeCount = _useState18[0],
       setLikeCount = _useState18[1];
 
+  var _useState19 = (0,react__WEBPACK_IMPORTED_MODULE_2__.useState)(null),
+      _useState20 = _slicedToArray(_useState19, 2),
+      error = _useState20[0],
+      setError = _useState20[1];
+
   (0,react__WEBPACK_IMPORTED_MODULE_2__.useEffect)(function () {
     if (post.post_likes.find(function (like) {
       return like.user_id == currentUser.id;
@@ -5851,19 +5856,29 @@ function Post(_ref) {
 
   var deletePost = function deletePost() {
     axios__WEBPACK_IMPORTED_MODULE_1___default()["delete"]("/posts/delete/".concat(post.id)).then(function (response) {
-      if (response.data.code == 404) {
-        setError(response.message);
-        setDisplayError(true);
+      if (response.status == 200) {
+        var posts = dashboardPosts ? dashboardPosts : myPosts;
+        var postIndex = posts.findIndex(function (post) {
+          return post.id == response.data.post_id;
+        });
+        posts.splice(postIndex, 1);
         toggleSetModalOpen(false);
+
+        if (updatePosts) {
+          updatePosts(posts);
+        }
+
+        if (updatePostsForMyPosts) {
+          updatePostsForMyPosts(posts);
+        }
+      }
+    })["catch"](function (error) {
+      if (error.response) {
+        setError(error.response.data.message);
+        setDisplayError(true);
         setTimeout(function () {
           setDisplayError(false);
         }, 5000);
-      } else {
-        if (fetchPosts) {
-          fetchPosts();
-        } else if (setPosts) {
-          setPosts();
-        }
       }
     });
   };
@@ -5945,7 +5960,7 @@ function Post(_ref) {
           updatePostsForMyPosts: updatePostsForMyPosts
         }), displayError && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("p", {
           className: "bg-red-500/75 text-white mt-2 w-fit rounded-lg",
-          children: serverError
+          children: error
         })]
       }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsxs)("div", {
         className: "px-6 pt-4 pb-2",

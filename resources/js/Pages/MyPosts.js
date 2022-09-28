@@ -43,7 +43,7 @@ function MyPosts(props) {
     },[]);
 
     const handleScroll = (e) => {
-        if (e.target.scrollHeight - e.target.scrollTop === e.target.clientHeight) {
+        if (posts.length > 20 && e.target.scrollHeight - e.target.scrollTop === e.target.clientHeight) {
             fetchMorePosts();
         }
     }
@@ -67,7 +67,7 @@ function MyPosts(props) {
                         <p className='bg-white rounded-xl p-2 max-w-fit mb-1'>{user.first_name} {user.last_name}</p>
                         <p className='bg-white rounded-xl p-2 max-w-fit mb-1'>Joined: {new Date(user.created_at).toLocaleDateString('en-us', { weekday:"long", year:"numeric", month:"short", day:"numeric"})}</p>
                         <p className='bg-white rounded-xl p-2 max-w-fit mb-1'>{posts.length} {posts.length == 1 ? 'post' : 'posts'}</p>
-                        <p className='bg-white rounded-xl p-2 max-w-fit mb-1'>{props.comment_count} {props.comment_count == 1 ? 'comment' : 'comments'}</p>
+                        <p className='bg-white rounded-xl p-2 max-w-fit mb-1'>{props.comment_count > 0 ? props.comment_count : 0} {props.comment_count == 1 ? 'comment' : 'comments'}</p>
 
                         <PostForm className="mt-4" categories={categories} />
                     </div>
@@ -82,7 +82,6 @@ function MyPosts(props) {
                             <p>No posts yet...</p>
                     </div>
                     <div>
-                        <p className='text-lg mx-auto'>You haven't posted anything yet...</p>
                         <PostForm categories={categories} />
                     </div>
                 </div>

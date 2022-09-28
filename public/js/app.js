@@ -6152,8 +6152,6 @@ function PostForm(_ref) {
     e.preventDefault();
     post(route('create-post'), {
       onError: function onError(error) {
-        console.log(error);
-
         if (error.message) {
           setError(error.message);
           setDisplayError(true);
@@ -7616,7 +7614,7 @@ function Dashboard(props) {
   };
 
   var handleScroll = function handleScroll(e) {
-    if (e.target.scrollHeight - e.target.scrollTop === e.target.clientHeight) {
+    if (posts.length > 20 && e.target.scrollHeight - e.target.scrollTop === e.target.clientHeight) {
       fetchMorePosts();
     }
   };
@@ -7661,9 +7659,183 @@ function Dashboard(props) {
 /*!***************************************!*\
   !*** ./resources/js/Pages/MyLikes.js ***!
   \***************************************/
-/***/ (() => {
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
-throw new Error("Module build failed (from ./node_modules/babel-loader/lib/index.js):\nSyntaxError: /Users/kevinwhelan/Desktop/ladynexus/lady-nexus/resources/js/Pages/MyLikes.js: Unexpected token (10:2)\n\n\u001b[0m \u001b[90m  8 |\u001b[39m \u001b[36mfunction\u001b[39m \u001b[33mMyLikes\u001b[39m(props) {\u001b[0m\n\u001b[0m \u001b[90m  9 |\u001b[39m\u001b[0m\n\u001b[0m\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 10 |\u001b[39m   )\u001b[0m\n\u001b[0m \u001b[90m    |\u001b[39m   \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\u001b[0m\n\u001b[0m \u001b[90m 11 |\u001b[39m }\u001b[0m\n\u001b[0m \u001b[90m 12 |\u001b[39m\u001b[0m\n\u001b[0m \u001b[90m 13 |\u001b[39m \u001b[36mexport\u001b[39m \u001b[36mdefault\u001b[39m \u001b[33mMyLikes\u001b[39m\u001b[0m\n    at instantiate (/Users/kevinwhelan/Desktop/ladynexus/lady-nexus/node_modules/@babel/parser/lib/index.js:72:32)\n    at constructor (/Users/kevinwhelan/Desktop/ladynexus/lady-nexus/node_modules/@babel/parser/lib/index.js:358:12)\n    at Object.raise (/Users/kevinwhelan/Desktop/ladynexus/lady-nexus/node_modules/@babel/parser/lib/index.js:3334:19)\n    at Object.unexpected (/Users/kevinwhelan/Desktop/ladynexus/lady-nexus/node_modules/@babel/parser/lib/index.js:3372:16)\n    at Object.parseExprAtom (/Users/kevinwhelan/Desktop/ladynexus/lady-nexus/node_modules/@babel/parser/lib/index.js:13014:22)\n    at Object.parseExprAtom (/Users/kevinwhelan/Desktop/ladynexus/lady-nexus/node_modules/@babel/parser/lib/index.js:8033:20)\n    at Object.parseExprSubscripts (/Users/kevinwhelan/Desktop/ladynexus/lady-nexus/node_modules/@babel/parser/lib/index.js:12539:23)\n    at Object.parseUpdate (/Users/kevinwhelan/Desktop/ladynexus/lady-nexus/node_modules/@babel/parser/lib/index.js:12518:21)\n    at Object.parseMaybeUnary (/Users/kevinwhelan/Desktop/ladynexus/lady-nexus/node_modules/@babel/parser/lib/index.js:12489:23)\n    at Object.parseMaybeUnaryOrPrivate (/Users/kevinwhelan/Desktop/ladynexus/lady-nexus/node_modules/@babel/parser/lib/index.js:12283:61)");
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _Components_Modal__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @/Components/Modal */ "./resources/js/Components/Modal.js");
+/* harmony import */ var _Components_Post__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @/Components/Post */ "./resources/js/Components/Post.js");
+/* harmony import */ var _Components_PostForm__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @/Components/PostForm */ "./resources/js/Components/PostForm.js");
+/* harmony import */ var _Layouts_Authenticated__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @/Layouts/Authenticated */ "./resources/js/Layouts/Authenticated.js");
+/* harmony import */ var _inertiajs_inertia_react__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @inertiajs/inertia-react */ "./node_modules/@inertiajs/inertia-react/dist/index.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
+function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }
+
+function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+
+function _iterableToArray(iter) { if (typeof Symbol !== "undefined" && iter[Symbol.iterator] != null || iter["@@iterator"] != null) return Array.from(iter); }
+
+function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) return _arrayLikeToArray(arr); }
+
+function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
+
+function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
+
+function _iterableToArrayLimit(arr, i) { var _i = arr == null ? null : typeof Symbol !== "undefined" && arr[Symbol.iterator] || arr["@@iterator"]; if (_i == null) return; var _arr = []; var _n = true; var _d = false; var _s, _e; try { for (_i = _i.call(arr); !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
+
+function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
+
+
+
+
+
+
+
+
+
+
+function MyLikes(props) {
+  var _useState = (0,react__WEBPACK_IMPORTED_MODULE_5__.useState)([]),
+      _useState2 = _slicedToArray(_useState, 2),
+      posts = _useState2[0],
+      setPosts = _useState2[1];
+
+  var _useState3 = (0,react__WEBPACK_IMPORTED_MODULE_5__.useState)([]),
+      _useState4 = _slicedToArray(_useState3, 2),
+      user = _useState4[0],
+      setUser = _useState4[1];
+
+  var _useState5 = (0,react__WEBPACK_IMPORTED_MODULE_5__.useState)([]),
+      _useState6 = _slicedToArray(_useState5, 2),
+      categories = _useState6[0],
+      setCategories = _useState6[1];
+
+  var _useState7 = (0,react__WEBPACK_IMPORTED_MODULE_5__.useState)(false),
+      _useState8 = _slicedToArray(_useState7, 2),
+      modalOpen = _useState8[0],
+      setModalOpen = _useState8[1];
+
+  var _useState9 = (0,react__WEBPACK_IMPORTED_MODULE_5__.useState)(0),
+      _useState10 = _slicedToArray(_useState9, 2),
+      offset = _useState10[0],
+      setOffset = _useState10[1];
+
+  var updatePosts = function updatePosts(newPosts) {
+    setPosts(_toConsumableArray(newPosts));
+  };
+
+  var toggleSetModalOpen = function toggleSetModalOpen() {
+    if (modalOpen) {
+      setModalOpen(false);
+    } else if (!modalOpen) {
+      setModalOpen(true);
+    }
+  };
+
+  var fetchMoreLikedPosts = function fetchMoreLikedPosts() {
+    axios.get('/posts/fetch-more-liked-posts', {
+      params: {
+        offset: offset
+      }
+    }).then(function (response) {
+      var newOffset = offset + 20;
+      setOffset(newOffset);
+      setPosts(function (posts) {
+        return [].concat(_toConsumableArray(posts), _toConsumableArray(response.data.posts));
+      });
+    });
+  };
+
+  (0,react__WEBPACK_IMPORTED_MODULE_5__.useEffect)(function () {
+    if (posts.length === 0) {
+      setPosts(props.posts);
+    }
+
+    setUser(props.auth.user);
+    setCategories(props.categories);
+  }, []);
+
+  var handleScroll = function handleScroll(e) {
+    if (posts.length > 20 && e.target.scrollHeight - e.target.scrollTop === e.target.clientHeight) {
+      fetchMoreLikedPosts();
+    }
+  };
+
+  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsxs)(_Layouts_Authenticated__WEBPACK_IMPORTED_MODULE_3__["default"], {
+    auth: props.auth,
+    errors: props.errors,
+    children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)(_inertiajs_inertia_react__WEBPACK_IMPORTED_MODULE_4__.Head, {
+      title: "My Posts"
+    }), posts ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsxs)("div", {
+      className: "flex justify-around",
+      children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("div", {
+        className: "flex-initial w-2/3 max-h-screen overflow-scroll",
+        onScroll: handleScroll,
+        children: posts.map(function (post) {
+          return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)(_Components_Post__WEBPACK_IMPORTED_MODULE_1__["default"], {
+            post: post,
+            myPosts: posts,
+            currentUser: props.auth.user,
+            updatePostsForMyPosts: updatePosts,
+            categories: props.categories
+          }, post.id);
+        })
+      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsxs)("div", {
+        className: "flex-initial w-1/3 mr-2 mt-5",
+        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsxs)("p", {
+          className: "bg-white rounded-xl p-2 max-w-fit mb-1",
+          children: [user.first_name, " ", user.last_name]
+        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsxs)("p", {
+          className: "bg-white rounded-xl p-2 max-w-fit mb-1",
+          children: ["Joined: ", new Date(user.created_at).toLocaleDateString('en-us', {
+            weekday: "long",
+            year: "numeric",
+            month: "short",
+            day: "numeric"
+          })]
+        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsxs)("p", {
+          className: "bg-white rounded-xl p-2 max-w-fit mb-1",
+          children: [posts.length, " ", posts.length == 1 ? 'post' : 'posts']
+        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsxs)("p", {
+          className: "bg-white rounded-xl p-2 max-w-fit mb-1",
+          children: [props.comment_count > 0 ? props.comment_count : 0, " ", props.comment_count == 1 ? 'comment' : 'comments']
+        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)(_Components_PostForm__WEBPACK_IMPORTED_MODULE_2__["default"], {
+          className: "mt-4",
+          categories: categories
+        })]
+      }), modalOpen && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)(_Components_Modal__WEBPACK_IMPORTED_MODULE_0__["default"], {
+        toggleModal: toggleSetModalOpen,
+        deletePost: deletePost,
+        whatWeAreDelting: "post"
+      })]
+    }) : /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsxs)("div", {
+      className: "flex justify-around",
+      children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("div", {
+        className: "flex-initial w-2/3 max-h-screen overflow-scroll",
+        children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("p", {
+          children: "You haven't liked anything yet..."
+        })
+      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsxs)("div", {
+        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("p", {
+          className: "text-lg mx-auto",
+          children: "You haven't posted anything yet..."
+        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)(_Components_PostForm__WEBPACK_IMPORTED_MODULE_2__["default"], {
+          categories: categories
+        })]
+      })]
+    })]
+  });
+}
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (MyLikes);
 
 /***/ }),
 
@@ -7774,7 +7946,7 @@ function MyPosts(props) {
   }, []);
 
   var handleScroll = function handleScroll(e) {
-    if (e.target.scrollHeight - e.target.scrollTop === e.target.clientHeight) {
+    if (posts.length > 20 && e.target.scrollHeight - e.target.scrollTop === e.target.clientHeight) {
       fetchMorePosts();
     }
   };
@@ -7816,7 +7988,7 @@ function MyPosts(props) {
           children: [posts.length, " ", posts.length == 1 ? 'post' : 'posts']
         }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxs)("p", {
           className: "bg-white rounded-xl p-2 max-w-fit mb-1",
-          children: [props.comment_count, " ", props.comment_count == 1 ? 'comment' : 'comments']
+          children: [props.comment_count > 0 ? props.comment_count : 0, " ", props.comment_count == 1 ? 'comment' : 'comments']
         }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)(_Components_PostForm__WEBPACK_IMPORTED_MODULE_1__["default"], {
           className: "mt-4",
           categories: categories
@@ -7833,13 +8005,10 @@ function MyPosts(props) {
         children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("p", {
           children: "No posts yet..."
         })
-      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxs)("div", {
-        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("p", {
-          className: "text-lg mx-auto",
-          children: "You haven't posted anything yet..."
-        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)(_Components_PostForm__WEBPACK_IMPORTED_MODULE_1__["default"], {
+      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("div", {
+        children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)(_Components_PostForm__WEBPACK_IMPORTED_MODULE_1__["default"], {
           categories: categories
-        })]
+        })
       })]
     })]
   });

@@ -31,7 +31,7 @@ Route::get('/dashboard', function () {
 //Need to add auth middleware once front end complete
 //Also need to reinstate CSRF
 Route::prefix('posts')->middleware(['auth', 'verified'])->group(function() {
-    Route::get('/', [PostsController::class, 'getPosts'])->middleware(['auth']);
+    // Route::get('/', [PostsController::class, 'getPosts'])->middleware(['auth']);
     Route::post('create', [PostsController::class, 'createPost'])->name('create-post');
     Route::delete('delete/{id}', [PostsController::class, 'deletePost'])->name('delete-post');
     Route::post('update', [PostsController::class, 'updatePost'])->name('post-update-post');
@@ -39,6 +39,7 @@ Route::prefix('posts')->middleware(['auth', 'verified'])->group(function() {
     Route::get('fetch-more-posts', [PostsController::class, 'retrieveMorePosts']);
     Route::post('/toggle-like', [PostsController::class, 'toggleLike']);
     Route::get('my-likes', [PostsController::class, 'getMyLikesPage'])->name('my-likes');
+    Route::get('/fetch-more-liked-posts', [PostsController::class, 'fetchMoreLikedPosts']);
 });
 
 //Need to add auth middleware once front end complete

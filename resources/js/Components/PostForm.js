@@ -69,7 +69,6 @@ function PostForm({ categories, className }) {
 
         post(route('create-post'), {
             onError: error => {
-                console.log(error)
                 if (error.message) {
                     setError(error.message);
                     setDisplayError(true);
@@ -87,7 +86,7 @@ function PostForm({ categories, className }) {
 
   return (
         <form className={className} onSubmit={submit}>
-            <Label forInput="post_body" value="Post Something Awesome" className={"text-lg"}/>
+            <Label forInput="post_body" value='Post Something Awesome' className={"text-lg"}/>
             <Input
                 type="textarea"
                 name="post_body"

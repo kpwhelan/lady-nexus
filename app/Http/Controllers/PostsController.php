@@ -13,21 +13,21 @@ use Illuminate\Support\Facades\Redirect;
 use Inertia\Inertia;
 
 class PostsController extends Controller {
-    public function getPosts(Request $request): JsonResponse {
-        $offset = $request->offset;
+    // public function getPosts(Request $request): JsonResponse {
+    //     $offset = $request->offset;
 
-        $posts = Post::with(['user', 'category', 'comments', 'comments.comment_likes', 'post_likes'])
-            ->offset($offset)
-            ->limit(20)
-            ->orderBy('id', 'desc')
-            ->get();
+    //     $posts = Post::with(['user', 'category', 'comments', 'comments.comment_likes', 'post_likes'])
+    //         ->offset($offset)
+    //         ->limit(20)
+    //         ->orderBy('id', 'desc')
+    //         ->get();
 
-        return response()->json([
-            'status' => 'Success',
-            'code'   => 200,
-            'posts'  => $posts,
-        ]);
-    }
+    //     return response()->json([
+    //         'status' => 'Success',
+    //         'code'   => 200,
+    //         'posts'  => $posts,
+    //     ]);
+    // }
 
     public function createPost(Request $request) {
         $request->validate([
@@ -131,6 +131,36 @@ class PostsController extends Controller {
             'posts' => $posts,
             'categories' => $categories,
             'comment_count' => $my_comment_count,
+        ]);
+    }
+
+    public function getMyLikesPage(Request $request) {
+        $categories = Category::all();
+        $posts = Post::with(['user', 'category', 'comments', 'comments.comment_likes', 'post_likes'])
+            ->whereRelation('post_likes', 'user_id', Auth::user()->id)
+            ->offset($request->offset ? $request->offset : 0)
+            ->limit(20)
+            ->orderBy('id', 'desc')
+            ->get();
+
+        return Inertia::render('MyLikes', [
+            'posts' => $posts,
+            'categories' => $categories
+        ]);
+    }
+
+    public function getMoreLikedPosts(Request $request) {
+        $offset = $request->offset;
+
+        $posts = Post::with(['user', 'category', 'comments', 'comments.comment_likes', 'post_likes'])
+            ->whereRelation('post_likes', 'user_id', Auth::user()->id)
+            ->offset($request->offset ? $request->offset : 0)
+            ->limit(20)
+            ->orderBy('id', 'desc')
+            ->get();
+
+        return response()->json([
+            'posts'  => $posts,
         ]);
     }
 

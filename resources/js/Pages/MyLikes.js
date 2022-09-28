@@ -1,10 +1,11 @@
+import Modal from '@/Components/Modal'
 import Post from '@/Components/Post'
-import PostForm from '@/Components/PostForm';
+import PostForm from '@/Components/PostForm'
 import Authenticated from '@/Layouts/Authenticated'
 import { Head } from '@inertiajs/inertia-react'
-import React, { useEffect, useState } from 'react'
+import React, { useState, useEffect } from 'react'
 
-function MyPosts(props) {
+function MyLikes(props) {
     const [posts, setPosts] = useState([]);
     const [user, setUser] = useState([]);
     const [categories, setCategories] = useState([]);
@@ -23,8 +24,8 @@ function MyPosts(props) {
         }
     }
 
-    const fetchMorePosts = () => {
-        axios.get('/posts/fetch-my-posts', {params: {
+    const fetchMoreLikedPosts = () => {
+        axios.get('/posts/fetch-more-liked-posts', {params: {
             offset: offset
         }})
         .then(response => {
@@ -44,10 +45,9 @@ function MyPosts(props) {
 
     const handleScroll = (e) => {
         if (posts.length > 20 && e.target.scrollHeight - e.target.scrollTop === e.target.clientHeight) {
-            fetchMorePosts();
+            fetchMoreLikedPosts();
         }
     }
-
   return (
     <Authenticated
         auth={props.auth}
@@ -79,9 +79,10 @@ function MyPosts(props) {
             (
                 <div className='flex justify-around'>
                     <div className='flex-initial w-2/3 max-h-screen overflow-scroll'>
-                            <p>No posts yet...</p>
+                            <p>You haven't liked anything yet...</p>
                     </div>
                     <div>
+                        <p className='text-lg mx-auto'>You haven't posted anything yet...</p>
                         <PostForm categories={categories} />
                     </div>
                 </div>
@@ -93,4 +94,4 @@ function MyPosts(props) {
   )
 }
 
-export default MyPosts
+export default MyLikes

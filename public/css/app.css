@@ -1265,6 +1265,10 @@ select {
   -webkit-text-decoration-line: underline;
           text-decoration-line: underline;
 }
+.no-underline {
+  -webkit-text-decoration-line: none;
+          text-decoration-line: none;
+}
 .antialiased {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;

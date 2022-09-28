@@ -81,9 +81,8 @@ function MyLikes(props) {
                     <div className='flex-initial w-2/3 max-h-screen overflow-scroll'>
                             <p>You haven't liked anything yet...</p>
                     </div>
-                    <div>
-                        <p className='text-lg mx-auto'>You haven't posted anything yet...</p>
-                        <PostForm categories={categories} />
+                    <div className='flex-initial w-1/3 mr-2 mt-5'>
+                        <PostForm className="mt-4" categories={categories} />
                     </div>
                 </div>
             )

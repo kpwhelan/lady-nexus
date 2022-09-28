@@ -4864,6 +4864,11 @@ function Comment(_ref) {
       likeCount = _useState12[0],
       setLikeCount = _useState12[1];
 
+  var _useState13 = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)(false),
+      _useState14 = _slicedToArray(_useState13, 2),
+      displaySubComments = _useState14[0],
+      setDisplaySubComments = _useState14[1];
+
   (0,react__WEBPACK_IMPORTED_MODULE_1__.useEffect)(function () {
     if (comment.comment_likes.find(function (like) {
       return like.user_id == currentUser.id;
@@ -4879,6 +4884,14 @@ function Comment(_ref) {
       setDisplayError(true);
     }
   }, [deleteCommentError]);
+
+  var toggleSetDisplaySubComments = function toggleSetDisplaySubComments() {
+    if (displaySubComments) {
+      setDisplaySubComments(false);
+    } else if (!displaySubComments) {
+      setDisplaySubComments(true);
+    }
+  };
 
   var toggleSetDisplayEditBox = function toggleSetDisplayEditBox() {
     if (displayEditBox) {
@@ -4909,10 +4922,24 @@ function Comment(_ref) {
     children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("div", {
       className: "px-6 py-4",
       children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("p", {
+        className: "text-sm",
         children: user.username
-      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("p", {
-        className: "text-gray-700 text-base",
-        children: comment.comment
+      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("div", {
+        className: "flex",
+        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("p", {
+          className: "text-gray-700 text-lg ml-2",
+          children: comment.comment
+        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("span", {
+          onClick: toggleLikeComment,
+          className: "cursor-pointer ml-4",
+          children: [isCommentLikeByUser ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_fortawesome_react_fontawesome__WEBPACK_IMPORTED_MODULE_0__.FontAwesomeIcon, {
+            icon: _fortawesome_free_solid_svg_icons__WEBPACK_IMPORTED_MODULE_5__.faHeart
+          }) : /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_fortawesome_react_fontawesome__WEBPACK_IMPORTED_MODULE_0__.FontAwesomeIcon, {
+            icon: _fortawesome_free_regular_svg_icons__WEBPACK_IMPORTED_MODULE_6__.faHeart
+          }), likeCount > 0 ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("sub", {
+            children: likeCount
+          }) : null]
+        })]
       }), currentUser.id === comment.user_id && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("div", {
         children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("button", {
           id: comment.id,
@@ -4925,20 +4952,29 @@ function Comment(_ref) {
           onClick: toggleSetModalOpen,
           className: "text-sm ml-1",
           children: "Delete"
-        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("span", {
-          onClick: toggleLikeComment,
-          className: "cursor-pointer ml-4",
-          children: [isCommentLikeByUser ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_fortawesome_react_fontawesome__WEBPACK_IMPORTED_MODULE_0__.FontAwesomeIcon, {
-            icon: _fortawesome_free_solid_svg_icons__WEBPACK_IMPORTED_MODULE_5__.faHeart
-          }) : /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_fortawesome_react_fontawesome__WEBPACK_IMPORTED_MODULE_0__.FontAwesomeIcon, {
-            icon: _fortawesome_free_regular_svg_icons__WEBPACK_IMPORTED_MODULE_6__.faHeart
-          }), likeCount > 0 ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("sub", {
-            children: likeCount
-          }) : null]
         }), displayError && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("p", {
           className: "bg-red-500/75 text-white mt-2 p-2 w-fit rounded-lg",
           children: error
         })]
+      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("p", {
+        onClick: toggleSetDisplaySubComments,
+        className: "text-sm cursor-pointer underline mt-4",
+        children: ["View replies ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("span", {
+          children: ["(", comment.sub_comments.length, ")"]
+        })]
+      }), comment.sub_comments && displaySubComments && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("div", {
+        className: "ml-4 mt-2",
+        children: comment.sub_comments.map(function (sub_comment) {
+          return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("div", {
+            children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("p", {
+              className: "text-sm",
+              children: sub_comment.user.username
+            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("p", {
+              className: "text-gray-700 text-lg ml-2",
+              children: sub_comment.sub_comment
+            })]
+          }, "sub_comment_".concat(sub_comment.id));
+        })
       }), displayEditBox && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_CommentInputEdit__WEBPACK_IMPORTED_MODULE_3__["default"], {
         posts: posts,
         existingComment: comment.comment,
@@ -7585,6 +7621,8 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
 
 function Dashboard(props) {
+  console.log(props.posts);
+
   var _useState = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)([]),
       _useState2 = _slicedToArray(_useState, 2),
       posts = _useState2[0],
@@ -7629,7 +7667,7 @@ function Dashboard(props) {
     errors: props.errors,
     children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)(_inertiajs_inertia_react__WEBPACK_IMPORTED_MODULE_2__.Head, {
       title: "Dashboard"
-    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsxs)("div", {
+    }), posts ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsxs)("div", {
       className: "flex justify-around",
       children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("div", {
         className: "flex-initial w-2/3 max-h-screen overflow-scroll",
@@ -7647,6 +7685,20 @@ function Dashboard(props) {
         className: "flex-initial w-1/3 mr-2 mt-5",
         children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)(_Components_PostForm__WEBPACK_IMPORTED_MODULE_5__["default"], {
           categories: props.categories
+        })
+      })]
+    }) : /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsxs)("div", {
+      className: "flex justify-around",
+      children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("div", {
+        className: "flex-initial w-2/3 max-h-screen overflow-scroll",
+        children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("p", {
+          children: "No one has posted yet, you can be the first one!"
+        })
+      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("div", {
+        className: "flex-initial w-1/3 mr-2 mt-5",
+        children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)(_Components_PostForm__WEBPACK_IMPORTED_MODULE_5__["default"], {
+          className: "mt-4",
+          categories: categories
         })
       })]
     })]
@@ -7823,13 +7875,12 @@ function MyLikes(props) {
         children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("p", {
           children: "You haven't liked anything yet..."
         })
-      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsxs)("div", {
-        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("p", {
-          className: "text-lg mx-auto",
-          children: "You haven't posted anything yet..."
-        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)(_Components_PostForm__WEBPACK_IMPORTED_MODULE_2__["default"], {
+      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("div", {
+        className: "flex-initial w-1/3 mr-2 mt-5",
+        children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)(_Components_PostForm__WEBPACK_IMPORTED_MODULE_2__["default"], {
+          className: "mt-4",
           categories: categories
-        })]
+        })
       })]
     })]
   });

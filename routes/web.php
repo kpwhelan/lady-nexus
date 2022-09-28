@@ -19,7 +19,7 @@ Route::get('/', function () {
 
 Route::get('/dashboard', function () {
     $categories = Category::all();
-    $posts = Post::with(['user', 'category', 'comments', 'comments.comment_likes', 'post_likes'])
+    $posts = Post::with(['user', 'category', 'comments', 'comments.sub_comments', 'comments.sub_comments.user', 'comments.comment_likes', 'post_likes'])
             ->offset(0)
             ->limit(20)
             ->orderBy('id', 'desc')

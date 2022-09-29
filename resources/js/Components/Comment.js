@@ -5,6 +5,7 @@ import React, { useEffect, useState } from 'react'
 import axios from 'axios'
 import CommentInputEdit from './CommentInputEdit';
 import SubCommentInput from './SubCommentInput';
+import SubComment from './SubComment';
 
 function Comment({ posts, comment, currentUser, updatePosts, updatePostsForMyPosts, toggleSetModalOpen, commentIdToDelete, deleteCommentError }) {
     const [user, setUser] = useState([]);
@@ -101,10 +102,7 @@ function Comment({ posts, comment, currentUser, updatePosts, updatePostsForMyPos
             {(comment.sub_comments.length > 0 && displaySubComments) &&
                 <div className='ml-4 mt-2'>
                     {comment.sub_comments.map(sub_comment => (
-                        <div key={`sub_comment_${sub_comment.id}`} className="bg-white rounded-lg px-2 max-w-fit my-2">
-                            <p className='text-sm'>{sub_comment.user.username}</p>
-                            <p className="text-gray-700 text-lg ml-3">{sub_comment.sub_comment}</p>
-                        </div>
+                        <SubComment key={`sub_comment_${sub_comment.id}`} subComment={sub_comment} currentUser={currentUser} />
                     ))}
                 </div>
             }

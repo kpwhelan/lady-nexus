@@ -19,7 +19,7 @@ Route::get('/', function () {
 
 Route::get('/dashboard', function () {
     $categories = Category::all();
-    $posts = Post::with(['user', 'category', 'comments', 'comments.sub_comments', 'comments.sub_comments.user', 'comments.comment_likes', 'post_likes'])
+    $posts = Post::with(['user', 'category', 'comments', 'comments.sub_comments', 'comments.sub_comments.user', 'comments.sub_comments.sub_comment_likes', 'comments.comment_likes', 'post_likes'])
             ->offset(0)
             ->limit(20)
             ->orderBy('id', 'desc')
@@ -51,6 +51,7 @@ Route::prefix('comments')->middleware(['auth', 'verified'])->group(function() {
     Route::get('user/{id}', [CommentsController::class, 'getUserFromComment']);
     Route::post('/toggle-like', [CommentsController::class, 'toggleLike']);
     Route::post('create/sub-comment', [CommentsController::class, 'createSubComment'])->name('post-sub-comment');
+    Route::post('/toggle-sub-comment-like', [CommentsController::class, 'toggleSubCommentLike']);
 });
 
 require __DIR__.'/auth.php';

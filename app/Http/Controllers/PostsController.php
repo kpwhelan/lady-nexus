@@ -84,7 +84,7 @@ class PostsController extends Controller {
             'category_id.required' => 'You have to select a category!'
         ]);
 
-        $post = Post::with(['user', 'category', 'comments', 'comments.sub_comments', 'comments.sub_comments.user', 'comments.comment_likes', 'post_likes'])->find($request->post_id);
+        $post = Post::with(['user', 'category', 'comments', 'comments.sub_comments', 'comments.sub_comments.sub_comment_likes', 'comments.sub_comments.user', 'comments.comment_likes', 'post_likes'])->find($request->post_id);
 
         if (!$post) {
             return response()->json(['message' => 'Something went wrong, please try again.'], 404);
@@ -106,7 +106,7 @@ class PostsController extends Controller {
         $offset = $request->offset;
 
         $posts = Post::where('user_id', Auth::user()->id)
-            ->with(['user', 'category', 'comments', 'comments.sub_comments', 'comments.sub_comments.user', 'comments.comment_likes', 'post_likes'])
+            ->with(['user', 'category', 'comments', 'comments.sub_comments', 'comments.sub_comments.sub_comment_likes', 'comments.sub_comments.user', 'comments.comment_likes', 'post_likes'])
             ->offset($offset)
             ->limit(20)
             ->orderBy('id', 'desc')
@@ -120,7 +120,7 @@ class PostsController extends Controller {
     public function getMyPostsPage(Request $request) {
         $categories = Category::all();
         $my_comment_count = Comment::where('user_id', Auth::user()->id)->count();
-        $posts = Post::with(['user', 'category', 'comments', 'comments.sub_comments', 'comments.sub_comments.user', 'comments.comment_likes', 'post_likes'])
+        $posts = Post::with(['user', 'category', 'comments', 'comments.sub_comments', 'comments.sub_comments.sub_comment_likes', 'comments.sub_comments.user', 'comments.comment_likes', 'post_likes'])
             ->where('user_id', Auth::user()->id)
             ->offset($request->offset ? $request->offset : 0)
             ->limit(20)
@@ -136,7 +136,7 @@ class PostsController extends Controller {
 
     public function getMyLikesPage(Request $request) {
         $categories = Category::all();
-        $posts = Post::with(['user', 'category', 'comments', 'comments.sub_comments', 'comments.sub_comments.user', 'comments.comment_likes', 'post_likes'])
+        $posts = Post::with(['user', 'category', 'comments', 'comments.sub_comments', 'comments.sub_comments.sub_comment_likes', 'comments.sub_comments.user', 'comments.comment_likes', 'post_likes'])
             ->whereRelation('post_likes', 'user_id', Auth::user()->id)
             ->offset($request->offset ? $request->offset : 0)
             ->limit(20)
@@ -152,7 +152,7 @@ class PostsController extends Controller {
     public function getMoreLikedPosts(Request $request) {
         $offset = $request->offset;
 
-        $posts = Post::with(['user', 'category', 'comments', 'comments.sub_comments', 'comments.sub_comments.user', 'comments.comment_likes', 'post_likes'])
+        $posts = Post::with(['user', 'category', 'comments', 'comments.sub_comments', 'comments.sub_comments.sub_comment_likes', 'comments.sub_comments.user', 'comments.comment_likes', 'post_likes'])
             ->whereRelation('post_likes', 'user_id', Auth::user()->id)
             ->offset($request->offset ? $request->offset : 0)
             ->limit(20)

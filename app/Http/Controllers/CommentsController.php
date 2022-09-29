@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Comment;
 use App\Models\CommentLike;
 use App\Models\SubComment;
+use App\Models\SubCommentLike;
 use App\Models\User;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -112,8 +113,35 @@ class CommentsController extends Controller {
         return response()->json();
     }
 
-    public function createSubComment(Request $request) {
+    public function toggleSubCommentLike(Request $request) {
+        $user_id = Auth::user()->id;
+        $sub_comment_id = $request->sub_comment_id;
+        $is_sub_comment_liked_by_user = $request->is_sub_comment_liked_by_user;
 
+        $sub_comment_like = SubCommentLike::where([
+            ['user_id', $user_id],
+            ['sub_comment_id', $sub_comment_id]
+        ])
+        ->first();
+
+        if ($sub_comment_like) {
+            $sub_comment_like->update([
+                'active' => $is_sub_comment_liked_by_user ? false : true
+            ]);
+        } elseif (!$sub_comment_like) {
+            $sub_comment_like = new SubCommentLike();
+
+            $sub_comment_like->user_id = $user_id;
+            $sub_comment_like->sub_comment_id = $sub_comment_id;
+            $sub_comment_like->active  = true;
+
+            $sub_comment_like->save();
+        }
+
+        return response()->json();
+    }
+
+    public function createSubComment(Request $request) {
         $request->validate([
             'sub_comment_body' => 'required|string',
         ]);

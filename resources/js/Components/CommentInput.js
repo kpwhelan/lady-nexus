@@ -51,7 +51,7 @@ function CommentInput({ posts, updatePosts, updatePostsForMyPosts, post_id }) {
                 type="textarea"
                 name="comment_body"
                 value={data.comment_body}
-                className="w-full"
+                className="w-2/3 rounded-lg"
                 autoComplete="comment_body"
                 isFocused={false}
                 handleChange={onHandleChange}

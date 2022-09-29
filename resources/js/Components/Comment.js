@@ -4,6 +4,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React, { useEffect, useState } from 'react'
 import axios from 'axios'
 import CommentInputEdit from './CommentInputEdit';
+import SubCommentInput from './SubCommentInput';
 
 function Comment({ posts, comment, currentUser, updatePosts, updatePostsForMyPosts, toggleSetModalOpen, commentIdToDelete, deleteCommentError }) {
     const [user, setUser] = useState([]);
@@ -65,20 +66,22 @@ function Comment({ posts, comment, currentUser, updatePosts, updatePostsForMyPos
   return (
     <>
     <div className="px-6 py-4">
-        <p className='text-sm'>{user.username}</p>
-        <div className='flex'>
-            <p className="text-gray-700 text-lg ml-2">{comment.comment}</p>
-            <span onClick={toggleLikeComment} className='cursor-pointer ml-4'>
-                {isCommentLikeByUser ? (
-                        <FontAwesomeIcon icon={faHeartSolid} />
-                    )
-                    :
-                    (
-                        <FontAwesomeIcon icon={faHeart} />
-                    )
-                }
-                {likeCount > 0 ? <sub>{likeCount}</sub> : null}
-            </span>
+        <div className='bg-white rounded-lg p-2 max-w-fit'>
+            <p className='text-sm'>{user.username}</p>
+            <div className='flex'>
+                <p className="text-gray-700 text-lg ml-2">{comment.comment}</p>
+                <span onClick={toggleLikeComment} className='cursor-pointer ml-4'>
+                    {isCommentLikeByUser ? (
+                            <FontAwesomeIcon icon={faHeartSolid} />
+                        )
+                        :
+                        (
+                            <FontAwesomeIcon icon={faHeart} />
+                        )
+                    }
+                    {likeCount > 0 ? <sub>{likeCount}</sub> : null}
+                </span>
+            </div>
         </div>
 
         {currentUser.id === comment.user_id &&
@@ -91,17 +94,21 @@ function Comment({ posts, comment, currentUser, updatePosts, updatePostsForMyPos
         </div>
         }
 
-        <p onClick={toggleSetDisplaySubComments} className='text-sm cursor-pointer underline mt-4'>View replies <span>&#40;{comment.sub_comments.length}&#41;</span></p>
-        {(comment.sub_comments && displaySubComments) &&
-            <div className='ml-4 mt-2'>
-                {comment.sub_comments.map(sub_comment => (
-                    <div key={`sub_comment_${sub_comment.id}`}>
-                        <p className='text-sm'>{sub_comment.user.username}</p>
-                        <p className="text-gray-700 text-lg ml-2">{sub_comment.sub_comment}</p>
-                    </div>
-                ))}
-            </div>
-        }
+        <div className='ml-8'>
+            <p onClick={toggleSetDisplaySubComments} className='text-sm cursor-pointer underline mt-4'>View replies <span>&#40;{comment.sub_comments.length}&#41;</span></p>
+            {(comment.sub_comments && displaySubComments) &&
+                <div className='ml-4 mt-2 bg-white rounded-lg p-2 max-w-fit'>
+                    {comment.sub_comments.map(sub_comment => (
+                        <div key={`sub_comment_${sub_comment.id}`}>
+                            <p className='text-sm'>{sub_comment.user.username}</p>
+                            <p className="text-gray-700 text-lg ml-2">{sub_comment.sub_comment}</p>
+                        </div>
+                    ))}
+                </div>
+            }
+        </div>
+
+        <SubCommentInput posts={posts} post_id={comment.post_id} comment_id={comment.id} updatePosts={updatePosts} updatePostsForMyPosts={updatePostsForMyPosts} />
         {displayEditBox && <CommentInputEdit posts={posts} existingComment={comment.comment} updatePosts={updatePosts} updatePostsForMyPosts={updatePostsForMyPosts} commentId={comment.id} toggleSetDisplayEditBox={toggleSetDisplayEditBox} />}
     </div>
     </>

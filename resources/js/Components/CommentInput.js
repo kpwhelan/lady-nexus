@@ -60,7 +60,7 @@ function CommentInput({ posts, updatePosts, updatePostsForMyPosts, post_id }) {
             />
 
             <Button className="my-1" processing={processing}>
-                Post
+                Submit
             </Button>
 
             {displayServerError &&

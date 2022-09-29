@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Comment;
 use App\Models\CommentLike;
+use App\Models\SubComment;
 use App\Models\User;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -26,6 +27,7 @@ class CommentsController extends Controller {
         }
 
         $comment->comment_likes = $comment->comment_likes;
+        $comment->sub_comments = $comment->sub_comments;
 
         return response()->json([
             'comment' => $comment
@@ -108,5 +110,28 @@ class CommentsController extends Controller {
         }
 
         return response()->json();
+    }
+
+    public function createSubComment(Request $request) {
+
+        $request->validate([
+            'sub_comment_body' => 'required|string',
+        ]);
+
+        $sub_comment          = new SubComment();
+        $sub_comment->sub_comment = $request->sub_comment_body;
+        $sub_comment->comment_id = $request->comment_id;
+        $sub_comment->user_id = Auth::user()->id;
+
+        if (!$sub_comment->save()) {
+            return response()->json(['message' => 'Something went wrong, please try again.'], 500);
+        }
+
+        $sub_comment->sub_comment_likes = $sub_comment->sub_comment_likes;
+        $sub_comment->user = $sub_comment->user;
+
+        return response()->json([
+            'sub_comment' => $sub_comment
+        ]);
     }
 }

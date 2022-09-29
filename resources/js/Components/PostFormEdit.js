@@ -129,7 +129,7 @@ function PostFormEdit({ className, postData, categories, previousCategoryId, tog
                 ))}
             </div>
              <Button className="mt-1 mr-1" processing={processing}>
-                Post
+                Submit
             </Button>
 
             {displayError &&

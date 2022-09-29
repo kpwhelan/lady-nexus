@@ -105,7 +105,7 @@ function PostForm({ categories, className }) {
                 ))}
             </div>
              <Button className="mt-1" processing={processing}>
-                Post
+                Submit
             </Button>
 
             {displayError &&

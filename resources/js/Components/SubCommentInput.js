@@ -1,14 +1,13 @@
 import { useForm } from '@inertiajs/inertia-react';
-import React, { useEffect, useState } from 'react'
-import Input from './Input'
+import React, { useState } from 'react'
 import Button from './Button';
+import Input from './Input';
 
-function CommentInputEdit({ posts, updatePosts, updatePostsForMyPosts, existingComment, commentId, toggleSetDisplayEditBox }) {
+function SubCommentInput({ posts, post_id, comment_id, updatePosts, updatePostsForMyPosts,  }) {
     const { data, setData, post, processing, errors, reset } = useForm({
-        comment_body: '',
-        comment_id: commentId
+        sub_comment_body: '',
+        comment_id: comment_id
     });
-
     const [ serverError, setServerError ] = useState('');
     const [ displayServerError, setDisplayServerError ] = useState(false);
 
@@ -16,31 +15,25 @@ function CommentInputEdit({ posts, updatePosts, updatePostsForMyPosts, existingC
         setData(event.target.name, event.target.type === 'checkbox' ? event.target.checked : event.target.value);
     };
 
-    useEffect(() => {
-        if (existingComment) {
-            const commentEditBox = document.querySelector(`#commend_edit_${commentId}`);
-            commentEditBox.textContent = existingComment
-        }
-    }, [])
-
     const submit = (e) => {
         e.preventDefault();
 
-        axios.post(route('post-update-comment'), {
-            comment_body: data.comment_body,
+        axios.post(route('post-sub-comment'), {
+            sub_comment_body: data.sub_comment_body,
             comment_id: data.comment_id
         })
         .then(response => {
             if (response.status == 200) {
-                let postIndex = posts.findIndex(post => post.id == response.data.comment.post_id);
-                let commentIndex = posts[postIndex].comments.findIndex(comment => comment.id == commentId);
+                let postIndex = posts.findIndex(post => post.id == post_id);
+                let commentIndex = posts[postIndex].comments.findIndex(comment => comment.id == data.comment_id);
+                // let subCommentIndex = posts[postIndex].comments[commentIndex].sub_comments.find(sub_comment => sub_comment.id == response.data.sub_comment.id);
 
-                posts[postIndex].comments[commentIndex].comment = response.data.comment.comment;
-                posts[postIndex].comments.reverse()
+                posts[postIndex].comments[commentIndex].sub_comments.unshift(response.data.sub_comment);
+                posts[postIndex].comments.reverse();
 
                 if (updatePosts) {updatePosts(posts)}
                 if (updatePostsForMyPosts) {updatePostsForMyPosts(posts)}
-                toggleSetDisplayEditBox(false)
+                reset()
             }
         })
         .catch(error => {
@@ -56,31 +49,30 @@ function CommentInputEdit({ posts, updatePosts, updatePostsForMyPosts, existingC
     };
 
   return (
-    <div className='mx-6'>
+    <div className='mt-8'>
         <form onSubmit={submit}>
             <Input
                 type="textarea"
-                name="comment_body"
-                value={data.comment_body}
+                name="sub_comment_body"
+                value={data.sub_comment_body}
                 className="w-full"
-                autoComplete="comment_body"
+                autoComplete="sub_comment_body"
                 isFocused={false}
                 handleChange={onHandleChange}
-                placeholder="Comment..."
+                placeholder="Reply..."
                 required
-                id={`commend_edit_${commentId}`}
             />
 
-            <Button className="mt-1" processing={processing}>
+            <Button className="my-1" processing={processing}>
                 Submit
             </Button>
 
             {displayServerError &&
-                <p className='bg-red-500/75 text-white mt-2 w-fit rounded-lg'>{serverError}</p>
+                <p className='bg-red-500/75 text-white mt-2 w-fit rounded-lg p-2'>{serverError}</p>
             }
         </form>
     </div>
   )
 }
 
-export default CommentInputEdit
+export default SubCommentInput

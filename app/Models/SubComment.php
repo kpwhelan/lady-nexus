@@ -23,6 +23,6 @@ class SubComment extends Model {
     }
 
     public function sub_comment_likes() {
-        return $this->hasMany(CommentLike::class)->where('active', true);
+        return $this->hasMany(SubCommentLike::class)->where('active', true);
     }
 }

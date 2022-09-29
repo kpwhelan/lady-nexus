@@ -6,7 +6,6 @@ import Post from '@/Components/Post';
 import PostForm from '@/Components/PostForm';
 
 export default function Dashboard(props) {
-    console.log(props.posts)
     const [posts, setPosts] = useState([]);
     const [offset, setOffset] = useState(20);
 

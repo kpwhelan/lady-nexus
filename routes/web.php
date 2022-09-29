@@ -50,6 +50,7 @@ Route::prefix('comments')->middleware(['auth', 'verified'])->group(function() {
     Route::post('update', [CommentsController::class, 'updateComment'])->name('post-update-comment');
     Route::get('user/{id}', [CommentsController::class, 'getUserFromComment']);
     Route::post('/toggle-like', [CommentsController::class, 'toggleLike']);
+    Route::post('create/sub-comment', [CommentsController::class, 'createSubComment'])->name('post-sub-comment');
 });
 
 require __DIR__.'/auth.php';

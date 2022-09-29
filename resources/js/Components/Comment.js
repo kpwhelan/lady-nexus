@@ -94,14 +94,16 @@ function Comment({ posts, comment, currentUser, updatePosts, updatePostsForMyPos
         </div>
         }
 
+        {displayEditBox && <CommentInputEdit posts={posts} existingComment={comment.comment} updatePosts={updatePosts} updatePostsForMyPosts={updatePostsForMyPosts} commentId={comment.id} toggleSetDisplayEditBox={toggleSetDisplayEditBox} />}
+
         <div className='ml-8'>
             <p onClick={toggleSetDisplaySubComments} className='text-sm cursor-pointer underline mt-4'>View replies <span>&#40;{comment.sub_comments.length}&#41;</span></p>
-            {(comment.sub_comments && displaySubComments) &&
-                <div className='ml-4 mt-2 bg-white rounded-lg p-2 max-w-fit'>
+            {(comment.sub_comments.length > 0 && displaySubComments) &&
+                <div className='ml-4 mt-2'>
                     {comment.sub_comments.map(sub_comment => (
-                        <div key={`sub_comment_${sub_comment.id}`}>
+                        <div key={`sub_comment_${sub_comment.id}`} className="bg-white rounded-lg px-2 max-w-fit my-2">
                             <p className='text-sm'>{sub_comment.user.username}</p>
-                            <p className="text-gray-700 text-lg ml-2">{sub_comment.sub_comment}</p>
+                            <p className="text-gray-700 text-lg ml-3">{sub_comment.sub_comment}</p>
                         </div>
                     ))}
                 </div>
@@ -109,7 +111,6 @@ function Comment({ posts, comment, currentUser, updatePosts, updatePostsForMyPos
         </div>
 
         <SubCommentInput posts={posts} post_id={comment.post_id} comment_id={comment.id} updatePosts={updatePosts} updatePostsForMyPosts={updatePostsForMyPosts} />
-        {displayEditBox && <CommentInputEdit posts={posts} existingComment={comment.comment} updatePosts={updatePosts} updatePostsForMyPosts={updatePostsForMyPosts} commentId={comment.id} toggleSetDisplayEditBox={toggleSetDisplayEditBox} />}
     </div>
     </>
   )

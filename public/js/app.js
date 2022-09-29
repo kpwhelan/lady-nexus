@@ -4961,6 +4961,13 @@ function Comment(_ref) {
           className: "bg-red-500/75 text-white mt-2 p-2 w-fit rounded-lg",
           children: error
         })]
+      }), displayEditBox && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)(_CommentInputEdit__WEBPACK_IMPORTED_MODULE_3__["default"], {
+        posts: posts,
+        existingComment: comment.comment,
+        updatePosts: updatePosts,
+        updatePostsForMyPosts: updatePostsForMyPosts,
+        commentId: comment.id,
+        toggleSetDisplayEditBox: toggleSetDisplayEditBox
       }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxs)("div", {
         className: "ml-8",
         children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxs)("p", {
@@ -4969,15 +4976,16 @@ function Comment(_ref) {
           children: ["View replies ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxs)("span", {
             children: ["(", comment.sub_comments.length, ")"]
           })]
-        }), comment.sub_comments && displaySubComments && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("div", {
-          className: "ml-4 mt-2 bg-white rounded-lg p-2 max-w-fit",
+        }), comment.sub_comments.length > 0 && displaySubComments && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("div", {
+          className: "ml-4 mt-2",
           children: comment.sub_comments.map(function (sub_comment) {
             return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxs)("div", {
+              className: "bg-white rounded-lg px-2 max-w-fit my-2",
               children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("p", {
                 className: "text-sm",
                 children: sub_comment.user.username
               }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("p", {
-                className: "text-gray-700 text-lg ml-2",
+                className: "text-gray-700 text-lg ml-3",
                 children: sub_comment.sub_comment
               })]
             }, "sub_comment_".concat(sub_comment.id));
@@ -4989,13 +4997,6 @@ function Comment(_ref) {
         comment_id: comment.id,
         updatePosts: updatePosts,
         updatePostsForMyPosts: updatePostsForMyPosts
-      }), displayEditBox && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)(_CommentInputEdit__WEBPACK_IMPORTED_MODULE_3__["default"], {
-        posts: posts,
-        existingComment: comment.comment,
-        updatePosts: updatePosts,
-        updatePostsForMyPosts: updatePostsForMyPosts,
-        commentId: comment.id,
-        toggleSetDisplayEditBox: toggleSetDisplayEditBox
       })]
     })
   });

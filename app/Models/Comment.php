@@ -25,4 +25,8 @@ class Comment extends Model {
     public function comment_likes() {
         return $this->hasMany(CommentLike::class)->where('active', true);
     }
+
+    public function sub_comments() {
+        return $this->hasMany(SubComment::class);
+    }
 }

@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Comment;
 use App\Models\CommentLike;
+use App\Models\SubComment;
+use App\Models\SubCommentLike;
 use App\Models\User;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -26,6 +28,7 @@ class CommentsController extends Controller {
         }
 
         $comment->comment_likes = $comment->comment_likes;
+        $comment->sub_comments = $comment->sub_comments;
 
         return response()->json([
             'comment' => $comment
@@ -44,6 +47,8 @@ class CommentsController extends Controller {
                 'message' => 'Hmmm we can\'t seem to find that comment...',
             ]);
         }
+
+        $comment->sub_comments()->delete();
 
         $comment->delete();
 
@@ -108,5 +113,101 @@ class CommentsController extends Controller {
         }
 
         return response()->json();
+    }
+
+    public function toggleSubCommentLike(Request $request) {
+        $user_id = Auth::user()->id;
+        $sub_comment_id = $request->sub_comment_id;
+        $is_sub_comment_liked_by_user = $request->is_sub_comment_liked_by_user;
+
+        $sub_comment_like = SubCommentLike::where([
+            ['user_id', $user_id],
+            ['sub_comment_id', $sub_comment_id]
+        ])
+        ->first();
+
+        if ($sub_comment_like) {
+            $sub_comment_like->update([
+                'active' => $is_sub_comment_liked_by_user ? false : true
+            ]);
+        } elseif (!$sub_comment_like) {
+            $sub_comment_like = new SubCommentLike();
+
+            $sub_comment_like->user_id = $user_id;
+            $sub_comment_like->sub_comment_id = $sub_comment_id;
+            $sub_comment_like->active  = true;
+
+            $sub_comment_like->save();
+        }
+
+        return response()->json();
+    }
+
+    public function createSubComment(Request $request) {
+        $request->validate([
+            'sub_comment_body' => 'required|string',
+        ]);
+
+        $sub_comment          = new SubComment();
+        $sub_comment->sub_comment = $request->sub_comment_body;
+        $sub_comment->comment_id = $request->comment_id;
+        $sub_comment->user_id = Auth::user()->id;
+
+        if (!$sub_comment->save()) {
+            return response()->json(['message' => 'Something went wrong, please try again.'], 500);
+        }
+
+        $sub_comment->sub_comment_likes = $sub_comment->sub_comment_likes;
+        $sub_comment->user = $sub_comment->user;
+
+        return response()->json([
+            'sub_comment' => $sub_comment
+        ]);
+    }
+
+    public function deleteSubComment($id) {
+        $sub_comment_id = $id;
+        $sub_comment = SubComment::find($sub_comment_id);
+        $comment_id = $sub_comment->comment->id;
+        $post_id = $sub_comment->comment->post->id;
+
+        if (!$sub_comment) {
+            return response()->json([
+                'status'  => 'Not Found',
+                'code'    => 404,
+                'message' => 'Hmmm we can\'t seem to find that comment...',
+            ]);
+        }
+
+        $sub_comment->delete();
+
+        return response()->json([
+            'sub_comment_id' => $sub_comment_id,
+            'comment_id' => $comment_id,
+            'post_id' => $post_id,
+            'message' => 'Deleted',
+        ]);
+    }
+
+    public function updateSubComment(Request $request) {
+        $sub_comment = SubComment::find($request->sub_comment_id);
+        $comment_id = $sub_comment->comment->id;
+        $post_id = $sub_comment->comment->post->id;
+
+        if (!$sub_comment) {
+            return back()->withErrors(['message' => 'Hmmm we can\'t seem to find that one...']);
+        }
+
+        $sub_comment->sub_comment = $request->sub_comment_body;
+
+        if (!$sub_comment->save()) {
+            return response()->json(['message' => 'Something went wrong, please try again.'], 500);
+        }
+
+        return response()->json([
+            'sub_comment' => $sub_comment,
+            'comment_id' => $comment_id,
+            'post_id' => $post_id
+        ]);
     }
 }

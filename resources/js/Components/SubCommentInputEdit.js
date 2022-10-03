@@ -3,10 +3,10 @@ import React, { useEffect, useState } from 'react'
 import Input from './Input'
 import Button from './Button';
 
-function CommentInputEdit({ posts, updatePosts, updatePostsForMyPosts, existingComment, commentId, toggleSetDisplayEditBox }) {
+function SubCommentInputEdit({ posts, updatePosts, updatePostsForMyPosts, existingSubComment, subCommentId, toggleSetDisplayEditBox }) {
     const { data, setData, post, processing, errors, reset } = useForm({
-        comment_body: '',
-        comment_id: commentId
+        sub_comment_body: '',
+        sub_comment_id: subCommentId
     });
 
     const [ serverError, setServerError ] = useState('');
@@ -17,30 +17,30 @@ function CommentInputEdit({ posts, updatePosts, updatePostsForMyPosts, existingC
     };
 
     useEffect(() => {
-        if (existingComment) {
-            const commentEditBox = document.querySelector(`#commend_edit_${commentId}`);
-            commentEditBox.textContent = existingComment
+        if (existingSubComment) {
+            const subCommentEditBox = document.querySelector(`#sub_comment_edit_${subCommentId}`);
+            subCommentEditBox.textContent = existingSubComment
         }
     }, [])
 
     const submit = (e) => {
         e.preventDefault();
 
-        axios.post(route('post-update-comment'), {
-            comment_body: data.comment_body,
-            comment_id: data.comment_id
+        axios.post(route('post-update-sub-comment'), {
+            sub_comment_body: data.sub_comment_body,
+            sub_comment_id: data.sub_comment_id
         })
         .then(response => {
             if (response.status == 200) {
-                let postIndex = posts.findIndex(post => post.id == response.data.comment.post_id);
-                let commentIndex = posts[postIndex].comments.findIndex(comment => comment.id == commentId);
+                const postIndex = posts.findIndex(post => post.id == response.data.post_id);
+                const commentIndex = posts[postIndex].comments.findIndex(comment => comment.id == response.data.comment_id);
+                const subCommentIndex = posts[postIndex].comments[commentIndex].sub_comments.findIndex(sub_comment => sub_comment.id == response.data.sub_comment.id);
 
-                posts[postIndex].comments[commentIndex].comment = response.data.comment.comment;
-                posts[postIndex].comments.reverse()
+                posts[postIndex].comments[commentIndex].sub_comments[subCommentIndex].sub_comment = response.data.sub_comment.sub_comment;
 
                 if (updatePosts) {updatePosts(posts)}
                 if (updatePostsForMyPosts) {updatePostsForMyPosts(posts)}
-                toggleSetDisplayEditBox(false)
+                toggleSetDisplayEditBox()
             }
         })
         .catch(error => {
@@ -60,15 +60,15 @@ function CommentInputEdit({ posts, updatePosts, updatePostsForMyPosts, existingC
         <form onSubmit={submit}>
             <Input
                 type="textarea"
-                name="comment_body"
-                value={data.comment_body}
+                name="sub_comment_body"
+                value={data.sub_comment_body}
                 className="w-full"
-                autoComplete="comment_body"
+                autoComplete="sub_comment_body"
                 isFocused={false}
                 handleChange={onHandleChange}
-                placeholder="Comment..."
+                placeholder="Reply"
                 required
-                id={`commend_edit_${commentId}`}
+                id={`sub_comment_edit_${subCommentId}`}
             />
 
             <Button className="mt-1" processing={processing}>
@@ -83,4 +83,4 @@ function CommentInputEdit({ posts, updatePosts, updatePostsForMyPosts, existingC
   )
 }
 
-export default CommentInputEdit
+export default SubCommentInputEdit

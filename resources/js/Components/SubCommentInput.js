@@ -1,12 +1,12 @@
 import { useForm } from '@inertiajs/inertia-react';
 import React, { useState } from 'react'
-import Input from './Input'
 import Button from './Button';
+import Input from './Input';
 
-function CommentInput({ posts, updatePosts, updatePostsForMyPosts, post_id }) {
+function SubCommentInput({ posts, post_id, comment_id, updatePosts, updatePostsForMyPosts,  }) {
     const { data, setData, post, processing, errors, reset } = useForm({
-        comment_body: '',
-        post_id: post_id
+        sub_comment_body: '',
+        comment_id: comment_id
     });
     const [ serverError, setServerError ] = useState('');
     const [ displayServerError, setDisplayServerError ] = useState(false);
@@ -18,14 +18,18 @@ function CommentInput({ posts, updatePosts, updatePostsForMyPosts, post_id }) {
     const submit = (e) => {
         e.preventDefault();
 
-        axios.post(route('post-comment'), {
-            comment_body: data.comment_body,
-            post_id: data.post_id
+        axios.post(route('post-sub-comment'), {
+            sub_comment_body: data.sub_comment_body,
+            comment_id: data.comment_id
         })
         .then(response => {
             if (response.status == 200) {
                 let postIndex = posts.findIndex(post => post.id == post_id);
-                posts[postIndex].comments.push(response.data.comment);
+                let commentIndex = posts[postIndex].comments.findIndex(comment => comment.id == data.comment_id);
+                // let subCommentIndex = posts[postIndex].comments[commentIndex].sub_comments.find(sub_comment => sub_comment.id == response.data.sub_comment.id);
+
+                posts[postIndex].comments[commentIndex].sub_comments.push(response.data.sub_comment);
+                // posts[postIndex].comments.reverse();
 
                 if (updatePosts) {updatePosts(posts)}
                 if (updatePostsForMyPosts) {updatePostsForMyPosts(posts)}
@@ -45,17 +49,17 @@ function CommentInput({ posts, updatePosts, updatePostsForMyPosts, post_id }) {
     };
 
   return (
-    <div className='mx-6'>
+    <div className='mt-8'>
         <form onSubmit={submit}>
             <Input
                 type="textarea"
-                name="comment_body"
-                value={data.comment_body}
+                name="sub_comment_body"
+                value={data.sub_comment_body}
                 className="w-2/3 rounded-lg"
-                autoComplete="comment_body"
+                autoComplete="sub_comment_body"
                 isFocused={false}
                 handleChange={onHandleChange}
-                placeholder="Comment..."
+                placeholder="Reply..."
                 required
             />
 
@@ -71,4 +75,4 @@ function CommentInput({ posts, updatePosts, updatePostsForMyPosts, post_id }) {
   )
 }
 
-export default CommentInput
+export default SubCommentInput

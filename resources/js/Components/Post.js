@@ -14,6 +14,7 @@ function Post({ post, dashboardPosts, myPosts, updatePosts, currentUser, updateP
     const [modalOpen, setModalOpen] = useState(false);
     const [whatWeAreDeleting, setWhatAreWeDeleting] = useState(null);
     const [commentIdToDelete, setCommentIdToDelete] = useState(null);
+    const [subCommentIdToDelete, setSubCommentIdToDelete] = useState(null);
     const [deleteCommentError, setDeleteCommentError] = useState(null);
     const [isPostLikeByUser, setIsPostLikedByUser] = useState(false);
     const [likeCount, setLikeCount] = useState(0);
@@ -32,13 +33,18 @@ function Post({ post, dashboardPosts, myPosts, updatePosts, currentUser, updateP
             setWhatAreWeDeleting(null)
             setModalOpen(false)
 
-            if (event.target && event.target.dataset.type == 'comment') {
-                setCommentIdToDelete(null)
-            }
         } else if (!modalOpen) {
-            setWhatAreWeDeleting(event.target.dataset.type)
+            let type = event.target.dataset.type;
+            if (type == 'post') {
+                setWhatAreWeDeleting(type)
+            } else if (type == 'comment') {
+                setWhatAreWeDeleting(type)
+                setCommentIdToDelete(event.target.id)
+            } else if (type == 'sub_comment') {
+                setWhatAreWeDeleting(type)
+                setSubCommentIdToDelete(event.target.id)
+            }
             setModalOpen(true)
-            setCommentIdToDelete(event.target.id)
         }
     }
 
@@ -66,7 +72,7 @@ function Post({ post, dashboardPosts, myPosts, updatePosts, currentUser, updateP
                 let postIndex = posts.findIndex(post => post.id == response.data.post_id);
                 posts.splice(postIndex, 1);
 
-                toggleSetModalOpen(false);
+
                 if (updatePosts) {updatePosts(posts)}
                 if (updatePostsForMyPosts) {updatePostsForMyPosts(posts)}
             }
@@ -80,8 +86,10 @@ function Post({ post, dashboardPosts, myPosts, updatePosts, currentUser, updateP
                 }, 5000);
             }
         })
+
+        toggleSetModalOpen();
     }
-    //NEED TO FIX DELETE COMMENT NOW
+
     const deleteComment = () => {
         axios.delete(`/comments/delete/${commentIdToDelete}`)
         .then(response => {
@@ -91,7 +99,6 @@ function Post({ post, dashboardPosts, myPosts, updatePosts, currentUser, updateP
                 let commentIndex = posts[postIndex].comments.findIndex(comment => comment.id == response.data.comment_id);
                 posts[postIndex].comments.splice(commentIndex, 1);
 
-                toggleSetModalOpen(false);
                 if (updatePosts) {updatePosts(posts)}
                 if (updatePostsForMyPosts) {updatePostsForMyPosts(posts)}
             }
@@ -105,6 +112,35 @@ function Post({ post, dashboardPosts, myPosts, updatePosts, currentUser, updateP
                 }, 5000);
             }
         })
+
+        toggleSetModalOpen();
+    }
+
+    const deleteSubComment = () => {
+        axios.delete(`/comments/delete/sub-comment/${subCommentIdToDelete}`)
+        .then(response => {
+            if (response.status == 200) {
+                const posts = dashboardPosts ? dashboardPosts : myPosts;
+                const postIndex = posts.findIndex(post => post.id == response.data.post_id);
+                const commentIndex = posts[postIndex].comments.findIndex(comment => comment.id == response.data.comment_id);
+                const subCommentIndex = posts[postIndex].comments[commentIndex].sub_comments.findIndex(sub_comment => sub_comment.id == response.data.sub_comment_id);
+                posts[postIndex].comments[commentIndex].sub_comments.splice(subCommentIndex, 1);
+
+                if (updatePosts) {updatePosts(posts)}
+                if (updatePostsForMyPosts) {updatePostsForMyPosts(posts)}
+            }
+        }).catch(error => {
+            if (error.response) {
+                setError(error.response.data.message);
+                setDisplayError(true);
+
+                setTimeout(() => {
+                    setDisplayError(false)
+                }, 5000);
+            }
+        })
+
+        toggleSetModalOpen();
     }
 
     const toggleLikePost = () => {
@@ -134,8 +170,8 @@ function Post({ post, dashboardPosts, myPosts, updatePosts, currentUser, updateP
 
                 {currentUser.id === post.user_id &&
                     <div className='mt-2'>
-                        <button id={post.id} onClick={toggleSetDisplayEditBox} className='text-sm mr-1'>Edit</button>
-                        <button id={post.id} data-type="post" onClick={toggleSetModalOpen} className='text-sm ml-1'>Delete</button>
+                        <button id={post.id} onClick={toggleSetDisplayEditBox} className='text-xs mr-1'>Edit</button>
+                        <button id={post.id} data-type="post" onClick={toggleSetModalOpen} className='text-xs ml-1'>Delete</button>
                     </div>
                 }
 
@@ -170,15 +206,7 @@ function Post({ post, dashboardPosts, myPosts, updatePosts, currentUser, updateP
         </div>
 
         {modalOpen &&
-            (whatWeAreDeleting == 'post' ? (
-                <Modal toggleModal={toggleSetModalOpen} deletePost={deletePost} whatWeAreDeleting={whatWeAreDeleting} />
-            )
-            :
-            (
-                <Modal toggleModal={toggleSetModalOpen} deleteComment={deleteComment} whatWeAreDeleting={whatWeAreDeleting} />
-            )
-            )
-
+            <Modal isModalOpen={modalOpen} toggleModal={toggleSetModalOpen} deletePost={deletePost} deleteComment={deleteComment} deleteSubComment={deleteSubComment} whatWeAreDeleting={whatWeAreDeleting} />
         }
         </>
     )

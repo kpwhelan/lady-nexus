@@ -1,11 +1,13 @@
 import React from 'react'
 
-function Modal({ toggleModal, deletePost, deleteComment, whatWeAreDeleting }) {
+function Modal({ toggleModal, deletePost, deleteComment, deleteSubComment, whatWeAreDeleting }) {
     const deleteItem = () => {
-        if (deletePost) {
+        if (whatWeAreDeleting == 'post') {
             deletePost()
-        } else if (deleteComment) {
+        } else if (whatWeAreDeleting == 'comment') {
             deleteComment()
+        } else if (whatWeAreDeleting == 'sub_comment') {
+            deleteSubComment()
         }
     }
 

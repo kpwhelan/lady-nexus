@@ -52,6 +52,8 @@ Route::prefix('comments')->middleware(['auth', 'verified'])->group(function() {
     Route::post('/toggle-like', [CommentsController::class, 'toggleLike']);
     Route::post('create/sub-comment', [CommentsController::class, 'createSubComment'])->name('post-sub-comment');
     Route::post('/toggle-sub-comment-like', [CommentsController::class, 'toggleSubCommentLike']);
+    Route::delete('delete/sub-comment/{id}', [CommentsController::class, 'deleteSubComment']);
+    Route::post('update/sub-comment', [CommentsController::class, 'updateSubComment'])->name('post-update-sub-comment');
 });
 
 require __DIR__.'/auth.php';

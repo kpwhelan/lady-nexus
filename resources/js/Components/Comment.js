@@ -87,8 +87,8 @@ function Comment({ posts, comment, currentUser, updatePosts, updatePostsForMyPos
 
         {currentUser.id === comment.user_id &&
         <div>
-            <button id={comment.id} onClick={toggleSetDisplayEditBox} className='text-sm mr-1'>Edit</button>
-            <button id={comment.id} data-type="comment" onClick={toggleSetModalOpen} className='text-sm ml-1'>Delete</button>
+            <button id={comment.id} onClick={toggleSetDisplayEditBox} className='text-xs mr-1'>Edit</button>
+            <button id={comment.id} data-type="comment" onClick={toggleSetModalOpen} className='text-xs ml-1'>Delete</button>
             {displayError &&
                 <p className='bg-red-500/75 text-white mt-2 p-2 w-fit rounded-lg'>{error}</p>
             }
@@ -97,12 +97,13 @@ function Comment({ posts, comment, currentUser, updatePosts, updatePostsForMyPos
 
         {displayEditBox && <CommentInputEdit posts={posts} existingComment={comment.comment} updatePosts={updatePosts} updatePostsForMyPosts={updatePostsForMyPosts} commentId={comment.id} toggleSetDisplayEditBox={toggleSetDisplayEditBox} />}
 
-        <div className='ml-8'>
+        <div className='ml-4'>
             <p onClick={toggleSetDisplaySubComments} className='text-sm cursor-pointer underline mt-4'>View replies <span>&#40;{comment.sub_comments.length}&#41;</span></p>
+
             {(comment.sub_comments.length > 0 && displaySubComments) &&
                 <div className='ml-4 mt-2'>
                     {comment.sub_comments.map(sub_comment => (
-                        <SubComment key={`sub_comment_${sub_comment.id}`} subComment={sub_comment} currentUser={currentUser} />
+                        <SubComment key={`sub_comment_${sub_comment.id}`} posts={posts} toggleSetModalOpen={toggleSetModalOpen} subComment={sub_comment} currentUser={currentUser} updatePosts={updatePosts} updatePostsForMyPosts={updatePostsForMyPosts} />
                     ))}
                 </div>
             }

@@ -2,10 +2,12 @@ import { faHeart } from '@fortawesome/free-regular-svg-icons';
 import { faHeart as faHeartSolid } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React, { useEffect, useState } from 'react'
+import SubCommentInputEdit from './SubCommentInputEdit';
 
-function SubComment({ subComment, currentUser }) {
+function SubComment({ subComment, currentUser, toggleSetModalOpen, posts, updatePosts, updatePostsForMyPosts }) {
     const [isSubCommentLikedByUser, setIsSubCommentLikedByUser] = useState(false);
     const [subCommentLikeCount, setSubCommentLikeCount] = useState(0);
+    const [displayEditBox, setDisplayEditBox] = useState(false);
 
     useEffect(() => {
         if (subComment.sub_comment_likes.find(like => like.user_id == currentUser.id)) {
@@ -27,6 +29,14 @@ function SubComment({ subComment, currentUser }) {
         });
     }
 
+    const toggleSetDisplayEditBox = () => {
+        if (displayEditBox) {
+            setDisplayEditBox(false);
+        } else if (!displayEditBox) {
+            setDisplayEditBox(true);
+        }
+    }
+
   return (
     <div key={`sub_comment_${subComment.id}`} className="bg-white rounded-lg px-2 max-w-fit my-2">
         <p className='text-sm'>{subComment.user.username}</p>
@@ -44,6 +54,16 @@ function SubComment({ subComment, currentUser }) {
                 {subCommentLikeCount > 0 ? <sub>{subCommentLikeCount}</sub> : null}
             </span>
         </div>
+        {currentUser.id === subComment.user_id &&
+        <div>
+            <button id={subComment.id} onClick={toggleSetDisplayEditBox} className='text-sm mr-1'>Edit</button>
+            <button id={subComment.id} data-type="sub_comment" onClick={toggleSetModalOpen} className='text-sm ml-1'>Delete</button>
+        </div>
+        }
+
+        {displayEditBox &&
+            <SubCommentInputEdit posts={posts} updatePosts={updatePosts} updatePostsForMyPosts={updatePostsForMyPosts} subCommentId={subComment.id} existingSubComment={subComment.sub_comment} toggleSetDisplayEditBox={toggleSetDisplayEditBox} />
+        }
     </div>
   )
 }

@@ -48,6 +48,8 @@ class CommentsController extends Controller {
             ]);
         }
 
+        $comment->sub_comments()->delete();
+
         $comment->delete();
 
         return response()->json([
@@ -160,6 +162,52 @@ class CommentsController extends Controller {
 
         return response()->json([
             'sub_comment' => $sub_comment
+        ]);
+    }
+
+    public function deleteSubComment($id) {
+        $sub_comment_id = $id;
+        $sub_comment = SubComment::find($sub_comment_id);
+        $comment_id = $sub_comment->comment->id;
+        $post_id = $sub_comment->comment->post->id;
+
+        if (!$sub_comment) {
+            return response()->json([
+                'status'  => 'Not Found',
+                'code'    => 404,
+                'message' => 'Hmmm we can\'t seem to find that comment...',
+            ]);
+        }
+
+        $sub_comment->delete();
+
+        return response()->json([
+            'sub_comment_id' => $sub_comment_id,
+            'comment_id' => $comment_id,
+            'post_id' => $post_id,
+            'message' => 'Deleted',
+        ]);
+    }
+
+    public function updateSubComment(Request $request) {
+        $sub_comment = SubComment::find($request->sub_comment_id);
+        $comment_id = $sub_comment->comment->id;
+        $post_id = $sub_comment->comment->post->id;
+
+        if (!$sub_comment) {
+            return back()->withErrors(['message' => 'Hmmm we can\'t seem to find that one...']);
+        }
+
+        $sub_comment->sub_comment = $request->sub_comment_body;
+
+        if (!$sub_comment->save()) {
+            return response()->json(['message' => 'Something went wrong, please try again.'], 500);
+        }
+
+        return response()->json([
+            'sub_comment' => $sub_comment,
+            'comment_id' => $comment_id,
+            'post_id' => $post_id
         ]);
     }
 }

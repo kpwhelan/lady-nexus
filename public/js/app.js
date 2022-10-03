@@ -4951,13 +4951,13 @@ function Comment(_ref) {
         children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("button", {
           id: comment.id,
           onClick: toggleSetDisplayEditBox,
-          className: "text-sm mr-1",
+          className: "text-xs mr-1",
           children: "Edit"
         }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("button", {
           id: comment.id,
           "data-type": "comment",
           onClick: toggleSetModalOpen,
-          className: "text-sm ml-1",
+          className: "text-xs ml-1",
           children: "Delete"
         }), displayError && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("p", {
           className: "bg-red-500/75 text-white mt-2 p-2 w-fit rounded-lg",
@@ -4971,7 +4971,7 @@ function Comment(_ref) {
         commentId: comment.id,
         toggleSetDisplayEditBox: toggleSetDisplayEditBox
       }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsxs)("div", {
-        className: "ml-8",
+        className: "ml-4",
         children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsxs)("p", {
           onClick: toggleSetDisplaySubComments,
           className: "text-sm cursor-pointer underline mt-4",
@@ -4982,8 +4982,12 @@ function Comment(_ref) {
           className: "ml-4 mt-2",
           children: comment.sub_comments.map(function (sub_comment) {
             return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)(_SubComment__WEBPACK_IMPORTED_MODULE_5__["default"], {
+              posts: posts,
+              toggleSetModalOpen: toggleSetModalOpen,
               subComment: sub_comment,
-              currentUser: currentUser
+              currentUser: currentUser,
+              updatePosts: updatePosts,
+              updatePostsForMyPosts: updatePostsForMyPosts
             }, "sub_comment_".concat(sub_comment.id));
           })
         })]
@@ -5646,13 +5650,16 @@ function Modal(_ref) {
   var toggleModal = _ref.toggleModal,
       deletePost = _ref.deletePost,
       deleteComment = _ref.deleteComment,
+      deleteSubComment = _ref.deleteSubComment,
       whatWeAreDeleting = _ref.whatWeAreDeleting;
 
   var deleteItem = function deleteItem() {
-    if (deletePost) {
+    if (whatWeAreDeleting == 'post') {
       deletePost();
-    } else if (deleteComment) {
+    } else if (whatWeAreDeleting == 'comment') {
       deleteComment();
+    } else if (whatWeAreDeleting == 'sub_comment') {
+      deleteSubComment();
     }
   };
 
@@ -5844,23 +5851,28 @@ function Post(_ref) {
 
   var _useState13 = (0,react__WEBPACK_IMPORTED_MODULE_2__.useState)(null),
       _useState14 = _slicedToArray(_useState13, 2),
-      deleteCommentError = _useState14[0],
-      setDeleteCommentError = _useState14[1];
+      subCommentIdToDelete = _useState14[0],
+      setSubCommentIdToDelete = _useState14[1];
 
-  var _useState15 = (0,react__WEBPACK_IMPORTED_MODULE_2__.useState)(false),
+  var _useState15 = (0,react__WEBPACK_IMPORTED_MODULE_2__.useState)(null),
       _useState16 = _slicedToArray(_useState15, 2),
-      isPostLikeByUser = _useState16[0],
-      setIsPostLikedByUser = _useState16[1];
+      deleteCommentError = _useState16[0],
+      setDeleteCommentError = _useState16[1];
 
-  var _useState17 = (0,react__WEBPACK_IMPORTED_MODULE_2__.useState)(0),
+  var _useState17 = (0,react__WEBPACK_IMPORTED_MODULE_2__.useState)(false),
       _useState18 = _slicedToArray(_useState17, 2),
-      likeCount = _useState18[0],
-      setLikeCount = _useState18[1];
+      isPostLikeByUser = _useState18[0],
+      setIsPostLikedByUser = _useState18[1];
 
-  var _useState19 = (0,react__WEBPACK_IMPORTED_MODULE_2__.useState)(null),
+  var _useState19 = (0,react__WEBPACK_IMPORTED_MODULE_2__.useState)(0),
       _useState20 = _slicedToArray(_useState19, 2),
-      error = _useState20[0],
-      setError = _useState20[1];
+      likeCount = _useState20[0],
+      setLikeCount = _useState20[1];
+
+  var _useState21 = (0,react__WEBPACK_IMPORTED_MODULE_2__.useState)(null),
+      _useState22 = _slicedToArray(_useState21, 2),
+      error = _useState22[0],
+      setError = _useState22[1];
 
   (0,react__WEBPACK_IMPORTED_MODULE_2__.useEffect)(function () {
     if (post.post_likes.find(function (like) {
@@ -5876,14 +5888,20 @@ function Post(_ref) {
     if (modalOpen) {
       setWhatAreWeDeleting(null);
       setModalOpen(false);
-
-      if (event.target && event.target.dataset.type == 'comment') {
-        setCommentIdToDelete(null);
-      }
     } else if (!modalOpen) {
-      setWhatAreWeDeleting(event.target.dataset.type);
+      var type = event.target.dataset.type;
+
+      if (type == 'post') {
+        setWhatAreWeDeleting(type);
+      } else if (type == 'comment') {
+        setWhatAreWeDeleting(type);
+        setCommentIdToDelete(event.target.id);
+      } else if (type == 'sub_comment') {
+        setWhatAreWeDeleting(type);
+        setSubCommentIdToDelete(event.target.id);
+      }
+
       setModalOpen(true);
-      setCommentIdToDelete(event.target.id);
     }
   };
 
@@ -5911,7 +5929,6 @@ function Post(_ref) {
           return post.id == response.data.post_id;
         });
         posts.splice(postIndex, 1);
-        toggleSetModalOpen(false);
 
         if (updatePosts) {
           updatePosts(posts);
@@ -5930,8 +5947,8 @@ function Post(_ref) {
         }, 5000);
       }
     });
-  }; //NEED TO FIX DELETE COMMENT NOW
-
+    toggleSetModalOpen();
+  };
 
   var deleteComment = function deleteComment() {
     axios__WEBPACK_IMPORTED_MODULE_1___default()["delete"]("/comments/delete/".concat(commentIdToDelete)).then(function (response) {
@@ -5944,7 +5961,6 @@ function Post(_ref) {
           return comment.id == response.data.comment_id;
         });
         posts[postIndex].comments.splice(commentIndex, 1);
-        toggleSetModalOpen(false);
 
         if (updatePosts) {
           updatePosts(posts);
@@ -5963,6 +5979,42 @@ function Post(_ref) {
         }, 5000);
       }
     });
+    toggleSetModalOpen();
+  };
+
+  var deleteSubComment = function deleteSubComment() {
+    axios__WEBPACK_IMPORTED_MODULE_1___default()["delete"]("/comments/delete/sub-comment/".concat(subCommentIdToDelete)).then(function (response) {
+      if (response.status == 200) {
+        var posts = dashboardPosts ? dashboardPosts : myPosts;
+        var postIndex = posts.findIndex(function (post) {
+          return post.id == response.data.post_id;
+        });
+        var commentIndex = posts[postIndex].comments.findIndex(function (comment) {
+          return comment.id == response.data.comment_id;
+        });
+        var subCommentIndex = posts[postIndex].comments[commentIndex].sub_comments.findIndex(function (sub_comment) {
+          return sub_comment.id == response.data.sub_comment_id;
+        });
+        posts[postIndex].comments[commentIndex].sub_comments.splice(subCommentIndex, 1);
+
+        if (updatePosts) {
+          updatePosts(posts);
+        }
+
+        if (updatePostsForMyPosts) {
+          updatePostsForMyPosts(posts);
+        }
+      }
+    })["catch"](function (error) {
+      if (error.response) {
+        setError(error.response.data.message);
+        setDisplayError(true);
+        setTimeout(function () {
+          setDisplayError(false);
+        }, 5000);
+      }
+    });
+    toggleSetModalOpen();
   };
 
   var toggleLikePost = function toggleLikePost() {
@@ -6002,13 +6054,13 @@ function Post(_ref) {
           children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("button", {
             id: post.id,
             onClick: toggleSetDisplayEditBox,
-            className: "text-sm mr-1",
+            className: "text-xs mr-1",
             children: "Edit"
           }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("button", {
             id: post.id,
             "data-type": "post",
             onClick: toggleSetModalOpen,
-            className: "text-sm ml-1",
+            className: "text-xs ml-1",
             children: "Delete"
           })]
         }), displayEditBox && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)(_PostFormEdit__WEBPACK_IMPORTED_MODULE_5__["default"], {
@@ -6061,15 +6113,14 @@ function Post(_ref) {
           children: "Hide Comments"
         })]
       }) : /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("div", {})]
-    }), modalOpen && (whatWeAreDeleting == 'post' ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)(_Modal__WEBPACK_IMPORTED_MODULE_4__["default"], {
+    }), modalOpen && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)(_Modal__WEBPACK_IMPORTED_MODULE_4__["default"], {
+      isModalOpen: modalOpen,
       toggleModal: toggleSetModalOpen,
       deletePost: deletePost,
-      whatWeAreDeleting: whatWeAreDeleting
-    }) : /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)(_Modal__WEBPACK_IMPORTED_MODULE_4__["default"], {
-      toggleModal: toggleSetModalOpen,
       deleteComment: deleteComment,
+      deleteSubComment: deleteSubComment,
       whatWeAreDeleting: whatWeAreDeleting
-    }))]
+    })]
   });
 }
 
@@ -6678,11 +6729,12 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
-/* harmony import */ var _fortawesome_free_regular_svg_icons__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @fortawesome/free-regular-svg-icons */ "./node_modules/@fortawesome/free-regular-svg-icons/index.mjs");
-/* harmony import */ var _fortawesome_free_solid_svg_icons__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @fortawesome/free-solid-svg-icons */ "./node_modules/@fortawesome/free-solid-svg-icons/index.mjs");
+/* harmony import */ var _fortawesome_free_regular_svg_icons__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @fortawesome/free-regular-svg-icons */ "./node_modules/@fortawesome/free-regular-svg-icons/index.mjs");
+/* harmony import */ var _fortawesome_free_solid_svg_icons__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @fortawesome/free-solid-svg-icons */ "./node_modules/@fortawesome/free-solid-svg-icons/index.mjs");
 /* harmony import */ var _fortawesome_react_fontawesome__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @fortawesome/react-fontawesome */ "./node_modules/@fortawesome/react-fontawesome/index.es.js");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
-/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
+/* harmony import */ var _SubCommentInputEdit__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./SubCommentInputEdit */ "./resources/js/Components/SubCommentInputEdit.js");
+/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
 function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
 
 function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
@@ -6702,9 +6754,14 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
 
 
+
 function SubComment(_ref) {
   var subComment = _ref.subComment,
-      currentUser = _ref.currentUser;
+      currentUser = _ref.currentUser,
+      toggleSetModalOpen = _ref.toggleSetModalOpen,
+      posts = _ref.posts,
+      updatePosts = _ref.updatePosts,
+      updatePostsForMyPosts = _ref.updatePostsForMyPosts;
 
   var _useState = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)(false),
       _useState2 = _slicedToArray(_useState, 2),
@@ -6715,6 +6772,11 @@ function SubComment(_ref) {
       _useState4 = _slicedToArray(_useState3, 2),
       subCommentLikeCount = _useState4[0],
       setSubCommentLikeCount = _useState4[1];
+
+  var _useState5 = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)(false),
+      _useState6 = _slicedToArray(_useState5, 2),
+      displayEditBox = _useState6[0],
+      setDisplayEditBox = _useState6[1];
 
   (0,react__WEBPACK_IMPORTED_MODULE_1__.useEffect)(function () {
     if (subComment.sub_comment_likes.find(function (like) {
@@ -6737,27 +6799,55 @@ function SubComment(_ref) {
     });
   };
 
-  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("div", {
+  var toggleSetDisplayEditBox = function toggleSetDisplayEditBox() {
+    if (displayEditBox) {
+      setDisplayEditBox(false);
+    } else if (!displayEditBox) {
+      setDisplayEditBox(true);
+    }
+  };
+
+  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
     className: "bg-white rounded-lg px-2 max-w-fit my-2",
-    children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("p", {
+    children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("p", {
       className: "text-sm",
       children: subComment.user.username
-    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("div", {
+    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
       className: "flex",
-      children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("p", {
+      children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("p", {
         className: "text-gray-700 text-lg ml-3",
         children: subComment.sub_comment
-      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("span", {
+      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("span", {
         onClick: toggleLikeSubComment,
         className: "cursor-pointer ml-4",
-        children: [isSubCommentLikedByUser ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)(_fortawesome_react_fontawesome__WEBPACK_IMPORTED_MODULE_0__.FontAwesomeIcon, {
-          icon: _fortawesome_free_solid_svg_icons__WEBPACK_IMPORTED_MODULE_3__.faHeart
-        }) : /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)(_fortawesome_react_fontawesome__WEBPACK_IMPORTED_MODULE_0__.FontAwesomeIcon, {
-          icon: _fortawesome_free_regular_svg_icons__WEBPACK_IMPORTED_MODULE_4__.faHeart
-        }), subCommentLikeCount > 0 ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("sub", {
+        children: [isSubCommentLikedByUser ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_fortawesome_react_fontawesome__WEBPACK_IMPORTED_MODULE_0__.FontAwesomeIcon, {
+          icon: _fortawesome_free_solid_svg_icons__WEBPACK_IMPORTED_MODULE_4__.faHeart
+        }) : /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_fortawesome_react_fontawesome__WEBPACK_IMPORTED_MODULE_0__.FontAwesomeIcon, {
+          icon: _fortawesome_free_regular_svg_icons__WEBPACK_IMPORTED_MODULE_5__.faHeart
+        }), subCommentLikeCount > 0 ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("sub", {
           children: subCommentLikeCount
         }) : null]
       })]
+    }), currentUser.id === subComment.user_id && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
+      children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("button", {
+        id: subComment.id,
+        onClick: toggleSetDisplayEditBox,
+        className: "text-sm mr-1",
+        children: "Edit"
+      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("button", {
+        id: subComment.id,
+        "data-type": "sub_comment",
+        onClick: toggleSetModalOpen,
+        className: "text-sm ml-1",
+        children: "Delete"
+      })]
+    }), displayEditBox && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_SubCommentInputEdit__WEBPACK_IMPORTED_MODULE_2__["default"], {
+      posts: posts,
+      updatePosts: updatePosts,
+      updatePostsForMyPosts: updatePostsForMyPosts,
+      subCommentId: subComment.id,
+      existingSubComment: subComment.sub_comment,
+      toggleSetDisplayEditBox: toggleSetDisplayEditBox
     })]
   }, "sub_comment_".concat(subComment.id));
 }
@@ -6847,8 +6937,7 @@ function SubCommentInput(_ref) {
           return comment.id == data.comment_id;
         }); // let subCommentIndex = posts[postIndex].comments[commentIndex].sub_comments.find(sub_comment => sub_comment.id == response.data.sub_comment.id);
 
-        posts[postIndex].comments[commentIndex].sub_comments.unshift(response.data.sub_comment);
-        posts[postIndex].comments.reverse();
+        posts[postIndex].comments[commentIndex].sub_comments.push(response.data.sub_comment); // posts[postIndex].comments.reverse();
 
         if (updatePosts) {
           updatePosts(posts);
@@ -6898,6 +6987,151 @@ function SubCommentInput(_ref) {
 }
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (SubCommentInput);
+
+/***/ }),
+
+/***/ "./resources/js/Components/SubCommentInputEdit.js":
+/*!********************************************************!*\
+  !*** ./resources/js/Components/SubCommentInputEdit.js ***!
+  \********************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _inertiajs_inertia_react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @inertiajs/inertia-react */ "./node_modules/@inertiajs/inertia-react/dist/index.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var _Input__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./Input */ "./resources/js/Components/Input.js");
+/* harmony import */ var _Button__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./Button */ "./resources/js/Components/Button.js");
+/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
+function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
+
+function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
+
+function _iterableToArrayLimit(arr, i) { var _i = arr == null ? null : typeof Symbol !== "undefined" && arr[Symbol.iterator] || arr["@@iterator"]; if (_i == null) return; var _arr = []; var _n = true; var _d = false; var _s, _e; try { for (_i = _i.call(arr); !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
+
+function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
+
+
+
+
+
+
+
+
+function SubCommentInputEdit(_ref) {
+  var posts = _ref.posts,
+      updatePosts = _ref.updatePosts,
+      updatePostsForMyPosts = _ref.updatePostsForMyPosts,
+      existingSubComment = _ref.existingSubComment,
+      subCommentId = _ref.subCommentId,
+      toggleSetDisplayEditBox = _ref.toggleSetDisplayEditBox;
+
+  var _useForm = (0,_inertiajs_inertia_react__WEBPACK_IMPORTED_MODULE_0__.useForm)({
+    sub_comment_body: '',
+    sub_comment_id: subCommentId
+  }),
+      data = _useForm.data,
+      setData = _useForm.setData,
+      post = _useForm.post,
+      processing = _useForm.processing,
+      errors = _useForm.errors,
+      reset = _useForm.reset;
+
+  var _useState = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)(''),
+      _useState2 = _slicedToArray(_useState, 2),
+      serverError = _useState2[0],
+      setServerError = _useState2[1];
+
+  var _useState3 = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)(false),
+      _useState4 = _slicedToArray(_useState3, 2),
+      displayServerError = _useState4[0],
+      setDisplayServerError = _useState4[1];
+
+  var onHandleChange = function onHandleChange(event) {
+    setData(event.target.name, event.target.type === 'checkbox' ? event.target.checked : event.target.value);
+  };
+
+  (0,react__WEBPACK_IMPORTED_MODULE_1__.useEffect)(function () {
+    if (existingSubComment) {
+      var subCommentEditBox = document.querySelector("#sub_comment_edit_".concat(subCommentId));
+      subCommentEditBox.textContent = existingSubComment;
+    }
+  }, []);
+
+  var submit = function submit(e) {
+    e.preventDefault();
+    axios.post(route('post-update-sub-comment'), {
+      sub_comment_body: data.sub_comment_body,
+      sub_comment_id: data.sub_comment_id
+    }).then(function (response) {
+      if (response.status == 200) {
+        var postIndex = posts.findIndex(function (post) {
+          return post.id == response.data.post_id;
+        });
+        var commentIndex = posts[postIndex].comments.findIndex(function (comment) {
+          return comment.id == response.data.comment_id;
+        });
+        var subCommentIndex = posts[postIndex].comments[commentIndex].sub_comments.findIndex(function (sub_comment) {
+          return sub_comment.id == response.data.sub_comment.id;
+        });
+        posts[postIndex].comments[commentIndex].sub_comments[subCommentIndex].sub_comment = response.data.sub_comment.sub_comment;
+
+        if (updatePosts) {
+          updatePosts(posts);
+        }
+
+        if (updatePostsForMyPosts) {
+          updatePostsForMyPosts(posts);
+        }
+
+        toggleSetDisplayEditBox();
+      }
+    })["catch"](function (error) {
+      if (error.response) {
+        setServerError(error.response.data.message);
+        setDisplayServerError(true);
+        setTimeout(function () {
+          setDisplayServerError(false);
+        }, 5000);
+      }
+    });
+  };
+
+  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("div", {
+    className: "mx-6",
+    children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("form", {
+      onSubmit: submit,
+      children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_Input__WEBPACK_IMPORTED_MODULE_2__["default"], {
+        type: "textarea",
+        name: "sub_comment_body",
+        value: data.sub_comment_body,
+        className: "w-full",
+        autoComplete: "sub_comment_body",
+        isFocused: false,
+        handleChange: onHandleChange,
+        placeholder: "Reply",
+        required: true,
+        id: "sub_comment_edit_".concat(subCommentId)
+      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_Button__WEBPACK_IMPORTED_MODULE_3__["default"], {
+        className: "mt-1",
+        processing: processing,
+        children: "Submit"
+      }), displayServerError && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("p", {
+        className: "bg-red-500/75 text-white mt-2 w-fit rounded-lg",
+        children: serverError
+      })]
+    })
+  });
+}
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (SubCommentInputEdit);
 
 /***/ }),
 

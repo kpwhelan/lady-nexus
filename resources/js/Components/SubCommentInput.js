@@ -29,7 +29,7 @@ function SubCommentInput({ posts, post_id, comment_id, updatePosts, updatePostsF
                 // let subCommentIndex = posts[postIndex].comments[commentIndex].sub_comments.find(sub_comment => sub_comment.id == response.data.sub_comment.id);
 
                 posts[postIndex].comments[commentIndex].sub_comments.push(response.data.sub_comment);
-                // posts[postIndex].comments.reverse();
+                posts[postIndex].comments.reverse();
 
                 if (updatePosts) {updatePosts(posts)}
                 if (updatePostsForMyPosts) {updatePostsForMyPosts(posts)}

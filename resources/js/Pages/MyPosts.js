@@ -42,6 +42,13 @@ function MyPosts(props) {
         setCategories(props.categories)
     },[]);
 
+    //hacky work around for posts not updating when you make a new post form myposts page
+    useEffect(() => {
+        if (posts.length > 0) {
+            setPosts(props.posts)
+        }
+    }, [props.posts])
+
     const handleScroll = (e) => {
         if (posts.length > 20 && e.target.scrollHeight - e.target.scrollTop === e.target.clientHeight) {
             fetchMorePosts();

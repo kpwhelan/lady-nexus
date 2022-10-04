@@ -8473,7 +8473,13 @@ function MyPosts(props) {
 
     setUser(props.auth.user);
     setCategories(props.categories);
-  }, []);
+  }, []); //hacky work around for posts not updating when you make a new post form myposts page
+
+  (0,react__WEBPACK_IMPORTED_MODULE_4__.useEffect)(function () {
+    if (posts.length > 0) {
+      setPosts(props.posts);
+    }
+  }, [props.posts]);
 
   var handleScroll = function handleScroll(e) {
     if (posts.length > 20 && e.target.scrollHeight - e.target.scrollTop === e.target.clientHeight) {

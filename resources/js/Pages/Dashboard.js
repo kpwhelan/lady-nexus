@@ -41,7 +41,7 @@ export default function Dashboard(props) {
             auth={props.auth}
             errors={props.errors}
         >
-            <Head title="Dashboard" />
+            <Head title="Nexus" />
             {posts ? (
                 <div className='flex justify-around'>
                     <div className='flex-initial w-2/3 max-h-screen overflow-scroll' onScroll={handleScroll}>

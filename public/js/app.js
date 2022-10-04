@@ -5326,9 +5326,9 @@ function CommentsContainer(_ref) {
     var hoursSince = Math.abs(new Date() - new Date(itemTime)) / 36e5;
 
     if (hoursSince < 1) {
-      return Math.floor(hoursSince) + ' minutes ago';
+      return Math.floor(hoursSince.toFixed(2) * 60) == 1 ? +Math.floor(hoursSince.toFixed(2) * 60) + ' minute ago' : Math.floor(hoursSince.toFixed(2) * 60) + ' minutes ago';
     } else if (hoursSince < 24) {
-      return Math.floor(hoursSince) + ' hours ago';
+      return Math.floor(hoursSince) == 1 ? +Math.floor(hoursSince) + ' hour ago' : Math.floor(hoursSince) + ' hours ago';
     } else if (hoursSince >= 24) {
       return Math.floor(hoursSince / 24) == 1 ? Math.floor(hoursSince / 24) + ' day ago' : Math.floor(hoursSince / 24) + ' days ago';
     }
@@ -6832,11 +6832,26 @@ function SubComment(_ref) {
     }
   };
 
+  var calcualateTimeStamp = function calcualateTimeStamp(itemTime) {
+    var hoursSince = Math.abs(new Date() - new Date(itemTime)) / 36e5;
+
+    if (hoursSince < 1) {
+      return Math.floor(hoursSince.toFixed(2) * 60) == 1 ? +Math.floor(hoursSince.toFixed(2) * 60) + ' minute ago' : Math.floor(hoursSince.toFixed(2) * 60) + ' minutes ago';
+    } else if (hoursSince < 24) {
+      return Math.floor(hoursSince) == 1 ? +Math.floor(hoursSince) + ' hour ago' : Math.floor(hoursSince) + ' hours ago';
+    } else if (hoursSince >= 24) {
+      return Math.floor(hoursSince / 24) == 1 ? Math.floor(hoursSince / 24) + ' day ago' : Math.floor(hoursSince / 24) + ' days ago';
+    }
+  };
+
   return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
     className: "bg-white rounded-lg px-2 py-1 max-w-fit my-2",
     children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("p", {
       className: "text-sm",
       children: subComment.user.username
+    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("p", {
+      className: "text-sm",
+      children: calcualateTimeStamp(subComment.created_at)
     }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
       className: "flex",
       children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("p", {
@@ -8190,7 +8205,7 @@ function Dashboard(props) {
     auth: props.auth,
     errors: props.errors,
     children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)(_inertiajs_inertia_react__WEBPACK_IMPORTED_MODULE_2__.Head, {
-      title: "Dashboard"
+      title: "Nexus"
     }), posts ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsxs)("div", {
       className: "flex justify-around",
       children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("div", {

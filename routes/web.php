@@ -17,7 +17,7 @@ Route::get('/', function () {
     ]);
 });
 
-Route::get('/dashboard', function () {
+Route::get('/nexus', function () {
     $categories = Category::all();
     $posts = Post::with(['user', 'category', 'comments', 'comments.sub_comments', 'comments.sub_comments.user', 'comments.sub_comments.sub_comment_likes', 'comments.comment_likes', 'post_likes'])
             ->offset(0)

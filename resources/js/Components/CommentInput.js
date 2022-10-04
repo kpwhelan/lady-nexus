@@ -25,7 +25,10 @@ function CommentInput({ posts, updatePosts, updatePostsForMyPosts, post_id }) {
         .then(response => {
             if (response.status == 200) {
                 let postIndex = posts.findIndex(post => post.id == post_id);
-                posts[postIndex].comments.push(response.data.comment);
+                console.log(posts[postIndex].comments)
+
+                posts[postIndex].comments = [...posts[postIndex].comments, response.data.comment];
+                posts[postIndex].comments.sort((a, b) => a.id - b.id)
 
                 if (updatePosts) {updatePosts(posts)}
                 if (updatePostsForMyPosts) {updatePostsForMyPosts(posts)}

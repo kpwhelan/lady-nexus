@@ -102,7 +102,7 @@ function Comment({ posts, comment, currentUser, updatePosts, updatePostsForMyPos
 
             {(comment.sub_comments.length > 0 && displaySubComments) &&
                 <div className='ml-4 mt-2'>
-                    {comment.sub_comments.map(sub_comment => (
+                    {comment.sub_comments.reverse().map(sub_comment => (
                         <SubComment key={`sub_comment_${sub_comment.id}`} posts={posts} toggleSetModalOpen={toggleSetModalOpen} subComment={sub_comment} currentUser={currentUser} updatePosts={updatePosts} updatePostsForMyPosts={updatePostsForMyPosts} />
                     ))}
                 </div>

@@ -38,6 +38,9 @@ function SubCommentInputEdit({ posts, updatePosts, updatePostsForMyPosts, existi
 
                 posts[postIndex].comments[commentIndex].sub_comments[subCommentIndex].sub_comment = response.data.sub_comment.sub_comment;
 
+                posts[postIndex].comments[commentIndex].sub_comments.sort((a,b) => a.id - b.id);
+                posts[postIndex].comments.sort((a,b) => a.id - b.id);
+
                 if (updatePosts) {updatePosts(posts)}
                 if (updatePostsForMyPosts) {updatePostsForMyPosts(posts)}
                 toggleSetDisplayEditBox()

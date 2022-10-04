@@ -4980,7 +4980,7 @@ function Comment(_ref) {
           })]
         }), comment.sub_comments.length > 0 && displaySubComments && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("div", {
           className: "ml-4 mt-2",
-          children: comment.sub_comments.map(function (sub_comment) {
+          children: comment.sub_comments.reverse().map(function (sub_comment) {
             return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)(_SubComment__WEBPACK_IMPORTED_MODULE_5__["default"], {
               posts: posts,
               toggleSetModalOpen: toggleSetModalOpen,
@@ -5022,6 +5022,14 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _Input__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./Input */ "./resources/js/Components/Input.js");
 /* harmony import */ var _Button__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./Button */ "./resources/js/Components/Button.js");
 /* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
+function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }
+
+function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+
+function _iterableToArray(iter) { if (typeof Symbol !== "undefined" && iter[Symbol.iterator] != null || iter["@@iterator"] != null) return Array.from(iter); }
+
+function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) return _arrayLikeToArray(arr); }
+
 function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
 
 function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
@@ -5082,7 +5090,11 @@ function CommentInput(_ref) {
         var postIndex = posts.findIndex(function (post) {
           return post.id == post_id;
         });
-        posts[postIndex].comments.push(response.data.comment);
+        console.log(posts[postIndex].comments);
+        posts[postIndex].comments = [].concat(_toConsumableArray(posts[postIndex].comments), [response.data.comment]);
+        posts[postIndex].comments.sort(function (a, b) {
+          return a.id - b.id;
+        });
 
         if (updatePosts) {
           updatePosts(posts);
@@ -6872,6 +6884,14 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _Button__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./Button */ "./resources/js/Components/Button.js");
 /* harmony import */ var _Input__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./Input */ "./resources/js/Components/Input.js");
 /* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
+function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }
+
+function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+
+function _iterableToArray(iter) { if (typeof Symbol !== "undefined" && iter[Symbol.iterator] != null || iter["@@iterator"] != null) return Array.from(iter); }
+
+function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) return _arrayLikeToArray(arr); }
+
 function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
 
 function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
@@ -6937,7 +6957,13 @@ function SubCommentInput(_ref) {
           return comment.id == data.comment_id;
         }); // let subCommentIndex = posts[postIndex].comments[commentIndex].sub_comments.find(sub_comment => sub_comment.id == response.data.sub_comment.id);
 
-        posts[postIndex].comments[commentIndex].sub_comments.push(response.data.sub_comment); // posts[postIndex].comments.reverse();
+        posts[postIndex].comments[commentIndex].sub_comments = [].concat(_toConsumableArray(posts[postIndex].comments[commentIndex].sub_comments), [response.data.sub_comment]);
+        posts[postIndex].comments[commentIndex].sub_comments.sort(function (a, b) {
+          return a.id - b.id;
+        });
+        posts[postIndex].comments.sort(function (a, b) {
+          return a.id - b.id;
+        });
 
         if (updatePosts) {
           updatePosts(posts);
@@ -7082,6 +7108,12 @@ function SubCommentInputEdit(_ref) {
           return sub_comment.id == response.data.sub_comment.id;
         });
         posts[postIndex].comments[commentIndex].sub_comments[subCommentIndex].sub_comment = response.data.sub_comment.sub_comment;
+        posts[postIndex].comments[commentIndex].sub_comments.sort(function (a, b) {
+          return a.id - b.id;
+        });
+        posts[postIndex].comments.sort(function (a, b) {
+          return a.id - b.id;
+        });
 
         if (updatePosts) {
           updatePosts(posts);

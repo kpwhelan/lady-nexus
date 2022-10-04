@@ -10,6 +10,17 @@ function PostForm({ categories, className }) {
         category_id: ''
     });
 
+    const postFormSayings = () => {
+        const sayings = [
+            'Post something awesome...',
+            'What\s on your mind?',
+            'Let it out...',
+            'You deserve to be heard!',
+        ];
+
+        return sayings[Math.floor(Math.random()*sayings.length)]
+    }
+
     const [isCategorySelected, setIsCategorySelected] = useState(false);
     const [categoryId, setCategoryId] = useState(null);
     const [error, setError] = useState('');
@@ -86,7 +97,7 @@ function PostForm({ categories, className }) {
 
   return (
         <form className={className} onSubmit={submit}>
-            <Label forInput="post_body" value='Post Something Awesome' className={"text-lg"}/>
+            <Label forInput="post_body" value='Post' className={"text-lg"}/>
             <Input
                 type="textarea"
                 name="post_body"
@@ -95,7 +106,7 @@ function PostForm({ categories, className }) {
                 autoComplete="post_body"
                 isFocused={false}
                 handleChange={onHandleChange}
-                placeholder="What's on your mind...?"
+                placeholder={postFormSayings()}
                 required
              />
 

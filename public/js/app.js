@@ -5305,8 +5305,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _Comment__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Comment */ "./resources/js/Components/Comment.js");
 /* harmony import */ var _CommentInput__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./CommentInput */ "./resources/js/Components/CommentInput.js");
 /* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
-function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
-
 
 
 
@@ -5323,6 +5321,19 @@ function CommentsContainer(_ref) {
       toggleSetModalOpen = _ref.toggleSetModalOpen,
       deleteCommentError = _ref.deleteCommentError,
       commentIdToDelete = _ref.commentIdToDelete;
+
+  var calcualateTimeStamp = function calcualateTimeStamp(itemTime) {
+    var hoursSince = Math.abs(new Date() - new Date(itemTime)) / 36e5;
+
+    if (hoursSince < 1) {
+      return Math.floor(hoursSince) + ' minutes ago';
+    } else if (hoursSince < 24) {
+      return Math.floor(hoursSince) + ' hours ago';
+    } else if (hoursSince >= 24) {
+      return Math.floor(hoursSince / 24) == 1 ? Math.floor(hoursSince / 24) + ' day ago' : Math.floor(hoursSince / 24) + ' days ago';
+    }
+  };
+
   return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
     className: "mx-10",
     children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_CommentInput__WEBPACK_IMPORTED_MODULE_2__["default"], {
@@ -5331,26 +5342,22 @@ function CommentsContainer(_ref) {
       updatePosts: updatePosts,
       updatePostsForMyPosts: updatePostsForMyPosts
     }), comments.reverse().map(function (comment) {
-      var _jsx2;
-
       return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
         className: "bg-sage/10 m-3 p-3 rounded-lg",
         children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("p", {
           className: "text-gray-700 text-sm",
-          children: new Date(comment.created_at).toLocaleDateString('en-us', {
-            weekday: "long",
-            year: "numeric",
-            month: "short",
-            day: "numeric"
-          })
-        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_Comment__WEBPACK_IMPORTED_MODULE_1__["default"], (_jsx2 = {
+          children: calcualateTimeStamp(comment.created_at)
+        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_Comment__WEBPACK_IMPORTED_MODULE_1__["default"], {
           posts: posts,
           post_id: post_id,
           currentUser: currentUser,
           comment: comment,
           updatePosts: updatePosts,
-          updatePostsForMyPosts: updatePostsForMyPosts
-        }, _defineProperty(_jsx2, "post_id", post_id), _defineProperty(_jsx2, "toggleSetModalOpen", toggleSetModalOpen), _defineProperty(_jsx2, "deleteCommentError", deleteCommentError), _defineProperty(_jsx2, "commentIdToDelete", commentIdToDelete), _jsx2))]
+          updatePostsForMyPosts: updatePostsForMyPosts,
+          toggleSetModalOpen: toggleSetModalOpen,
+          deleteCommentError: deleteCommentError,
+          commentIdToDelete: commentIdToDelete
+        })]
       }, comment.id);
     })]
   });
@@ -6052,10 +6059,11 @@ function Post(_ref) {
           }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("p", {
             className: "text-sm font-normal",
             children: new Date(post.created_at).toLocaleDateString('en-us', {
-              weekday: "long",
               year: "numeric",
               month: "short",
-              day: "numeric"
+              day: "numeric",
+              hour: "numeric",
+              minute: "numeric"
             })
           })]
         }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("p", {
@@ -6192,6 +6200,11 @@ function PostForm(_ref) {
       errors = _useForm.errors,
       reset = _useForm.reset;
 
+  var postFormSayings = function postFormSayings() {
+    var sayings = ['Post something awesome...', 'What\s on your mind?', 'Let it out...', 'You deserve to be heard!'];
+    return sayings[Math.floor(Math.random() * sayings.length)];
+  };
+
   var _useState = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(false),
       _useState2 = _slicedToArray(_useState, 2),
       isCategorySelected = _useState2[0],
@@ -6284,7 +6297,7 @@ function PostForm(_ref) {
     onSubmit: submit,
     children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)(_Label__WEBPACK_IMPORTED_MODULE_4__["default"], {
       forInput: "post_body",
-      value: "Post Something Awesome",
+      value: "Post",
       className: "text-lg"
     }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)(_Input__WEBPACK_IMPORTED_MODULE_2__["default"], {
       type: "textarea",
@@ -6294,7 +6307,7 @@ function PostForm(_ref) {
       autoComplete: "post_body",
       isFocused: false,
       handleChange: onHandleChange,
-      placeholder: "What's on your mind...?",
+      placeholder: postFormSayings(),
       required: true
     }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("div", {
       className: "flex flex-wrap mt-2",

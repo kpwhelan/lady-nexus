@@ -161,7 +161,7 @@ function Post({ post, dashboardPosts, myPosts, updatePosts, currentUser, updateP
             <div className="px-6 py-4">
                 <div className="font-bold text-xl mb-2">
                     <p>{post.user.username}</p>
-                    <p className='text-sm font-normal'>{new Date(post.created_at).toLocaleDateString('en-us', { weekday:"long", year:"numeric", month:"short", day:"numeric"})}</p>
+                    <p className='text-sm font-normal'>{new Date(post.created_at).toLocaleDateString('en-us', { year:"numeric", month:"short", day:"numeric", hour:"numeric", minute:"numeric"})}</p>
                 </div>
 
                 <p className="text-gray-700 text-base">

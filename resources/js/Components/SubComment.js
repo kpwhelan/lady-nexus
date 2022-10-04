@@ -38,7 +38,7 @@ function SubComment({ subComment, currentUser, toggleSetModalOpen, posts, update
     }
 
   return (
-    <div key={`sub_comment_${subComment.id}`} className="bg-white rounded-lg px-2 max-w-fit my-2">
+    <div key={`sub_comment_${subComment.id}`} className="bg-white rounded-lg px-2 py-1 max-w-fit my-2">
         <p className='text-sm'>{subComment.user.username}</p>
         <div className='flex'>
             <p className="text-gray-700 text-lg ml-3">{subComment.sub_comment}</p>

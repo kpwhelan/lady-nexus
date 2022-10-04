@@ -6808,7 +6808,7 @@ function SubComment(_ref) {
   };
 
   return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
-    className: "bg-white rounded-lg px-2 max-w-fit my-2",
+    className: "bg-white rounded-lg px-2 py-1 max-w-fit my-2",
     children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("p", {
       className: "text-sm",
       children: subComment.user.username
@@ -6968,7 +6968,7 @@ function SubCommentInput(_ref) {
         type: "textarea",
         name: "sub_comment_body",
         value: data.sub_comment_body,
-        className: "w-2/3 rounded-lg",
+        className: "w-2/3 rounded-lg h-10",
         autoComplete: "sub_comment_body",
         isFocused: false,
         handleChange: onHandleChange,

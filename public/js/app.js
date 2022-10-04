@@ -5090,7 +5090,6 @@ function CommentInput(_ref) {
         var postIndex = posts.findIndex(function (post) {
           return post.id == post_id;
         });
-        console.log(posts[postIndex].comments);
         posts[postIndex].comments = [].concat(_toConsumableArray(posts[postIndex].comments), [response.data.comment]);
         posts[postIndex].comments.sort(function (a, b) {
           return a.id - b.id;

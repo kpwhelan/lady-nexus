@@ -7108,6 +7108,12 @@ function SubCommentInputEdit(_ref) {
           return sub_comment.id == response.data.sub_comment.id;
         });
         posts[postIndex].comments[commentIndex].sub_comments[subCommentIndex].sub_comment = response.data.sub_comment.sub_comment;
+        posts[postIndex].comments[commentIndex].sub_comments.sort(function (a, b) {
+          return a.id - b.id;
+        });
+        posts[postIndex].comments.sort(function (a, b) {
+          return a.id - b.id;
+        });
 
         if (updatePosts) {
           updatePosts(posts);

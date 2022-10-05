@@ -50,7 +50,7 @@ function SubCommentInput({ posts, post_id, comment_id, updatePosts, updatePostsF
     };
 
   return (
-    <div className='mt-8'>
+    <div className='mt-6'>
         <form onSubmit={submit}>
             <Input
                 type="textarea"

@@ -20,7 +20,7 @@ function CommentsContainer({ posts, comments, updatePosts, updatePostsForMyPosts
 
         {comments.reverse().map(comment => (
 
-            <div key={comment.id} className='bg-sage/10 m-3 p-3 rounded-lg'>
+            <div key={comment.id} className='bg-sage/10 m-3 p-2 rounded-lg'>
                 <p className="text-gray-700 text-sm">{
                     calcualateTimeStamp(comment.created_at)
                 }</p>

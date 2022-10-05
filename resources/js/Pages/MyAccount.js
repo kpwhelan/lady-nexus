@@ -1,3 +1,4 @@
+import DeleteAccountModal from '@/Components/DeleteAccountModal'
 import PasswordResetForm from '@/Components/PasswordResetForm'
 import Authenticated from '@/Layouts/Authenticated'
 import { Head } from '@inertiajs/inertia-react'
@@ -6,6 +7,8 @@ import ResetPassword from './Auth/ResetPassword'
 
 function MyAccount(props) {
     const [displayPasswordReset, setDisplayPasswordReset] = useState(false);
+    const [displayModal, setDisplayModal] = useState(false);
+    const [error, setError] = useState(null);
 
     const toggleSetDisplayPasswordReset = () => {
         if (displayPasswordReset) {
@@ -13,6 +16,33 @@ function MyAccount(props) {
         } else if (!displayPasswordReset) {
             setDisplayPasswordReset(true);
         }
+    }
+
+    const toggleSetDisplayModal = () => {
+        if (displayModal) {
+            setDisplayModal(false)
+        } else if (!displayModal) {
+            setDisplayModal(true)
+        }
+    }
+
+    const deleteAccount = () => {
+        console.log('here')
+        axios.post(route('delete'), {
+            user_id: props.auth.user.id
+        }).then(response => {
+            if (response.status == 200) {
+                window.location.href=route('register')
+            }
+        }).catch(error => {
+            if (error.response) {
+                setError(e.response.data.message)
+            }
+
+            setTimeout(() => {
+                setError(false)
+            }, 5000);
+        })
     }
 
   return (
@@ -40,7 +70,7 @@ function MyAccount(props) {
 
                 <div className=''>
                     <button onClick={toggleSetDisplayPasswordReset} className="inline-flex items-center mr-1 px-4 py-2 bg-sage border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest active:bg-gray-900 transition ease-in-out duration-150">Change Password</button>
-                    <button className="inline-flex items-center ml-1 px-4 py-2 bg-red-500/75 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest active:bg-gray-900 transition ease-in-out duration-150">Delete Account</button>
+                    <button onClick={toggleSetDisplayModal} className="inline-flex items-center ml-1 px-4 py-2 bg-red-500/75 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest active:bg-gray-900 transition ease-in-out duration-150">Delete Account</button>
 
                     {displayPasswordReset &&
                         <PasswordResetForm userId={props.auth.user.id} />
@@ -48,6 +78,10 @@ function MyAccount(props) {
                 </div>
             </div>
         </div>
+
+        {displayModal &&
+            <DeleteAccountModal deleteAccount={deleteAccount} toggleModal={toggleSetDisplayModal} />
+        }
 
     </Authenticated>
   )

@@ -58,8 +58,9 @@ Route::prefix('comments')->middleware(['auth', 'verified'])->group(function() {
 });
 
 Route::prefix('account')->middleware(['auth', 'verified'])->group(function() {
-    Route::get('/my-account', [MyAccountController::class, 'getMyAccountPage'])->name('my-account');
-    Route::post('/change-password', [MyAccountController::class, 'changePassword'])->name('change-password');
+    Route::get('my-account', [MyAccountController::class, 'getMyAccountPage'])->name('my-account');
+    Route::post('change-password', [MyAccountController::class, 'changePassword'])->name('change-password');
+    Route::post('delete', [MyAccountController::class, 'deleteAccount'])->name('delete');
 });
 
 require __DIR__.'/auth.php';

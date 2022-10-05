@@ -43,7 +43,9 @@ function PasswordResetForm({ userId }) {
                 }, 5000);
             }
         }).catch(e => {
-            setError(e.response.data.message)
+            if (e.response) {
+                setError(e.response.data.message)
+            }
 
             setTimeout(() => {
                 setError(false)

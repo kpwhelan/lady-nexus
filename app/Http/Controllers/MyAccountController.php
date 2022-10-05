@@ -59,4 +59,26 @@ class MyAccountController extends Controller {
             'message' => 'Password updated'
         ]);
     }
+
+    public function deleteAccount(Request $request) {
+        $user = User::find($request->user_id);
+
+        try {
+            $user->comments()->delete();
+            $user->sub_comments()->delete();
+            $user->posts()->delete();
+            $user->post_likes()->delete();
+            $user->comment_likes()->delete();
+            $user->sub_comment_likes()->delete();
+
+            $user->delete();
+        } catch (Exception $e) {
+            return response()->json([
+                'message' => 'Something went wrong...',
+                'thing' => $e->getMessage()
+            ], 500);
+        }
+
+        return response()->json();
+    }
 }

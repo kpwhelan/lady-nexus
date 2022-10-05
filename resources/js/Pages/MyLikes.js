@@ -64,11 +64,6 @@ function MyLikes(props) {
                     </div>
 
                     <div className='flex-initial w-1/3 mr-2 mt-5'>
-                        <p className='bg-white rounded-xl p-2 max-w-fit mb-1'>{user.first_name} {user.last_name}</p>
-                        <p className='bg-white rounded-xl p-2 max-w-fit mb-1'>Joined: {new Date(user.created_at).toLocaleDateString('en-us', { weekday:"long", year:"numeric", month:"short", day:"numeric"})}</p>
-                        <p className='bg-white rounded-xl p-2 max-w-fit mb-1'>{posts.length} {posts.length == 1 ? 'post' : 'posts'}</p>
-                        <p className='bg-white rounded-xl p-2 max-w-fit mb-1'>{props.comment_count > 0 ? props.comment_count : 0} {props.comment_count == 1 ? 'comment' : 'comments'}</p>
-
                         <PostForm className="mt-4" categories={categories} />
                     </div>
 

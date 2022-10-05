@@ -48,7 +48,6 @@ export default function Register() {
                         value={data.first_name}
                         className="mt-1 block w-full"
                         autoComplete="first_name"
-                        isFocused={true}
                         handleChange={onHandleChange}
                         required
                     />
@@ -63,7 +62,6 @@ export default function Register() {
                         value={data.last_name}
                         className="mt-1 block w-full"
                         autoComplete="name"
-                        isFocused={true}
                         handleChange={onHandleChange}
                         required
                     />

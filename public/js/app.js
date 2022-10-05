@@ -5724,7 +5724,7 @@ function Modal(_ref) {
                   className: "mt-2",
                   children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsxs)("p", {
                     className: "text-sm text-gray-500",
-                    children: ["Are you sure you want to delete your ", whatWeAreDeleting, "?"]
+                    children: ["Are you sure you want to delete your ", whatWeAreDeleting == 'sub_comment' ? 'reply' : whatWeAreDeleting, "?"]
                   })
                 })]
               })]

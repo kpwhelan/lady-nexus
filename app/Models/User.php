@@ -17,7 +17,8 @@ class User extends Authenticatable {
         'last_name',
         'email',
         'password',
-        'username'
+        'username',
+        'active'
     ];
 
     protected $hidden = [
@@ -27,6 +28,10 @@ class User extends Authenticatable {
 
     protected $casts = [
         'email_verified_at' => 'datetime',
+    ];
+
+    protected $attributes = [
+        'active' => true
     ];
 
     public function posts(): HasMany {

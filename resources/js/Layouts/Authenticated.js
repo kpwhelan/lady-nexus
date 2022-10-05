@@ -15,7 +15,7 @@ export default function Authenticated({ auth, header, children}) {
                     <div className="flex justify-between h-16">
                         <div className="flex">
                             <div className="shrink-0 flex items-center">
-                                <Link href="/dashboard">
+                                <Link href="/nexus">
                                     <ApplicationLogo className="block h-16 w-auto rounded-full" />
                                 </Link>
                             </div>
@@ -42,7 +42,7 @@ export default function Authenticated({ auth, header, children}) {
                                                 type="button"
                                                 className="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 bg-white hover:text-gray-700 focus:outline-none transition ease-in-out duration-150"
                                             >
-                                                {auth.user.name}
+                                                {auth.user.first_name} {auth.user.last_name}
 
                                                 <svg
                                                     className="ml-2 -mr-0.5 h-4 w-4"
@@ -61,6 +61,9 @@ export default function Authenticated({ auth, header, children}) {
                                     </Dropdown.Trigger>
 
                                     <Dropdown.Content>
+                                        <Dropdown.Link href={route('my-account')} method="get" as="button">
+                                            My Account
+                                        </Dropdown.Link>
                                         <Dropdown.Link href={route('logout')} method="post" as="button">
                                             Log Out
                                         </Dropdown.Link>

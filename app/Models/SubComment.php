@@ -12,6 +12,11 @@ class SubComment extends Model {
         'sub_comment',
         'comment_id',
         'user_id',
+        'active'
+    ];
+
+    protected $attributes = [
+        'active' => true
     ];
 
     public function comment() {

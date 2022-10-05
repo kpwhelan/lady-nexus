@@ -178,7 +178,7 @@ function Post({ post, dashboardPosts, myPosts, updatePosts, currentUser, updateP
                 {displayEditBox && <PostFormEdit myPosts={myPosts} dashboardPosts={dashboardPosts} postData={post} categories={categories} previousCategoryId={post.category.id} toggleSetDisplayEditBox={toggleSetDisplayEditBox} updatePostsForDashboard={updatePosts} updatePostsForMyPosts={updatePostsForMyPosts}/>}
 
                 {displayError &&
-                    <p className='bg-red-500/75 text-white mt-2 w-fit rounded-lg'>{error}</p>
+                    <p className='bg-red-500/75 text-white mt-2 w-fit rounded-lg p-2'>{error}</p>
                 }
             </div>
             <div className="px-6 pt-4 pb-2">

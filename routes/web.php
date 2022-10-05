@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\CommentsController;
+use App\Http\Controllers\MyAccountController;
 use App\Http\Controllers\PostsController;
 use App\Models\Category;
 use App\Models\Post;
@@ -54,6 +55,11 @@ Route::prefix('comments')->middleware(['auth', 'verified'])->group(function() {
     Route::post('/toggle-sub-comment-like', [CommentsController::class, 'toggleSubCommentLike']);
     Route::delete('delete/sub-comment/{id}', [CommentsController::class, 'deleteSubComment']);
     Route::post('update/sub-comment', [CommentsController::class, 'updateSubComment'])->name('post-update-sub-comment');
+});
+
+Route::prefix('account')->middleware(['auth', 'verified'])->group(function() {
+    Route::get('/my-account', [MyAccountController::class, 'getMyAccountPage'])->name('my-account');
+    Route::post('/change-password', [MyAccountController::class, 'changePassword'])->name('change-password');
 });
 
 require __DIR__.'/auth.php';

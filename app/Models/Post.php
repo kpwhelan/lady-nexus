@@ -15,6 +15,11 @@ class Post extends Model {
         'post',
         'user_id',
         'category_id',
+        'active'
+    ];
+
+    protected $attributes = [
+        'active' => true
     ];
 
     public function user(): BelongsTo {

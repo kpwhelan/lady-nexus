@@ -12,6 +12,11 @@ class Comment extends Model {
         'comment',
         'post_id',
         'user_id',
+        'active'
+    ];
+
+    protected $attributes = [
+        'active' => true
     ];
 
     public function post() {

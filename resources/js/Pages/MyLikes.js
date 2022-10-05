@@ -44,7 +44,7 @@ function MyLikes(props) {
     },[]);
 
     const handleScroll = (e) => {
-        if (posts.length > 20 && e.target.scrollHeight - e.target.scrollTop === e.target.clientHeight) {
+        if (posts.length >= 20 && e.target.scrollHeight - e.target.scrollTop === e.target.clientHeight) {
             fetchMoreLikedPosts();
         }
     }

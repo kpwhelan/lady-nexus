@@ -14,7 +14,7 @@ export default function Dashboard(props) {
     }
 
     const fetchMorePosts = () => {
-        axios.get(`/posts`, {params: {
+        axios.get(route('more-dashboard-posts'), {params: {
             offset: offset
         }})
         .then(response => {
@@ -25,7 +25,7 @@ export default function Dashboard(props) {
     }
 
     const handleScroll = (e) => {
-        if (posts.length > 20 && e.target.scrollHeight - e.target.scrollTop === e.target.clientHeight) {
+        if (posts.length >= 20 && e.target.scrollHeight - e.target.scrollTop === e.target.clientHeight) {
             fetchMorePosts();
         }
     }

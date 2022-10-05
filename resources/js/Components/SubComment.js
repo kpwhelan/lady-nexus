@@ -50,9 +50,11 @@ function SubComment({ subComment, currentUser, toggleSetModalOpen, posts, update
     }
 
   return (
-    <div key={`sub_comment_${subComment.id}`} className="bg-white rounded-lg px-2 py-1 max-w-fit my-2">
-        <p className='text-sm'>{subComment.user.username}</p>
-        <p className='text-sm'>{calcualateTimeStamp(subComment.created_at)}</p>
+    <div key={`sub_comment_${subComment.id}`} className="rounded-lg px-2 py-1 max-w-fit my-2">
+        <div className='flex'>
+            <p className='text-sm'>{subComment.user.username} - </p>
+            <p className='text-sm'>{calcualateTimeStamp(subComment.created_at)}</p>
+        </div>
         <div className='flex'>
             <p className="text-gray-700 text-lg ml-3">{subComment.sub_comment}</p>
             <span onClick={toggleLikeSubComment} className='cursor-pointer ml-4'>

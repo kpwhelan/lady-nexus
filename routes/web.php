@@ -32,7 +32,7 @@ Route::get('/nexus', function () {
 //Need to add auth middleware once front end complete
 //Also need to reinstate CSRF
 Route::prefix('posts')->middleware(['auth', 'verified'])->group(function() {
-    // Route::get('/', [PostsController::class, 'getPosts'])->middleware(['auth']);
+    Route::get('/more-dashboard-posts', [PostsController::class, 'getMoreDashboardPosts'])->name('more-dashboard-posts');
     Route::post('create', [PostsController::class, 'createPost'])->name('create-post');
     Route::delete('delete/{id}', [PostsController::class, 'deletePost'])->name('delete-post');
     Route::post('update', [PostsController::class, 'updatePost'])->name('post-update-post');

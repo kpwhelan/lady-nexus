@@ -6308,7 +6308,7 @@ function Post(_ref) {
 
   return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsxs)(react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.Fragment, {
     children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsxs)("div", {
-      className: "max-h-96 w-100 bg-white rounded overflow-scroll shadow-lg m-5 transition ease-in-out delay-110 hover:-translate-y-2 hover:scale-102",
+      className: "max-h-screen w-100 bg-white rounded overflow-scroll shadow-lg m-5 transition ease-in-out delay-110 hover:-translate-y-2 hover:scale-102",
       children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsxs)("div", {
         className: "px-6 py-4",
         children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsxs)("div", {
@@ -7104,13 +7104,16 @@ function SubComment(_ref) {
   };
 
   return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
-    className: "bg-white rounded-lg px-2 py-1 max-w-fit my-2",
-    children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("p", {
-      className: "text-sm",
-      children: subComment.user.username
-    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("p", {
-      className: "text-sm",
-      children: calcualateTimeStamp(subComment.created_at)
+    className: "rounded-lg px-2 py-1 max-w-fit my-2",
+    children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
+      className: "flex",
+      children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("p", {
+        className: "text-sm",
+        children: [subComment.user.username, " - "]
+      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("p", {
+        className: "text-sm",
+        children: calcualateTimeStamp(subComment.created_at)
+      })]
     }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
       className: "flex",
       children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("p", {
@@ -8439,7 +8442,7 @@ function Dashboard(props) {
   };
 
   var fetchMorePosts = function fetchMorePosts() {
-    axios__WEBPACK_IMPORTED_MODULE_3___default().get("/posts", {
+    axios__WEBPACK_IMPORTED_MODULE_3___default().get(route('more-dashboard-posts'), {
       params: {
         offset: offset
       }
@@ -8453,7 +8456,7 @@ function Dashboard(props) {
   };
 
   var handleScroll = function handleScroll(e) {
-    if (posts.length > 20 && e.target.scrollHeight - e.target.scrollTop === e.target.clientHeight) {
+    if (posts.length >= 20 && e.target.scrollHeight - e.target.scrollTop === e.target.clientHeight) {
       fetchMorePosts();
     }
   };
@@ -8783,7 +8786,7 @@ function MyLikes(props) {
   }, []);
 
   var handleScroll = function handleScroll(e) {
-    if (posts.length > 20 && e.target.scrollHeight - e.target.scrollTop === e.target.clientHeight) {
+    if (posts.length >= 20 && e.target.scrollHeight - e.target.scrollTop === e.target.clientHeight) {
       fetchMoreLikedPosts();
     }
   };
@@ -8953,7 +8956,7 @@ function MyPosts(props) {
   }, [props.posts]);
 
   var handleScroll = function handleScroll(e) {
-    if (posts.length > 20 && e.target.scrollHeight - e.target.scrollTop === e.target.clientHeight) {
+    if (posts.length >= 20 && e.target.scrollHeight - e.target.scrollTop === e.target.clientHeight) {
       fetchMorePosts();
     }
   };

@@ -13,21 +13,21 @@ use Illuminate\Support\Facades\Redirect;
 use Inertia\Inertia;
 
 class PostsController extends Controller {
-    // public function getPosts(Request $request): JsonResponse {
-    //     $offset = $request->offset;
+    public function getMoreDashboardPosts(Request $request): JsonResponse {
+        $offset = $request->offset;
 
-    //     $posts = Post::with(['user', 'category', 'comments', 'comments.comment_likes', 'post_likes'])
-    //         ->offset($offset)
-    //         ->limit(20)
-    //         ->orderBy('id', 'desc')
-    //         ->get();
+        $posts = Post::with(['user', 'category', 'comments', 'comments.sub_comments', 'comments.sub_comments.sub_comment_likes', 'comments.sub_comments.user', 'comments.comment_likes', 'post_likes'])
+            ->offset($offset)
+            ->limit(20)
+            ->orderBy('id', 'desc')
+            ->get();
 
-    //     return response()->json([
-    //         'status' => 'Success',
-    //         'code'   => 200,
-    //         'posts'  => $posts,
-    //     ]);
-    // }
+        return response()->json([
+            'status' => 'Success',
+            'code'   => 200,
+            'posts'  => $posts,
+        ]);
+    }
 
     public function createPost(Request $request) {
         $request->validate([

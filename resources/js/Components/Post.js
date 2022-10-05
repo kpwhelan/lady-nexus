@@ -157,7 +157,7 @@ function Post({ post, dashboardPosts, myPosts, updatePosts, currentUser, updateP
 
     return (
         <>
-        <div className="max-h-96 w-100 bg-white rounded overflow-scroll shadow-lg m-5 transition ease-in-out delay-110 hover:-translate-y-2 hover:scale-102">
+        <div className="max-h-screen w-100 bg-white rounded overflow-scroll shadow-lg m-5 transition ease-in-out delay-110 hover:-translate-y-2 hover:scale-102">
             <div className="px-6 py-4">
                 <div className="font-bold text-xl mb-2">
                     <p>{post.user.username}</p>

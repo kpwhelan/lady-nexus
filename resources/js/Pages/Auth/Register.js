@@ -14,6 +14,7 @@ export default function Register() {
         email: '',
         password: '',
         password_confirmation: '',
+        invite_token: '',
     });
 
     useEffect(() => {
@@ -117,6 +118,19 @@ export default function Register() {
                         type="password"
                         name="password_confirmation"
                         value={data.password_confirmation}
+                        className="mt-1 block w-full"
+                        handleChange={onHandleChange}
+                        required
+                    />
+                </div>
+
+                <div className="mt-4">
+                    <Label forInput="token" value="Invite Token" />
+
+                    <Input
+                        type="text"
+                        name="invite_token"
+                        value={data.invite_token}
                         className="mt-1 block w-full"
                         handleChange={onHandleChange}
                         required

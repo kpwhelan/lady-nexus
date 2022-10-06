@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\CommentsController;
+use App\Http\Controllers\InviteController;
 use App\Http\Controllers\MyAccountController;
 use App\Http\Controllers\PostsController;
 use App\Models\Category;
@@ -66,5 +67,7 @@ Route::prefix('account')->middleware(['auth', 'verified'])->group(function() {
     Route::post('change-password', [MyAccountController::class, 'changePassword'])->name('change-password');
     Route::post('delete', [MyAccountController::class, 'deleteAccount'])->name('delete');
 });
+
+Route::post('/invite', [InviteController::class, 'sendInvite'])->name('send-invite');
 
 require __DIR__.'/auth.php';

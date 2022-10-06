@@ -32,7 +32,10 @@ class RegisteredUserController extends Controller
             'username' => 'required|string',
             'email' => 'required|string|email|max:255|unique:users',
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
+            'invite_token' => 'required|string',
         ]);
+
+        //Logic for checking invite token
 
         $user = User::create([
             'first_name' => ucfirst($request->first_name),

@@ -8082,7 +8082,8 @@ function Register() {
     username: '',
     email: '',
     password: '',
-    password_confirmation: ''
+    password_confirmation: '',
+    invite_token: ''
   }),
       data = _useForm.data,
       setData = _useForm.setData,
@@ -8190,6 +8191,19 @@ function Register() {
           type: "password",
           name: "password_confirmation",
           value: data.password_confirmation,
+          className: "mt-1 block w-full",
+          handleChange: onHandleChange,
+          required: true
+        })]
+      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsxs)("div", {
+        className: "mt-4",
+        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)(_Components_Label__WEBPACK_IMPORTED_MODULE_4__["default"], {
+          forInput: "token",
+          value: "Invite Token"
+        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)(_Components_Input__WEBPACK_IMPORTED_MODULE_3__["default"], {
+          type: "text",
+          name: "invite_token",
+          value: data.invite_token,
           className: "mt-1 block w-full",
           handleChange: onHandleChange,
           required: true
@@ -8557,7 +8571,7 @@ __webpack_require__.r(__webpack_exports__);
 
 function Invite(props) {
   var _useForm = (0,_inertiajs_inertia_react__WEBPACK_IMPORTED_MODULE_4__.useForm)({
-    invite_email: '',
+    email: '',
     name: ''
   }),
       data = _useForm.data,
@@ -8573,19 +8587,9 @@ function Invite(props) {
 
   var submit = function submit(e) {
     e.preventDefault();
-    post(route('create-post'), {
+    post(route('send-invite'), {
       onError: function onError(error) {
-        if (error.message) {
-          setError(error.message);
-          setDisplayError(true);
-        } else if (error.category_id) {
-          setError(error.category_id);
-          setDisplayError(true);
-        }
-
-        setTimeout(function () {
-          setDisplayError(false);
-        }, 5000);
+        console.log(error);
       }
     });
   };
@@ -8602,9 +8606,10 @@ function Invite(props) {
       }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("p", {
         children: "Please be mindful of who you invite to our platform."
       }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsxs)("form", {
+        className: "mt-4",
         onSubmit: submit,
         children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)(_Components_Label__WEBPACK_IMPORTED_MODULE_2__["default"], {
-          forInput: "invite_email",
+          forInput: "email",
           value: "Send An Invite",
           className: "text-lg"
         }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)(_Components_Input__WEBPACK_IMPORTED_MODULE_1__["default"], {
@@ -8615,14 +8620,14 @@ function Invite(props) {
           autoComplete: "name",
           isFocused: false,
           handleChange: onHandleChange,
-          placeholder: "Name",
+          placeholder: "Your Name (so they know who it's from!)",
           required: true
         }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)(_Components_Input__WEBPACK_IMPORTED_MODULE_1__["default"], {
           type: "email",
-          name: "invite_email",
+          name: "email",
           value: data.invite_email,
           className: "w-full mb-2",
-          autoComplete: "invite_email",
+          autoComplete: "email",
           isFocused: false,
           handleChange: onHandleChange,
           placeholder: "Email",

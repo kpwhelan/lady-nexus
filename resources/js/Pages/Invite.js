@@ -7,8 +7,8 @@ import React from 'react'
 
 function Invite(props) {
     const { data, setData, post, processing, errors, reset } = useForm({
-        invite_email: '',
-        name: ''
+        email: '',
+        name: '',
     });
 
     const onHandleChange = (event) => {
@@ -18,19 +18,9 @@ function Invite(props) {
     const submit = (e) => {
         e.preventDefault();
 
-        post(route('create-post'), {
+        post(route('send-invite'), {
             onError: error => {
-                if (error.message) {
-                    setError(error.message);
-                    setDisplayError(true);
-                } else if (error.category_id) {
-                    setError (error.category_id)
-                    setDisplayError(true);
-                }
-
-                setTimeout(() => {
-                    setDisplayError(false)
-                }, 5000);
+                console.log(error)
             }
         });
     };
@@ -45,8 +35,8 @@ function Invite(props) {
         <div className="mx-auto text-center max-w-md mt-4">
             <p>Lady Nexus is meant to be a safe, enjoyable place for women to connect with other women.</p>
             <p>Please be mindful of who you invite to our platform.</p>
-            <form onSubmit={submit}>
-                <Label forInput="invite_email" value='Send An Invite' className={"text-lg"}/>
+            <form className='mt-4' onSubmit={submit}>
+                <Label forInput="email" value='Send An Invite' className={"text-lg"}/>
                 <Input
                     type="text"
                     name="name"
@@ -55,15 +45,15 @@ function Invite(props) {
                     autoComplete="name"
                     isFocused={false}
                     handleChange={onHandleChange}
-                    placeholder="Name"
+                    placeholder="Your Name (so they know who it's from!)"
                     required
                 />
                 <Input
                     type="email"
-                    name="invite_email"
+                    name="email"
                     value={data.invite_email}
                     className="w-full mb-2"
-                    autoComplete="invite_email"
+                    autoComplete="email"
                     isFocused={false}
                     handleChange={onHandleChange}
                     placeholder="Email"

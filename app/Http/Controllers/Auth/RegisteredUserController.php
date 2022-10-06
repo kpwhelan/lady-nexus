@@ -3,8 +3,10 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Models\InviteToken;
 use App\Models\User;
 use App\Providers\RouteServiceProvider;
+use Carbon\Carbon;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -36,6 +38,22 @@ class RegisteredUserController extends Controller
         ]);
 
         //Logic for checking invite token
+        $token = InviteToken::where('token', $request->invite_token)->first();
+
+        if ($token) {
+            $token_creation_time = Carbon::parse($token->created_at)->format('Y-m-d H:i:s');
+
+            $current_time = Carbon::now();
+
+            $hours_elapsed = $current_time->diffInHours($token_creation_time);
+
+            if ($hours_elapsed >= 24) {
+                return back()->withErrors('Token is expired.');
+            }
+        } else {
+            return back()->withErrors('Not a valid token');
+        }
+
 
         $user = User::create([
             'first_name' => ucfirst($request->first_name),

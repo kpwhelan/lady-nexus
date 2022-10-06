@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\InviteToken;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
 
 class InviteController extends Controller {
@@ -16,15 +17,20 @@ class InviteController extends Controller {
 
         $name = ucwords($request->name);
         $email = $request->email;
+        $token = Hash::make(Str::random(32));
 
         $invite_token = new InviteToken([
-            'token' => Hash::make(Str::random(32)),
+            'token' => $token,
             'email' => $email
         ]);
 
         $invite_token->save();
 
-        dd($name);
+        Mail::send('invite', ['token' => $token, 'name' => $name], function ($message) use ($email) {
+            $message->subject('You\'ve Been Invited to Lady Nexus');
+            $message->to($email);
+        });
 
+        return back();
     }
 }

@@ -3,9 +3,13 @@ import Input from '@/Components/Input';
 import Label from '@/Components/Label';
 import Authenticated from '@/Layouts/Authenticated'
 import { Head, useForm } from '@inertiajs/inertia-react';
-import React from 'react'
+import { set } from 'lodash';
+import React, { useState } from 'react'
 
 function Invite(props) {
+    const [success, setSuccess] = useState(null);
+    const [error, setError] = useState(null);
+
     const { data, setData, post, processing, errors, reset } = useForm({
         email: '',
         name: '',
@@ -19,8 +23,20 @@ function Invite(props) {
         e.preventDefault();
 
         post(route('send-invite'), {
+            onSuccess: () => {
+                reset()
+                setSuccess('Email sent successfully!');
+
+                setTimeout(() => {
+                    setSuccess(null);
+                }, 7000);
+            },
             onError: error => {
-                console.log(error)
+                setError(error);
+
+                setTimeout(() => {
+                    setError(null)
+                }, 7000);
             }
         });
     };
@@ -51,7 +67,7 @@ function Invite(props) {
                 <Input
                     type="email"
                     name="email"
-                    value={data.invite_email}
+                    value={data.email}
                     className="w-full mb-2"
                     autoComplete="email"
                     isFocused={false}
@@ -64,6 +80,13 @@ function Invite(props) {
                     Send Invite
                 </Button>
             </form>
+
+            {success &&
+                <p className='bg-sage text-white mt-2 w-fit rounded-lg p-2 mx-auto'>{success}</p>
+            }
+            {error &&
+                <p className='bg-red-500/75 text-white mt-2 w-fit rounded-lg p-2 mx-auto'>{error}</p>
+            }
         </div>
     </Authenticated>
   )

@@ -70,4 +70,8 @@ Route::prefix('account')->middleware(['auth', 'verified'])->group(function() {
 
 Route::post('/invite', [InviteController::class, 'sendInvite'])->name('send-invite');
 
+Route::get('/invites', function () {
+    return view('invite', ['name' => 'Kevin Whelan', 'token' => 'lkjasdlknioijee']);
+});
+
 require __DIR__.'/auth.php';

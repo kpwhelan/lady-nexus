@@ -28,6 +28,6 @@ class Invite extends Mailable
      */
     public function build()
     {
-        return $this->view('view.name');
+
     }
 }

@@ -79,7 +79,7 @@ function SubCommentInputEdit({ posts, updatePosts, updatePostsForMyPosts, existi
             </Button>
 
             {displayServerError &&
-                <p className='bg-red-500/75 text-white mt-2 w-fit rounded-lg'>{serverError}</p>
+                <p className='bg-red-500/75 text-white mt-2 p-2 w-fit rounded-lg'>{serverError}</p>
             }
         </form>
     </div>

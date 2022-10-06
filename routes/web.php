@@ -29,6 +29,10 @@ Route::get('/nexus', function () {
     return Inertia::render('Dashboard', ['categories' => $categories, 'posts' => $posts]);
 })->middleware(['auth', 'verified'])->name('dashboard');
 
+Route::get('invite', function () {
+    return Inertia::render('Invite');
+})->middleware(['auth'])->name('invite');
+
 //Need to add auth middleware once front end complete
 //Also need to reinstate CSRF
 Route::prefix('posts')->middleware(['auth', 'verified'])->group(function() {

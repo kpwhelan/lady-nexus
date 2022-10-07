@@ -1,6 +1,7 @@
 import Modal from '@/Components/Modal'
 import Post from '@/Components/Post'
 import PostForm from '@/Components/PostForm'
+import SelectBox from '@/Components/SelectBox'
 import Authenticated from '@/Layouts/Authenticated'
 import { Head } from '@inertiajs/inertia-react'
 import React, { useState, useEffect } from 'react'
@@ -11,6 +12,9 @@ function MyLikes(props) {
     const [categories, setCategories] = useState([]);
     const [modalOpen, setModalOpen] = useState(false);
     const [offset, setOffset] = useState(0);
+    const [categoryFilters, setCategoryFilters] = useState([]);
+    const [isFilterSet, setIsFilterSet] = useState(false);
+    const [preFilterPosts, setPreFilterPosts] = useState([]);
 
     const updatePosts = newPosts => {
         setPosts([...newPosts])
@@ -41,6 +45,10 @@ function MyLikes(props) {
         }
         setUser(props.auth.user)
         setCategories(props.categories)
+
+        setCategoryFilters(props.categories.map(category => (
+            {value: category.name, label: category.name}
+        )))
     },[]);
 
     const handleScroll = (e) => {
@@ -48,6 +56,33 @@ function MyLikes(props) {
             fetchMoreLikedPosts();
         }
     }
+
+    const filter = (filters, posts) => {
+        if (filters.length > 0) {
+            let newPosts = posts.filter(post => {
+               return filters.includes(post.category.name)
+            })
+
+            updatePosts(newPosts);
+            setIsFilterSet(true);
+        } else if (filters.length == 0) {
+            updatePosts(preFilterPosts);
+            setIsFilterSet(false);
+        }
+    }
+
+    const beginFilter = values => {
+        const filters = values.map(value => value.value);
+
+        if (!isFilterSet) {
+            setPreFilterPosts(posts);
+
+            filter(filters, posts)
+        } else if (isFilterSet) {
+            filter(filters, preFilterPosts)
+        }
+    }
+
   return (
     <Authenticated
         auth={props.auth}
@@ -58,6 +93,9 @@ function MyLikes(props) {
         {posts ? (
                 <div className='flex justify-around'>
                     <div className='flex-initial w-2/3 max-h-screen overflow-scroll' onScroll={handleScroll}>
+                        <div className='ml-6 mt-2 w-3/6'>
+                            <SelectBox beginFilter={beginFilter} categoryFilters={categoryFilters} />
+                        </div>
                         {posts.map(post => (
                             <Post key={post.id} post={post} myPosts={posts} currentUser={props.auth.user} updatePostsForMyPosts={updatePosts} categories={props.categories} />
                         ))}

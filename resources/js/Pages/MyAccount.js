@@ -3,7 +3,6 @@ import PasswordResetForm from '@/Components/PasswordResetForm'
 import Authenticated from '@/Layouts/Authenticated'
 import { Head } from '@inertiajs/inertia-react'
 import React, { useState } from 'react'
-import ResetPassword from './Auth/ResetPassword'
 
 function MyAccount(props) {
     const [displayPasswordReset, setDisplayPasswordReset] = useState(false);
@@ -73,6 +72,10 @@ function MyAccount(props) {
 
                     {displayPasswordReset &&
                         <PasswordResetForm userId={props.auth.user.id} />
+                    }
+
+                    {error &&
+                        <p className='bg-red-500/75 text-white mt-2 w-fit p-2 rounded-lg'>{error}</p>
                     }
                 </div>
             </div>

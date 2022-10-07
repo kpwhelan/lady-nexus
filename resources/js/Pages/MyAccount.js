@@ -27,7 +27,6 @@ function MyAccount(props) {
     }
 
     const deleteAccount = () => {
-        console.log('here')
         axios.post(route('delete'), {
             user_id: props.auth.user.id
         }).then(response => {

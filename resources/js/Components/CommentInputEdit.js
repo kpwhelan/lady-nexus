@@ -36,7 +36,6 @@ function CommentInputEdit({ posts, updatePosts, updatePostsForMyPosts, existingC
                 let commentIndex = posts[postIndex].comments.findIndex(comment => comment.id == commentId);
 
                 posts[postIndex].comments[commentIndex].comment = response.data.comment.comment;
-                posts[postIndex].comments.reverse()
 
                 if (updatePosts) {updatePosts(posts)}
                 if (updatePostsForMyPosts) {updatePostsForMyPosts(posts)}
@@ -76,7 +75,7 @@ function CommentInputEdit({ posts, updatePosts, updatePostsForMyPosts, existingC
             </Button>
 
             {displayServerError &&
-                <p className='bg-red-500/75 text-white mt-2 w-fit rounded-lg'>{serverError}</p>
+                <p className='bg-red-500/75 text-white mt-2 w-fit p-2 rounded-lg'>{serverError}</p>
             }
         </form>
     </div>

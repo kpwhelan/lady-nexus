@@ -4,10 +4,19 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React, { useEffect, useState } from 'react'
 import SubCommentInputEdit from './SubCommentInputEdit';
 
-function SubComment({ subComment, currentUser, toggleSetModalOpen, posts, updatePosts, updatePostsForMyPosts }) {
+function SubComment({ subComment,
+    currentUser,
+    toggleSetModalOpen,
+    posts,
+    updatePosts,
+    updatePostsForMyPosts,
+    deleteSubCommentError,
+    subCommentIdToDelete
+ }) {
     const [isSubCommentLikedByUser, setIsSubCommentLikedByUser] = useState(false);
     const [subCommentLikeCount, setSubCommentLikeCount] = useState(0);
     const [displayEditBox, setDisplayEditBox] = useState(false);
+    const [error, setError] = useState(null);
 
     useEffect(() => {
         if (subComment.sub_comment_likes.find(like => like.user_id == currentUser.id)) {
@@ -16,6 +25,12 @@ function SubComment({ subComment, currentUser, toggleSetModalOpen, posts, update
 
         setSubCommentLikeCount(subComment.sub_comment_likes.length)
     }, [])
+
+    useEffect(() => {
+        if (subComment.id == subCommentIdToDelete) {
+            setError(deleteSubCommentError)
+        }
+    }, [deleteSubCommentError])
 
     const toggleLikeSubComment = () => {
         axios.post('/comments/toggle-sub-comment-like', {
@@ -50,7 +65,7 @@ function SubComment({ subComment, currentUser, toggleSetModalOpen, posts, update
     }
 
   return (
-    <div key={`sub_comment_${subComment.id}`} className="rounded-lg px-2 py-1 max-w-fit my-2">
+    <div key={`sub_comment_${subComment.id}`} id={subComment.id} className="rounded-lg px-2 py-1 max-w-fit my-2">
         <div className='flex'>
             <p className='text-sm'>{subComment.user.username} - </p>
             <p className='text-sm'>{calcualateTimeStamp(subComment.created_at)}</p>
@@ -73,6 +88,9 @@ function SubComment({ subComment, currentUser, toggleSetModalOpen, posts, update
         <div>
             <button id={subComment.id} onClick={toggleSetDisplayEditBox} className='text-sm mr-1'>Edit</button>
             <button id={subComment.id} data-type="sub_comment" onClick={toggleSetModalOpen} className='text-sm ml-1'>Delete</button>
+            {error &&
+                <p className='bg-red-500/75 text-white mt-2 p-2 w-fit rounded-lg'>{error}</p>
+            }
         </div>
         }
 

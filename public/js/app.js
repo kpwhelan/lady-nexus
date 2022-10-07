@@ -4836,7 +4836,9 @@ function Comment(_ref) {
       updatePostsForMyPosts = _ref.updatePostsForMyPosts,
       toggleSetModalOpen = _ref.toggleSetModalOpen,
       commentIdToDelete = _ref.commentIdToDelete,
-      deleteCommentError = _ref.deleteCommentError;
+      subCommentIdToDelete = _ref.subCommentIdToDelete,
+      deleteCommentError = _ref.deleteCommentError,
+      deleteSubCommentError = _ref.deleteSubCommentError;
 
   var _useState = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)([]),
       _useState2 = _slicedToArray(_useState, 2),
@@ -4848,31 +4850,36 @@ function Comment(_ref) {
       displayEditBox = _useState4[0],
       setDisplayEditBox = _useState4[1];
 
-  var _useState5 = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)(''),
+  var _useState5 = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)(null),
       _useState6 = _slicedToArray(_useState5, 2),
       error = _useState6[0],
       setError = _useState6[1];
 
   var _useState7 = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)(false),
       _useState8 = _slicedToArray(_useState7, 2),
-      displayError = _useState8[0],
-      setDisplayError = _useState8[1];
+      isCommentLikeByUser = _useState8[0],
+      setIsCommentLikedByUser = _useState8[1];
 
-  var _useState9 = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)(false),
+  var _useState9 = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)(0),
       _useState10 = _slicedToArray(_useState9, 2),
-      isCommentLikeByUser = _useState10[0],
-      setIsCommentLikedByUser = _useState10[1];
+      likeCount = _useState10[0],
+      setLikeCount = _useState10[1];
 
-  var _useState11 = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)(0),
+  var _useState11 = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)(false),
       _useState12 = _slicedToArray(_useState11, 2),
-      likeCount = _useState12[0],
-      setLikeCount = _useState12[1];
+      displaySubComments = _useState12[0],
+      setDisplaySubComments = _useState12[1];
 
-  var _useState13 = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)(false),
+  var _useState13 = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)([]),
       _useState14 = _slicedToArray(_useState13, 2),
-      displaySubComments = _useState14[0],
-      setDisplaySubComments = _useState14[1];
+      theSubComments = _useState14[0],
+      setTheSubComments = _useState14[1];
 
+  (0,react__WEBPACK_IMPORTED_MODULE_1__.useEffect)(function () {
+    setTheSubComments(comment.sub_comments.sort(function (a, b) {
+      return a.id - b.id;
+    }));
+  }, [comment, comment.sub_comments]);
   (0,react__WEBPACK_IMPORTED_MODULE_1__.useEffect)(function () {
     if (comment.comment_likes.find(function (like) {
       return like.user_id == currentUser.id;
@@ -4883,9 +4890,8 @@ function Comment(_ref) {
     setLikeCount(comment.comment_likes.length);
   }, []);
   (0,react__WEBPACK_IMPORTED_MODULE_1__.useEffect)(function () {
-    if (deleteCommentError && comment.id == commentIdToDelete) {
+    if (comment.id == commentIdToDelete) {
       setError(deleteCommentError);
-      setDisplayError(true);
     }
   }, [deleteCommentError]);
 
@@ -4959,7 +4965,7 @@ function Comment(_ref) {
           onClick: toggleSetModalOpen,
           className: "text-xs ml-1",
           children: "Delete"
-        }), displayError && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("p", {
+        }), error && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("p", {
           className: "bg-red-500/75 text-white mt-2 p-2 w-fit rounded-lg",
           children: error
         })]
@@ -4980,14 +4986,16 @@ function Comment(_ref) {
           })]
         }), comment.sub_comments.length > 0 && displaySubComments && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("div", {
           className: "ml-4 mt-2",
-          children: comment.sub_comments.reverse().map(function (sub_comment) {
+          children: theSubComments.map(function (sub_comment) {
             return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)(_SubComment__WEBPACK_IMPORTED_MODULE_5__["default"], {
               posts: posts,
               toggleSetModalOpen: toggleSetModalOpen,
               subComment: sub_comment,
               currentUser: currentUser,
               updatePosts: updatePosts,
-              updatePostsForMyPosts: updatePostsForMyPosts
+              updatePostsForMyPosts: updatePostsForMyPosts,
+              subCommentIdToDelete: subCommentIdToDelete,
+              deleteSubCommentError: deleteSubCommentError
             }, "sub_comment_".concat(sub_comment.id));
           })
         })]
@@ -5235,7 +5243,6 @@ function CommentInputEdit(_ref) {
           return comment.id == commentId;
         });
         posts[postIndex].comments[commentIndex].comment = response.data.comment.comment;
-        posts[postIndex].comments.reverse();
 
         if (updatePosts) {
           updatePosts(posts);
@@ -5278,7 +5285,7 @@ function CommentInputEdit(_ref) {
         processing: processing,
         children: "Submit"
       }), displayServerError && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("p", {
-        className: "bg-red-500/75 text-white mt-2 w-fit rounded-lg",
+        className: "bg-red-500/75 text-white mt-2 w-fit p-2 rounded-lg",
         children: serverError
       })]
     })
@@ -5304,6 +5311,18 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _Comment__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Comment */ "./resources/js/Components/Comment.js");
 /* harmony import */ var _CommentInput__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./CommentInput */ "./resources/js/Components/CommentInput.js");
 /* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
+function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
+
+function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
+
+function _iterableToArrayLimit(arr, i) { var _i = arr == null ? null : typeof Symbol !== "undefined" && arr[Symbol.iterator] || arr["@@iterator"]; if (_i == null) return; var _arr = []; var _n = true; var _d = false; var _s, _e; try { for (_i = _i.call(arr); !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
+
+function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
+
 
 
 
@@ -5319,7 +5338,21 @@ function CommentsContainer(_ref) {
       currentUser = _ref.currentUser,
       toggleSetModalOpen = _ref.toggleSetModalOpen,
       deleteCommentError = _ref.deleteCommentError,
-      commentIdToDelete = _ref.commentIdToDelete;
+      deleteSubCommentError = _ref.deleteSubCommentError,
+      commentIdToDelete = _ref.commentIdToDelete,
+      subCommentIdToDelete = _ref.subCommentIdToDelete;
+
+  //you did this because every time the modal for deletion came up it was reversing the comments
+  var _useState = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)([]),
+      _useState2 = _slicedToArray(_useState, 2),
+      theComments = _useState2[0],
+      setTheComments = _useState2[1];
+
+  (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(function () {
+    setTheComments(comments.sort(function (a, b) {
+      return b.id - a.id;
+    }));
+  }, [posts]);
 
   var calcualateTimeStamp = function calcualateTimeStamp(itemTime) {
     var hoursSince = Math.abs(new Date() - new Date(itemTime)) / 36e5;
@@ -5340,7 +5373,7 @@ function CommentsContainer(_ref) {
       post_id: post_id,
       updatePosts: updatePosts,
       updatePostsForMyPosts: updatePostsForMyPosts
-    }), comments.reverse().map(function (comment) {
+    }), theComments.map(function (comment) {
       return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
         className: "bg-sage/10 m-3 p-2 rounded-lg",
         children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("p", {
@@ -5355,6 +5388,8 @@ function CommentsContainer(_ref) {
           updatePostsForMyPosts: updatePostsForMyPosts,
           toggleSetModalOpen: toggleSetModalOpen,
           deleteCommentError: deleteCommentError,
+          deleteSubCommentError: deleteSubCommentError,
+          subCommentIdToDelete: subCommentIdToDelete,
           commentIdToDelete: commentIdToDelete
         })]
       }, comment.id);
@@ -5826,7 +5861,10 @@ function Modal(_ref) {
             className: "bg-gray-50 px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6",
             children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("button", {
               type: "button",
-              onClick: deleteItem,
+              onClick: function onClick() {
+                deleteItem();
+                toggleModal();
+              },
               className: "inline-flex w-full justify-center rounded-md border border-transparent bg-red-600 px-4 py-2 text-base font-medium text-white shadow-sm hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 sm:ml-3 sm:w-auto sm:text-sm",
               children: "Delete"
             }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("button", {
@@ -6031,10 +6069,10 @@ function PasswordResetForm(_ref) {
         })
       })]
     }), success && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("p", {
-      className: "bg-sage text-white mt-2 w-fit rounded-lg",
+      className: "bg-sage text-white mt-2 w-fit p-2 rounded-lg",
       children: success
     }), error && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("p", {
-      className: "bg-red-500/75 text-white mt-2 w-fit rounded-lg",
+      className: "bg-red-500/75 text-white mt-2 w-fit p-2 rounded-lg",
       children: error
     })]
   });
@@ -6110,33 +6148,33 @@ function Post(_ref) {
 
   var _useState5 = (0,react__WEBPACK_IMPORTED_MODULE_2__.useState)(false),
       _useState6 = _slicedToArray(_useState5, 2),
-      displayError = _useState6[0],
-      setDisplayError = _useState6[1];
+      modalOpen = _useState6[0],
+      setModalOpen = _useState6[1];
 
-  var _useState7 = (0,react__WEBPACK_IMPORTED_MODULE_2__.useState)(false),
+  var _useState7 = (0,react__WEBPACK_IMPORTED_MODULE_2__.useState)(null),
       _useState8 = _slicedToArray(_useState7, 2),
-      modalOpen = _useState8[0],
-      setModalOpen = _useState8[1];
+      whatWeAreDeleting = _useState8[0],
+      setWhatAreWeDeleting = _useState8[1];
 
   var _useState9 = (0,react__WEBPACK_IMPORTED_MODULE_2__.useState)(null),
       _useState10 = _slicedToArray(_useState9, 2),
-      whatWeAreDeleting = _useState10[0],
-      setWhatAreWeDeleting = _useState10[1];
+      commentIdToDelete = _useState10[0],
+      setCommentIdToDelete = _useState10[1];
 
   var _useState11 = (0,react__WEBPACK_IMPORTED_MODULE_2__.useState)(null),
       _useState12 = _slicedToArray(_useState11, 2),
-      commentIdToDelete = _useState12[0],
-      setCommentIdToDelete = _useState12[1];
+      subCommentIdToDelete = _useState12[0],
+      setSubCommentIdToDelete = _useState12[1];
 
   var _useState13 = (0,react__WEBPACK_IMPORTED_MODULE_2__.useState)(null),
       _useState14 = _slicedToArray(_useState13, 2),
-      subCommentIdToDelete = _useState14[0],
-      setSubCommentIdToDelete = _useState14[1];
+      deleteCommentError = _useState14[0],
+      setDeleteCommentError = _useState14[1];
 
   var _useState15 = (0,react__WEBPACK_IMPORTED_MODULE_2__.useState)(null),
       _useState16 = _slicedToArray(_useState15, 2),
-      deleteCommentError = _useState16[0],
-      setDeleteCommentError = _useState16[1];
+      deleteSubCommentError = _useState16[0],
+      setDeleteSubCommentError = _useState16[1];
 
   var _useState17 = (0,react__WEBPACK_IMPORTED_MODULE_2__.useState)(false),
       _useState18 = _slicedToArray(_useState17, 2),
@@ -6220,13 +6258,11 @@ function Post(_ref) {
     })["catch"](function (error) {
       if (error.response) {
         setError(error.response.data.message);
-        setDisplayError(true);
         setTimeout(function () {
-          setDisplayError(false);
+          setError(null);
         }, 5000);
       }
     });
-    toggleSetModalOpen();
   };
 
   var deleteComment = function deleteComment() {
@@ -6251,14 +6287,12 @@ function Post(_ref) {
       }
     })["catch"](function (error) {
       if (error.response) {
-        setError(error.response.data.message);
-        setDisplayError(true);
+        setDeleteCommentError(error.response.data.message);
         setTimeout(function () {
-          setDisplayError(false);
+          setDeleteCommentError(null);
         }, 5000);
       }
     });
-    toggleSetModalOpen();
   };
 
   var deleteSubComment = function deleteSubComment() {
@@ -6286,14 +6320,12 @@ function Post(_ref) {
       }
     })["catch"](function (error) {
       if (error.response) {
-        setError(error.response.data.message);
-        setDisplayError(true);
+        setDeleteSubCommentError(error.response.data.message);
         setTimeout(function () {
-          setDisplayError(false);
+          setDeleteSubCommentError(null);
         }, 5000);
       }
     });
-    toggleSetModalOpen();
   };
 
   var toggleLikePost = function toggleLikePost() {
@@ -6352,7 +6384,7 @@ function Post(_ref) {
           toggleSetDisplayEditBox: toggleSetDisplayEditBox,
           updatePostsForDashboard: updatePosts,
           updatePostsForMyPosts: updatePostsForMyPosts
-        }), displayError && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("p", {
+        }), error && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("p", {
           className: "bg-red-500/75 text-white mt-2 w-fit rounded-lg p-2",
           children: error
         })]
@@ -6386,7 +6418,9 @@ function Post(_ref) {
           currentUser: currentUser,
           toggleSetModalOpen: toggleSetModalOpen,
           deleteCommentError: deleteCommentError,
-          commentIdToDelete: commentIdToDelete
+          deleteSubCommentError: deleteSubCommentError,
+          commentIdToDelete: commentIdToDelete,
+          subCommentIdToDelete: subCommentIdToDelete
         }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("button", {
           className: "bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 ml-6 mb-2 cursor-pointer transition ease-in-out delay-110 hover:-translate-y-1 hover:scale-110 hover:bg-sage hover:text-white duration-300\"",
           onClick: toggleSetShowComment,
@@ -7046,7 +7080,9 @@ function SubComment(_ref) {
       toggleSetModalOpen = _ref.toggleSetModalOpen,
       posts = _ref.posts,
       updatePosts = _ref.updatePosts,
-      updatePostsForMyPosts = _ref.updatePostsForMyPosts;
+      updatePostsForMyPosts = _ref.updatePostsForMyPosts,
+      deleteSubCommentError = _ref.deleteSubCommentError,
+      subCommentIdToDelete = _ref.subCommentIdToDelete;
 
   var _useState = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)(false),
       _useState2 = _slicedToArray(_useState, 2),
@@ -7063,6 +7099,11 @@ function SubComment(_ref) {
       displayEditBox = _useState6[0],
       setDisplayEditBox = _useState6[1];
 
+  var _useState7 = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)(null),
+      _useState8 = _slicedToArray(_useState7, 2),
+      error = _useState8[0],
+      setError = _useState8[1];
+
   (0,react__WEBPACK_IMPORTED_MODULE_1__.useEffect)(function () {
     if (subComment.sub_comment_likes.find(function (like) {
       return like.user_id == currentUser.id;
@@ -7072,6 +7113,11 @@ function SubComment(_ref) {
 
     setSubCommentLikeCount(subComment.sub_comment_likes.length);
   }, []);
+  (0,react__WEBPACK_IMPORTED_MODULE_1__.useEffect)(function () {
+    if (subComment.id == subCommentIdToDelete) {
+      setError(deleteSubCommentError);
+    }
+  }, [deleteSubCommentError]);
 
   var toggleLikeSubComment = function toggleLikeSubComment() {
     axios.post('/comments/toggle-sub-comment-like', {
@@ -7105,6 +7151,7 @@ function SubComment(_ref) {
   };
 
   return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
+    id: subComment.id,
     className: "rounded-lg px-2 py-1 max-w-fit my-2",
     children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
       className: "flex",
@@ -7143,6 +7190,9 @@ function SubComment(_ref) {
         onClick: toggleSetModalOpen,
         className: "text-sm ml-1",
         children: "Delete"
+      }), error && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("p", {
+        className: "bg-red-500/75 text-white mt-2 p-2 w-fit rounded-lg",
+        children: error
       })]
     }), displayEditBox && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_SubCommentInputEdit__WEBPACK_IMPORTED_MODULE_2__["default"], {
       posts: posts,
@@ -7251,10 +7301,7 @@ function SubCommentInput(_ref) {
         posts[postIndex].comments[commentIndex].sub_comments = [].concat(_toConsumableArray(posts[postIndex].comments[commentIndex].sub_comments), [response.data.sub_comment]);
         posts[postIndex].comments[commentIndex].sub_comments.sort(function (a, b) {
           return a.id - b.id;
-        });
-        posts[postIndex].comments.sort(function (a, b) {
-          return a.id - b.id;
-        });
+        }); // posts[postIndex].comments.sort((a,b) => a.id - b.id)
 
         if (updatePosts) {
           updatePosts(posts);
@@ -7399,12 +7446,6 @@ function SubCommentInputEdit(_ref) {
           return sub_comment.id == response.data.sub_comment.id;
         });
         posts[postIndex].comments[commentIndex].sub_comments[subCommentIndex].sub_comment = response.data.sub_comment.sub_comment;
-        posts[postIndex].comments[commentIndex].sub_comments.sort(function (a, b) {
-          return a.id - b.id;
-        });
-        posts[postIndex].comments.sort(function (a, b) {
-          return a.id - b.id;
-        });
 
         if (updatePosts) {
           updatePosts(posts);
@@ -8759,7 +8800,6 @@ function MyAccount(props) {
   };
 
   var deleteAccount = function deleteAccount() {
-    console.log('here');
     axios.post(route('delete'), {
       user_id: props.auth.user.id
     }).then(function (response) {

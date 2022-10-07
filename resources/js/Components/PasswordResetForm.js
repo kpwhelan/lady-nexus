@@ -105,11 +105,11 @@ function PasswordResetForm({ userId }) {
             </form>
 
             {success &&
-                <p className='bg-sage text-white mt-2 w-fit rounded-lg'>{success}</p>
+                <p className='bg-sage text-white mt-2 w-fit p-2 rounded-lg'>{success}</p>
             }
 
             {error &&
-                <p className='bg-red-500/75 text-white mt-2 w-fit rounded-lg'>{error}</p>
+                <p className='bg-red-500/75 text-white mt-2 w-fit p-2 rounded-lg'>{error}</p>
             }
          </div>
     )

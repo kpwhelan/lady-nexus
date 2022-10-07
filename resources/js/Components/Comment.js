@@ -7,14 +7,28 @@ import CommentInputEdit from './CommentInputEdit';
 import SubCommentInput from './SubCommentInput';
 import SubComment from './SubComment';
 
-function Comment({ posts, comment, currentUser, updatePosts, updatePostsForMyPosts, toggleSetModalOpen, commentIdToDelete, deleteCommentError }) {
+function Comment({ posts,
+    comment,
+    currentUser,
+    updatePosts,
+    updatePostsForMyPosts,
+    toggleSetModalOpen,
+    commentIdToDelete,
+    subCommentIdToDelete,
+    deleteCommentError,
+    deleteSubCommentError,
+     }) {
     const [user, setUser] = useState([]);
     const [displayEditBox, setDisplayEditBox] = useState(false);
-    const [error, setError] = useState('');
-    const [displayError, setDisplayError] = useState(false);
+    const [error, setError] = useState(null);
     const [isCommentLikeByUser, setIsCommentLikedByUser] = useState(false);
     const [likeCount, setLikeCount] = useState(0);
     const [displaySubComments, setDisplaySubComments] = useState(false);
+    const [theSubComments, setTheSubComments] = useState([]);
+
+    useEffect(() => {
+        setTheSubComments(comment.sub_comments.sort((a,b) => a.id - b.id));
+    }, [comment, comment.sub_comments])
 
     useEffect(() => {
         if (comment.comment_likes.find(like => like.user_id == currentUser.id)) {
@@ -25,9 +39,8 @@ function Comment({ posts, comment, currentUser, updatePosts, updatePostsForMyPos
     }, [])
 
     useEffect(() => {
-        if (deleteCommentError && comment.id == commentIdToDelete) {
+        if (comment.id == commentIdToDelete) {
             setError(deleteCommentError)
-            setDisplayError(true)
         }
     }, [deleteCommentError])
 
@@ -89,7 +102,7 @@ function Comment({ posts, comment, currentUser, updatePosts, updatePostsForMyPos
         <div>
             <button id={comment.id} onClick={toggleSetDisplayEditBox} className='text-xs mr-1'>Edit</button>
             <button id={comment.id} data-type="comment" onClick={toggleSetModalOpen} className='text-xs ml-1'>Delete</button>
-            {displayError &&
+            {error &&
                 <p className='bg-red-500/75 text-white mt-2 p-2 w-fit rounded-lg'>{error}</p>
             }
         </div>
@@ -102,8 +115,17 @@ function Comment({ posts, comment, currentUser, updatePosts, updatePostsForMyPos
 
             {(comment.sub_comments.length > 0 && displaySubComments) &&
                 <div className='ml-4 mt-2'>
-                    {comment.sub_comments.reverse().map(sub_comment => (
-                        <SubComment key={`sub_comment_${sub_comment.id}`} posts={posts} toggleSetModalOpen={toggleSetModalOpen} subComment={sub_comment} currentUser={currentUser} updatePosts={updatePosts} updatePostsForMyPosts={updatePostsForMyPosts} />
+                    {theSubComments.map(sub_comment => (
+                        <SubComment key={`sub_comment_${sub_comment.id}`}
+                            posts={posts}
+                            toggleSetModalOpen={toggleSetModalOpen}
+                            subComment={sub_comment}
+                            currentUser={currentUser}
+                            updatePosts={updatePosts}
+                            updatePostsForMyPosts={updatePostsForMyPosts}
+                            subCommentIdToDelete={subCommentIdToDelete}
+                            deleteSubCommentError={deleteSubCommentError}
+                        />
                     ))}
                 </div>
             }

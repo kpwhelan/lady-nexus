@@ -10,12 +10,12 @@ import PostFormEdit from './PostFormEdit';
 function Post({ post, dashboardPosts, myPosts, updatePosts, currentUser, updatePostsForMyPosts, categories }) {
     const [showComments, setShowComments] = useState(false);
     const [displayEditBox, setDisplayEditBox] = useState(false);
-    const [displayError, setDisplayError] = useState(false);
     const [modalOpen, setModalOpen] = useState(false);
     const [whatWeAreDeleting, setWhatAreWeDeleting] = useState(null);
     const [commentIdToDelete, setCommentIdToDelete] = useState(null);
     const [subCommentIdToDelete, setSubCommentIdToDelete] = useState(null);
     const [deleteCommentError, setDeleteCommentError] = useState(null);
+    const [deleteSubCommentError, setDeleteSubCommentError] = useState(null);
     const [isPostLikeByUser, setIsPostLikedByUser] = useState(false);
     const [likeCount, setLikeCount] = useState(0);
     const [error, setError] = useState(null);
@@ -32,7 +32,6 @@ function Post({ post, dashboardPosts, myPosts, updatePosts, currentUser, updateP
         if (modalOpen) {
             setWhatAreWeDeleting(null)
             setModalOpen(false)
-
         } else if (!modalOpen) {
             let type = event.target.dataset.type;
             if (type == 'post') {
@@ -72,22 +71,18 @@ function Post({ post, dashboardPosts, myPosts, updatePosts, currentUser, updateP
                 let postIndex = posts.findIndex(post => post.id == response.data.post_id);
                 posts.splice(postIndex, 1);
 
-
                 if (updatePosts) {updatePosts(posts)}
                 if (updatePostsForMyPosts) {updatePostsForMyPosts(posts)}
             }
         }).catch(error => {
             if (error.response) {
                 setError(error.response.data.message);
-                setDisplayError(true);
 
                 setTimeout(() => {
-                    setDisplayError(false)
+                    setError(null);
                 }, 5000);
             }
         })
-
-        toggleSetModalOpen();
     }
 
     const deleteComment = () => {
@@ -104,16 +99,13 @@ function Post({ post, dashboardPosts, myPosts, updatePosts, currentUser, updateP
             }
         }).catch(error => {
             if (error.response) {
-                setError(error.response.data.message);
-                setDisplayError(true);
+                setDeleteCommentError(error.response.data.message);
 
                 setTimeout(() => {
-                    setDisplayError(false)
+                    setDeleteCommentError(null)
                 }, 5000);
             }
         })
-
-        toggleSetModalOpen();
     }
 
     const deleteSubComment = () => {
@@ -131,16 +123,13 @@ function Post({ post, dashboardPosts, myPosts, updatePosts, currentUser, updateP
             }
         }).catch(error => {
             if (error.response) {
-                setError(error.response.data.message);
-                setDisplayError(true);
+                setDeleteSubCommentError(error.response.data.message);
 
                 setTimeout(() => {
-                    setDisplayError(false)
+                    setDeleteSubCommentError(null);
                 }, 5000);
             }
         })
-
-        toggleSetModalOpen();
     }
 
     const toggleLikePost = () => {
@@ -177,7 +166,7 @@ function Post({ post, dashboardPosts, myPosts, updatePosts, currentUser, updateP
 
                 {displayEditBox && <PostFormEdit myPosts={myPosts} dashboardPosts={dashboardPosts} postData={post} categories={categories} previousCategoryId={post.category.id} toggleSetDisplayEditBox={toggleSetDisplayEditBox} updatePostsForDashboard={updatePosts} updatePostsForMyPosts={updatePostsForMyPosts}/>}
 
-                {displayError &&
+                {error &&
                     <p className='bg-red-500/75 text-white mt-2 w-fit rounded-lg p-2'>{error}</p>
                 }
             </div>
@@ -199,7 +188,18 @@ function Post({ post, dashboardPosts, myPosts, updatePosts, currentUser, updateP
 
             {showComments ? (
                 <>
-                    <CommentsContainer posts={dashboardPosts ? dashboardPosts : myPosts} comments={post.comments} updatePosts={updatePosts} updatePostsForMyPosts={updatePostsForMyPosts} post_id={post.id} currentUser={currentUser} toggleSetModalOpen={toggleSetModalOpen} deleteCommentError={deleteCommentError} commentIdToDelete={commentIdToDelete}/>
+                    <CommentsContainer
+                        posts={dashboardPosts ? dashboardPosts : myPosts}
+                        comments={post.comments}
+                        updatePosts={updatePosts}
+                        updatePostsForMyPosts={updatePostsForMyPosts}
+                        post_id={post.id} currentUser={currentUser}
+                        toggleSetModalOpen={toggleSetModalOpen}
+                        deleteCommentError={deleteCommentError}
+                        deleteSubCommentError={deleteSubCommentError}
+                        commentIdToDelete={commentIdToDelete}
+                        subCommentIdToDelete={subCommentIdToDelete}
+                     />
                     <button className='bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 ml-6 mb-2 cursor-pointer transition ease-in-out delay-110 hover:-translate-y-1 hover:scale-110 hover:bg-sage hover:text-white duration-300"' onClick={toggleSetShowComment}>Hide Comments</button>
                 </>
             ) : (<div></div>)}

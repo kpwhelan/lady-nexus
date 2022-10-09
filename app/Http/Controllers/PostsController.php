@@ -13,6 +13,12 @@ use Illuminate\Support\Facades\Redirect;
 use Inertia\Inertia;
 
 class PostsController extends Controller {
+    public function getCategories() {
+        $categories = Category::all();
+
+        return response()->json(['categories' => $categories]);
+    }
+
     public function getMoreDashboardPosts(Request $request): JsonResponse {
         $offset = $request->offset;
 

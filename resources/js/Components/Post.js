@@ -7,7 +7,7 @@ import CommentsContainer from './CommentsContainer'
 import Modal from './Modal';
 import PostFormEdit from './PostFormEdit';
 
-function Post({ post, dashboardPosts, myPosts, updatePosts, currentUser, updatePostsForMyPosts, categories }) {
+function Post({ post, className, dashboardPosts, myPosts, updatePosts, currentUser, updatePostsForMyPosts, categories }) {
     const [showComments, setShowComments] = useState(false);
     const [displayEditBox, setDisplayEditBox] = useState(false);
     const [modalOpen, setModalOpen] = useState(false);
@@ -146,7 +146,7 @@ function Post({ post, dashboardPosts, myPosts, updatePosts, currentUser, updateP
 
     return (
         <>
-        <div className="max-h-{120} w-100 bg-white rounded overflow-scroll shadow-lg m-5 transition ease-in-out delay-110 hover:-translate-y-2 hover:scale-102">
+        <div className={`max-h-{120} w-100 bg-white rounded overflow-scroll shadow-lg m-5 transition ease-in-out delay-110 hover:-translate-y-2 hover:scale-102 ${className}`}>
             <div className="px-6 py-4">
                 <div className="font-bold text-xl mb-2">
                     <p>{post.user.username}</p>

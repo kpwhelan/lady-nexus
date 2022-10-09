@@ -7930,7 +7930,7 @@ function PasswordResetForm(_ref) {
   };
 
   return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsxs)("div", {
-    className: "mt-2",
+    className: "text-center w-11/12 mt-2",
     children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)(_ValidationErrors__WEBPACK_IMPORTED_MODULE_6__["default"], {
       errors: errors
     }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsxs)("form", {
@@ -7974,7 +7974,7 @@ function PasswordResetForm(_ref) {
           handleChange: onHandleChange
         })]
       }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("div", {
-        className: "flex items-center justify-end mt-4",
+        className: "md:flex md:items-center md:justify-end mt-4",
         children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)(_Button__WEBPACK_IMPORTED_MODULE_3__["default"], {
           className: "ml-4",
           processing: processing,
@@ -9560,6 +9560,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
 
 
+
 function Authenticated(_ref) {
   var auth = _ref.auth,
       header = _ref.header,
@@ -9688,11 +9689,17 @@ function Authenticated(_ref) {
                   d: "M6 18L18 6M6 6l12 12"
                 })]
               })
-            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)("div", {
+            }), !displayPostForm && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)("div", {
               onClick: toggleSetDisplayPostForm,
               className: "border-solid border-sage border-2 rounded-full md:hidden w-fit py-2 px-3 mx-1 bg-white",
               children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)(_fortawesome_react_fontawesome__WEBPACK_IMPORTED_MODULE_6__.FontAwesomeIcon, {
                 icon: _fortawesome_free_solid_svg_icons__WEBPACK_IMPORTED_MODULE_9__.faPlus
+              })
+            }), displayPostForm && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)("div", {
+              onClick: toggleSetDisplayPostForm,
+              className: "border-solid border-sage border-2 rounded-full md:hidden w-fit py-2 px-3 mx-1 bg-white",
+              children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)(_fortawesome_react_fontawesome__WEBPACK_IMPORTED_MODULE_6__.FontAwesomeIcon, {
+                icon: _fortawesome_free_solid_svg_icons__WEBPACK_IMPORTED_MODULE_9__.faX
               })
             }), displayPostForm && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)("div", {
               className: "bg-sage/[0.6] fixed z-30 right-2 left-2 top-20 bottom-2",
@@ -10894,9 +10901,9 @@ function MyAccount(props) {
     }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("div", {
       className: "ml-8 mt-2",
       children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxs)("div", {
-        className: "flex justify-around",
+        className: "flex-col md:flex md:flex-row justify-around",
         children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxs)("div", {
-          className: "mr-2 mt-5",
+          className: "mr-2 mt-5 mb-4",
           children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("h1", {
             className: "text-xl",
             children: "Account Details"

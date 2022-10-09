@@ -96,8 +96,8 @@ function MyPosts(props) {
         <Head title="My Posts" />
 
         {posts ? (
-                <div className='flex justify-around'>
-                    <div className='flex-initial w-2/3 max-h-screen overflow-scroll' onScroll={handleScroll}>
+                <div className='sm:flex-col md:flex md:flex-row justify-around'>
+                    <div className='flex-initial md:w-2/3 max-h-screen overflow-scroll' onScroll={handleScroll}>
                         <div className='ml-6 mt-2 w-3/6'>
                             <SelectBox beginFilter={beginFilter} categoryFilters={categoryFilters} />
                         </div>
@@ -106,7 +106,7 @@ function MyPosts(props) {
                         ))}
                     </div>
 
-                    <div className='flex-initial w-1/3 mr-2 mt-5'>
+                    <div className='hidden md:block flex-initial md:w-1/3 mr-2 mt-5'>
                         <PostForm className="mt-4" categories={categories} />
                     </div>
 

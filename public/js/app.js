@@ -9732,6 +9732,14 @@ function Authenticated(_ref) {
           }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)("div", {
             className: "mt-3 space-y-1",
             children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)(_Components_ResponsiveNavLink__WEBPACK_IMPORTED_MODULE_4__["default"], {
+              href: route('my-account'),
+              method: "get",
+              as: "button",
+              children: "My Account"
+            })
+          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)("div", {
+            className: "mt-3 space-y-1",
+            children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)(_Components_ResponsiveNavLink__WEBPACK_IMPORTED_MODULE_4__["default"], {
               method: "post",
               href: route('logout'),
               as: "button",
@@ -11126,9 +11134,9 @@ function MyLikes(props) {
     children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)(_inertiajs_inertia_react__WEBPACK_IMPORTED_MODULE_5__.Head, {
       title: "My Posts"
     }), posts ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsxs)("div", {
-      className: "flex justify-around",
+      className: "sm:flex-col md:flex md:flex-row justify-around",
       children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsxs)("div", {
-        className: "flex-initial w-2/3 max-h-screen overflow-scroll",
+        className: "flex-initial md:w-2/3 max-h-screen overflow-scroll",
         onScroll: handleScroll,
         children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("div", {
           className: "ml-6 mt-2 w-3/6",
@@ -11146,7 +11154,7 @@ function MyLikes(props) {
           }, post.id);
         })]
       }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("div", {
-        className: "flex-initial w-1/3 mr-2 mt-5",
+        className: "hidden md:block flex-initial md:w-1/3 mr-2 mt-5",
         children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)(_Components_PostForm__WEBPACK_IMPORTED_MODULE_2__["default"], {
           className: "mt-4",
           categories: categories
@@ -11351,9 +11359,9 @@ function MyPosts(props) {
     children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)(_inertiajs_inertia_react__WEBPACK_IMPORTED_MODULE_4__.Head, {
       title: "My Posts"
     }), posts ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsxs)("div", {
-      className: "flex justify-around",
+      className: "sm:flex-col md:flex md:flex-row justify-around",
       children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsxs)("div", {
-        className: "flex-initial w-2/3 max-h-screen overflow-scroll",
+        className: "flex-initial md:w-2/3 max-h-screen overflow-scroll",
         onScroll: handleScroll,
         children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("div", {
           className: "ml-6 mt-2 w-3/6",
@@ -11371,7 +11379,7 @@ function MyPosts(props) {
           }, post.id);
         })]
       }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("div", {
-        className: "flex-initial w-1/3 mr-2 mt-5",
+        className: "hidden md:block flex-initial md:w-1/3 mr-2 mt-5",
         children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)(_Components_PostForm__WEBPACK_IMPORTED_MODULE_1__["default"], {
           className: "mt-4",
           categories: categories

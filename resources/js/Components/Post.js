@@ -153,7 +153,7 @@ function Post({ post, className, dashboardPosts, myPosts, updatePosts, currentUs
                     <p className='text-sm font-normal'>{new Date(post.created_at).toLocaleDateString('en-us', { year:"numeric", month:"short", day:"numeric", hour:"numeric", minute:"numeric"})}</p>
                 </div>
 
-                <p className="text-gray-700 text-base">
+                <p className="text-gray-700 text-lg">
                     {post.post}
                 </p>
 

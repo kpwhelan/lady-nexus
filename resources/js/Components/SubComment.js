@@ -71,7 +71,7 @@ function SubComment({ subComment,
             <p className='text-sm'>{calcualateTimeStamp(subComment.created_at)}</p>
         </div>
         <div className='flex'>
-            <p className="text-gray-700 text-lg ml-3">{subComment.sub_comment}</p>
+            <p className="text-gray-700 text-md ml-3">{subComment.sub_comment}</p>
             <span onClick={toggleLikeSubComment} className='cursor-pointer ml-4'>
                 {isSubCommentLikedByUser ? (
                         <FontAwesomeIcon icon={faHeartSolid} />

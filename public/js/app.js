@@ -6850,9 +6850,9 @@ function Comment(_ref) {
           className: "text-sm",
           children: user.username
         }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsxs)("div", {
-          className: "flex",
+          className: "md:flex",
           children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("p", {
-            className: "text-gray-700 text-lg ml-2",
+            className: "text-gray-700 text-md ml-2",
             children: comment.comment
           }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsxs)("span", {
             onClick: toggleLikeComment,
@@ -9146,7 +9146,7 @@ function SubComment(_ref) {
     }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
       className: "flex",
       children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("p", {
-        className: "text-gray-700 text-lg ml-3",
+        className: "text-gray-700 text-md ml-3",
         children: subComment.sub_comment
       }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("span", {
         onClick: toggleLikeSubComment,

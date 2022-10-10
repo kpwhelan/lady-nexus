@@ -80,10 +80,10 @@ function Comment({ posts,
   return (
     <>
     <div className="px-6 py-4">
-        <div className='bg-white rounded-lg p-2 max-w-fit'>
+        <div className='bg-white rounded-lg p-2 max-w-full'>
             <p className='text-sm'>{user.username}</p>
-            <div className='flex'>
-                <p className="text-gray-700 text-lg ml-2">{comment.comment}</p>
+            <div className='md:flex'>
+                <p className="text-gray-700 text-md ml-2">{comment.comment}</p>
                 <span onClick={toggleLikeComment} className='cursor-pointer ml-4'>
                     {isCommentLikeByUser ? (
                             <FontAwesomeIcon icon={faHeartSolid} />

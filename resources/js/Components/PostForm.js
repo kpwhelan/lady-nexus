@@ -3,8 +3,22 @@ import { useForm } from '@inertiajs/inertia-react';
 import Input from './Input';
 import Button from './Button';
 import Label from './Label';
+import axios from 'axios';
 
 function PostForm({ categories, className }) {
+    const [theCategories, setTheCategories] = useState([]);
+
+    useEffect(() => {
+        if (categories) {
+            setTheCategories(categories)
+        } else if (!categories) {
+            axios.get(route('get-categories'))
+            .then(response => {
+                setTheCategories(response.data.categories);
+            })
+        }
+    }, [])
+
     const { data, setData, post, processing, errors, reset } = useForm({
         post_body: '',
         category_id: ''
@@ -111,7 +125,7 @@ function PostForm({ categories, className }) {
              />
 
             <div className='flex flex-wrap mt-2'>
-                {categories.map(category => (
+                {theCategories.map(category => (
                     <span key={category.id} data={category.id} id={`category_${category.id}`} onClick={() => {toggleIsCategorySelected(); setCategoryId(category.id)}} className="categories inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2 cursor-pointer transition ease-in-out delay-110 hover:-translate-y-1 hover:scale-110 hover:bg-sage hover:text-white duration-300">{category.name}</span>
                 ))}
             </div>

@@ -51,8 +51,8 @@ function MyAccount(props) {
         <Head title="My Account" />
 
         <div className='ml-8 mt-2'>
-            <div className="flex justify-around">
-                <div className='mr-2 mt-5'>
+            <div className="flex-col md:flex md:flex-row justify-around">
+                <div className='mr-2 mt-5 mb-4'>
                 <h1 className='text-xl'>Account Details</h1>
                     <p className='bg-white rounded-xl p-2 max-w-fit mb-1'>{props.auth.user.first_name} {props.auth.user.last_name}</p>
                     <p className='bg-white rounded-xl p-2 max-w-fit mb-1'>Joined: {new Date(props.auth.user.created_at).toLocaleDateString('en-us', { weekday:"long", year:"numeric", month:"short", day:"numeric"})}</p>

@@ -37,7 +37,6 @@ function CommentsContainer({
         <CommentInput posts={posts} post_id={post_id} updatePosts={updatePosts} updatePostsForMyPosts={updatePostsForMyPosts} />
 
         {theComments.map(comment => (
-
             <div key={comment.id} className='bg-sage/10 m-3 p-2 rounded-lg'>
                 <p className="text-gray-700 text-sm">{
                     calcualateTimeStamp(comment.created_at)

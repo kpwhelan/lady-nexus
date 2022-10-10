@@ -54,7 +54,7 @@ function PasswordResetForm({ userId }) {
     };
 
     return (
-        <div className='mt-2'>
+        <div className='text-center w-11/12 mt-2'>
             <ValidationErrors errors={errors} />
 
             <form onSubmit={submit}>
@@ -97,7 +97,7 @@ function PasswordResetForm({ userId }) {
                     />
                 </div>
 
-                <div className="flex items-center justify-end mt-4">
+                <div className="md:flex md:items-center md:justify-end mt-4">
                     <Button className="ml-4" processing={processing}>
                         Reset Password
                     </Button>

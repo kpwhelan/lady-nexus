@@ -4,9 +4,22 @@ import Dropdown from '@/Components/Dropdown';
 import NavLink from '@/Components/NavLink';
 import ResponsiveNavLink from '@/Components/ResponsiveNavLink';
 import { Link } from '@inertiajs/inertia-react';
+import { faPlus } from '@fortawesome/free-solid-svg-icons';
+import { faX } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import PostForm from '@/Components/PostForm';
 
 export default function Authenticated({ auth, header, children}) {
     const [showingNavigationDropdown, setShowingNavigationDropdown] = useState(false);
+    const [displayPostForm, setDisplayPostForm] = useState(false);
+
+    const toggleSetDisplayPostForm = () => {
+        if (displayPostForm) {
+            setDisplayPostForm(false)
+        } else if (!displayPostForm) {
+            setDisplayPostForm(true)
+        }
+    }
 
     return (
         <div className="min-h-screen bg-gray-100">
@@ -97,6 +110,25 @@ export default function Authenticated({ auth, header, children}) {
                                     />
                                 </svg>
                             </button>
+
+                            {!displayPostForm &&
+                                <div onClick={toggleSetDisplayPostForm} className="border-solid border-sage border-2 rounded-full md:hidden w-fit py-2 px-3 mx-1 bg-white">
+                                    <FontAwesomeIcon icon={faPlus} />
+                                </div>
+                            }
+
+                            {displayPostForm &&
+                                <div onClick={toggleSetDisplayPostForm} className="border-solid border-sage border-2 rounded-full md:hidden w-fit py-2 px-3 mx-1 bg-white">
+                                    <FontAwesomeIcon icon={faX} />
+                                </div>
+                            }
+
+
+                            {displayPostForm &&
+                                <div className='bg-sage/[0.6] fixed z-30 right-2 left-2 top-20 bottom-2'>
+                                    <PostForm />
+                                </div>
+                            }
                         </div>
                     </div>
                 </div>
@@ -110,17 +142,22 @@ export default function Authenticated({ auth, header, children}) {
                             My Posts
                         </ResponsiveNavLink>
                         <ResponsiveNavLink href={route('my-likes')} active={route().current('my-likes')}>
-                            Nexus
+                            My Likes
                         </ResponsiveNavLink>
                         <ResponsiveNavLink href={route('invite')} active={route().current('invite')}>
-                            Nexus
+                            Invite
                         </ResponsiveNavLink>
                     </div>
 
                     <div className="pt-4 pb-1 border-t border-gray-200">
                         <div className="px-4">
-                            <div className="font-medium text-base text-gray-800">{auth.user.name}</div>
-                            <div className="font-medium text-sm text-gray-500">{auth.user.email}</div>
+                            <div className="font-medium text-base text-gray-800">{auth.user.username}</div>
+                        </div>
+
+                        <div className='mt-3 space-y-1'>
+                            <ResponsiveNavLink href={route('my-account')} method="get" as="button" >
+                                My Account
+                            </ResponsiveNavLink>
                         </div>
 
                         <div className="mt-3 space-y-1">

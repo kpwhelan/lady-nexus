@@ -18,7 +18,8 @@ class User extends Authenticatable {
         'email',
         'password',
         'username',
-        'active'
+        'active',
+        'profile_picture_url'
     ];
 
     protected $hidden = [

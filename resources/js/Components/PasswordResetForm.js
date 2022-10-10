@@ -54,7 +54,7 @@ function PasswordResetForm({ userId }) {
     };
 
     return (
-        <div className='text-center w-11/12 mt-2'>
+        <div className='text-center w-11/12 my-2'>
             <ValidationErrors errors={errors} />
 
             <form onSubmit={submit}>

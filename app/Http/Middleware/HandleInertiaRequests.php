@@ -3,6 +3,7 @@
 namespace App\Http\Middleware;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 use Inertia\Middleware;
 
 class HandleInertiaRequests extends Middleware
@@ -33,6 +34,9 @@ class HandleInertiaRequests extends Middleware
      */
     public function share(Request $request)
     {
+        $user = $request->user();
+        $user->profile_picture_url = Storage::temporaryUrl($user->profile_picture_url, now()->addHours(24));
+
         return array_merge(parent::share($request), [
             'auth' => [
                 'user' => $request->user(),

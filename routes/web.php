@@ -4,6 +4,7 @@ use App\Http\Controllers\CommentsController;
 use App\Http\Controllers\InviteController;
 use App\Http\Controllers\MyAccountController;
 use App\Http\Controllers\PostsController;
+use App\Http\Controllers\UsersController;
 use App\Models\Category;
 use App\Models\Post;
 use Illuminate\Foundation\Application;
@@ -69,10 +70,12 @@ Route::prefix('account')->middleware(['auth', 'verified'])->group(function() {
     Route::post('delete', [MyAccountController::class, 'deleteAccount'])->name('delete');
 });
 
+Route::prefix('user')->middleware(['auth', 'verified'])->group(function() {
+    Route::post('upload-profile-picture', [UsersController::class, 'uploadProfilePicture'])->name('upload-profile-picture');
+});
+
 Route::post('/invite', [InviteController::class, 'sendInvite'])->name('send-invite');
 
-Route::get('/invites', function () {
-    return view('invite', ['name' => 'Kevin Whelan', 'token' => 'lkjasdlknioijee']);
-});
+
 
 require __DIR__.'/auth.php';

@@ -7930,7 +7930,7 @@ function PasswordResetForm(_ref) {
   };
 
   return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsxs)("div", {
-    className: "text-center w-11/12 mt-2",
+    className: "text-center w-11/12 my-2",
     children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)(_ValidationErrors__WEBPACK_IMPORTED_MODULE_6__["default"], {
       errors: errors
     }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsxs)("form", {
@@ -8775,6 +8775,172 @@ function PostFormEdit(_ref) {
 }
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (PostFormEdit);
+
+/***/ }),
+
+/***/ "./resources/js/Components/ProfilePicture.js":
+/*!***************************************************!*\
+  !*** ./resources/js/Components/ProfilePicture.js ***!
+  \***************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
+
+
+
+
+function ProfilePicture(_ref) {
+  var profilePictureUrl = _ref.profilePictureUrl,
+      classes = _ref.classes;
+  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)(react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.Fragment, {
+    children: profilePictureUrl ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("div", {
+      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("img", {
+        className: "object-cover aspect-square rounded-full ".concat(classes),
+        src: profilePictureUrl
+      })
+    }) : /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("div", {
+      className: "my-2 border-4 border-solid border-slate-900 w-fit h-fit py-3 px-4 rounded-full",
+      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)(FontAwesomeIcon, {
+        size: "3x",
+        icon: faUser
+      })
+    })
+  });
+}
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (ProfilePicture);
+
+/***/ }),
+
+/***/ "./resources/js/Components/ProfilePictureUploadForm.js":
+/*!*************************************************************!*\
+  !*** ./resources/js/Components/ProfilePictureUploadForm.js ***!
+  \*************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _inertiajs_inertia_react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @inertiajs/inertia-react */ "./node_modules/@inertiajs/inertia-react/dist/index.js");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var _Button__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./Button */ "./resources/js/Components/Button.js");
+/* harmony import */ var _Input__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./Input */ "./resources/js/Components/Input.js");
+/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
+function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
+
+function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
+
+function _iterableToArrayLimit(arr, i) { var _i = arr == null ? null : typeof Symbol !== "undefined" && arr[Symbol.iterator] || arr["@@iterator"]; if (_i == null) return; var _arr = []; var _n = true; var _d = false; var _s, _e; try { for (_i = _i.call(arr); !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
+
+function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
+
+
+
+
+
+
+
+
+
+
+function ProfilePictureUploadForm(_ref) {
+  var toggleUploadForm = _ref.toggleUploadForm;
+
+  var _useForm = (0,_inertiajs_inertia_react__WEBPACK_IMPORTED_MODULE_0__.useForm)({
+    profile_picture: null
+  }),
+      data = _useForm.data,
+      setData = _useForm.setData,
+      post = _useForm.post,
+      progress = _useForm.progress,
+      reset = _useForm.reset;
+
+  var _useState = (0,react__WEBPACK_IMPORTED_MODULE_2__.useState)(null),
+      _useState2 = _slicedToArray(_useState, 2),
+      error = _useState2[0],
+      setError = _useState2[1];
+
+  var onHandleChange = function onHandleChange(event) {
+    setData('profile_picture', event.target.files[0]);
+  };
+
+  function submit(e) {
+    e.preventDefault();
+    post(route('upload-profile-picture'), {
+      onSuccess: function onSuccess() {
+        reset();
+        toggleUploadForm();
+      },
+      onError: function onError(error) {
+        if (error.message) {
+          setError(error.message);
+        } else if (error.mimes) {
+          setError(error.mimes);
+        } else if (error.profile_picture) {
+          setError(error.profile_picture);
+        } else {
+          setError(error);
+        }
+
+        setTimeout(function () {
+          setError(null);
+        }, 7000);
+      }
+    });
+  }
+
+  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxs)(react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.Fragment, {
+    children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("div", {
+      className: "my-2 flex",
+      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxs)("form", {
+        onSubmit: submit,
+        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)(_Input__WEBPACK_IMPORTED_MODULE_4__["default"], {
+          type: "file",
+          name: "profile_picture",
+          className: "w-full",
+          autoComplete: "profile_picture",
+          isFocused: false,
+          handleChange: onHandleChange,
+          placeholder: "",
+          required: true
+        }), progress && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)(react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.Fragment, {
+          children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("div", {
+            className: "w-full bg-gray-200 rounded-full",
+            children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxs)("div", {
+              className: "bg-sage text-sm font-medium text-blue-100 text-center p-0.5 leading-none rounded-full",
+              style: {
+                width: progress.percentage + '%'
+              },
+              children: [" ", progress.percentage, "%"]
+            })
+          })
+        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)(_Button__WEBPACK_IMPORTED_MODULE_3__["default"], {
+          className: "mt-1",
+          children: "Upload"
+        })]
+      })
+    }), error && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("p", {
+      className: "bg-red-500/75 text-white mt-2 w-fit p-2 rounded-lg",
+      children: error
+    })]
+  });
+}
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (ProfilePictureUploadForm);
 
 /***/ }),
 
@@ -10819,10 +10985,12 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var _Components_DeleteAccountModal__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @/Components/DeleteAccountModal */ "./resources/js/Components/DeleteAccountModal.js");
 /* harmony import */ var _Components_PasswordResetForm__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @/Components/PasswordResetForm */ "./resources/js/Components/PasswordResetForm.js");
-/* harmony import */ var _Layouts_Authenticated__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @/Layouts/Authenticated */ "./resources/js/Layouts/Authenticated.js");
-/* harmony import */ var _inertiajs_inertia_react__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @inertiajs/inertia-react */ "./node_modules/@inertiajs/inertia-react/dist/index.js");
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
-/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
+/* harmony import */ var _Components_ProfilePictureUploadForm__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @/Components/ProfilePictureUploadForm */ "./resources/js/Components/ProfilePictureUploadForm.js");
+/* harmony import */ var _Layouts_Authenticated__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @/Layouts/Authenticated */ "./resources/js/Layouts/Authenticated.js");
+/* harmony import */ var _inertiajs_inertia_react__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @inertiajs/inertia-react */ "./node_modules/@inertiajs/inertia-react/dist/index.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var _Components_ProfilePicture__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @/Components/ProfilePicture */ "./resources/js/Components/ProfilePicture.js");
+/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
 function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
 
 function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
@@ -10843,36 +11011,45 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
 
 
+
+
 function MyAccount(props) {
-  var _useState = (0,react__WEBPACK_IMPORTED_MODULE_4__.useState)(false),
+  var _useState = (0,react__WEBPACK_IMPORTED_MODULE_5__.useState)(false),
       _useState2 = _slicedToArray(_useState, 2),
       displayPasswordReset = _useState2[0],
       setDisplayPasswordReset = _useState2[1];
 
-  var _useState3 = (0,react__WEBPACK_IMPORTED_MODULE_4__.useState)(false),
+  var _useState3 = (0,react__WEBPACK_IMPORTED_MODULE_5__.useState)(false),
       _useState4 = _slicedToArray(_useState3, 2),
       displayModal = _useState4[0],
       setDisplayModal = _useState4[1];
 
-  var _useState5 = (0,react__WEBPACK_IMPORTED_MODULE_4__.useState)(null),
+  var _useState5 = (0,react__WEBPACK_IMPORTED_MODULE_5__.useState)(false),
       _useState6 = _slicedToArray(_useState5, 2),
-      error = _useState6[0],
-      setError = _useState6[1];
+      displayUpload = _useState6[0],
+      setDisplayUpload = _useState6[1];
+
+  var _useState7 = (0,react__WEBPACK_IMPORTED_MODULE_5__.useState)(null),
+      _useState8 = _slicedToArray(_useState7, 2),
+      error = _useState8[0],
+      setError = _useState8[1];
 
   var toggleSetDisplayPasswordReset = function toggleSetDisplayPasswordReset() {
-    if (displayPasswordReset) {
-      setDisplayPasswordReset(false);
-    } else if (!displayPasswordReset) {
-      setDisplayPasswordReset(true);
-    }
+    displayPasswordReset ? setDisplayPasswordReset(false) : setDisplayPasswordReset(true);
+    setDisplayModal(false);
+    setDisplayUpload(false);
   };
 
   var toggleSetDisplayModal = function toggleSetDisplayModal() {
-    if (displayModal) {
-      setDisplayModal(false);
-    } else if (!displayModal) {
-      setDisplayModal(true);
-    }
+    displayModal ? setDisplayModal(false) : setDisplayModal(true);
+    setDisplayPasswordReset(false);
+    toggleSetDisplayUpload(false);
+  };
+
+  var toggleSetDisplayUpload = function toggleSetDisplayUpload() {
+    displayUpload ? setDisplayUpload(false) : setDisplayUpload(true);
+    setDisplayPasswordReset(false);
+    setDisplayModal(false);
   };
 
   var deleteAccount = function deleteAccount() {
@@ -10893,24 +11070,27 @@ function MyAccount(props) {
     });
   };
 
-  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxs)(_Layouts_Authenticated__WEBPACK_IMPORTED_MODULE_2__["default"], {
+  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsxs)(_Layouts_Authenticated__WEBPACK_IMPORTED_MODULE_3__["default"], {
     auth: props.auth,
     errors: props.errors,
-    children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)(_inertiajs_inertia_react__WEBPACK_IMPORTED_MODULE_3__.Head, {
+    children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)(_inertiajs_inertia_react__WEBPACK_IMPORTED_MODULE_4__.Head, {
       title: "My Account"
-    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("div", {
+    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("div", {
       className: "ml-8 mt-2",
-      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxs)("div", {
+      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsxs)("div", {
         className: "flex-col md:flex md:flex-row justify-around",
-        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxs)("div", {
+        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsxs)("div", {
           className: "mr-2 mt-5 mb-4",
-          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("h1", {
-            className: "text-xl",
+          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("h1", {
+            className: "text-xl underline",
             children: "Account Details"
-          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxs)("p", {
+          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)(_Components_ProfilePicture__WEBPACK_IMPORTED_MODULE_6__["default"], {
+            profilePictureUrl: props.auth.user.profile_picture_url,
+            classes: "w-46 h-36 my-2"
+          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsxs)("p", {
             className: "bg-white rounded-xl p-2 max-w-fit mb-1",
             children: [props.auth.user.first_name, " ", props.auth.user.last_name]
-          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxs)("p", {
+          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsxs)("p", {
             className: "bg-white rounded-xl p-2 max-w-fit mb-1",
             children: ["Joined: ", new Date(props.auth.user.created_at).toLocaleDateString('en-us', {
               weekday: "long",
@@ -10918,50 +11098,56 @@ function MyAccount(props) {
               month: "short",
               day: "numeric"
             })]
-          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxs)("p", {
+          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsxs)("p", {
             className: "bg-white rounded-xl p-2 w-fit mb-1",
             children: ["Email: ", props.auth.user.email]
-          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxs)("p", {
+          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsxs)("p", {
             className: "bg-white rounded-xl p-2 max-w-fit mb-1",
             children: ["Username: ", props.auth.user.username]
-          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxs)("p", {
+          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsxs)("p", {
             className: "bg-white rounded-xl p-2 max-w-fit mb-1",
             children: [props.post_count, " ", props.post_count == 1 ? 'post' : 'posts']
-          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxs)("p", {
+          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsxs)("p", {
             className: "bg-white rounded-xl p-2 max-w-fit mb-1",
             children: [props.comment_count > 0 ? props.comment_count : 0, " ", props.comment_count == 1 ? 'comment' : 'comments']
-          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxs)("p", {
+          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsxs)("p", {
             className: "bg-white rounded-xl p-2 max-w-fit mb-1",
             children: [props.sub_comment_count > 0 ? props.sub_comment_count : 0, " ", props.sub_comment_count == 1 ? 'comment reply' : 'comment replies']
-          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxs)("p", {
+          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsxs)("p", {
             className: "bg-white rounded-xl p-2 max-w-fit mb-1",
             children: [props.post_like_count > 0 ? props.post_like_count : 0, " ", props.post_like_count == 1 ? 'liked post' : 'liked posts']
-          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxs)("p", {
+          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsxs)("p", {
             className: "bg-white rounded-xl p-2 max-w-fit mb-1",
             children: [props.comment_like_count > 0 ? props.comment_like_count : 0, " ", props.comment_like_count == 1 ? 'liked comment' : 'liked comments']
-          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxs)("p", {
+          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsxs)("p", {
             className: "bg-white rounded-xl p-2 max-w-fit mb-1",
             children: [props.sub_comment_like_count > 0 ? props.sub_comment_like_count : 0, " ", props.sub_comment_like_count == 1 ? 'liked comment reply' : 'liked comment replies']
           })]
-        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxs)("div", {
+        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsxs)("div", {
           className: "",
-          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("button", {
+          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("button", {
             onClick: toggleSetDisplayPasswordReset,
             className: "inline-flex items-center mr-1 px-4 py-2 bg-sage border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest active:bg-gray-900 transition ease-in-out duration-150",
             children: "Change Password"
-          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("button", {
+          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("button", {
             onClick: toggleSetDisplayModal,
             className: "inline-flex items-center ml-1 px-4 py-2 bg-red-500/75 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest active:bg-gray-900 transition ease-in-out duration-150",
             children: "Delete Account"
-          }), displayPasswordReset && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)(_Components_PasswordResetForm__WEBPACK_IMPORTED_MODULE_1__["default"], {
+          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("button", {
+            onClick: toggleSetDisplayUpload,
+            className: "inline-flex items-center ml-1 mt-2 px-4 py-2 bg-sage border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest active:bg-gray-900 transition ease-in-out duration-150",
+            children: "Upload Profile Picture"
+          }), displayPasswordReset && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)(_Components_PasswordResetForm__WEBPACK_IMPORTED_MODULE_1__["default"], {
             userId: props.auth.user.id
-          }), error && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("p", {
+          }), error && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("p", {
             className: "bg-red-500/75 text-white mt-2 w-fit p-2 rounded-lg",
             children: error
+          }), displayUpload && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)(_Components_ProfilePictureUploadForm__WEBPACK_IMPORTED_MODULE_2__["default"], {
+            toggleUploadForm: toggleSetDisplayUpload
           })]
         })]
       })
-    }), displayModal && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)(_Components_DeleteAccountModal__WEBPACK_IMPORTED_MODULE_0__["default"], {
+    }), displayModal && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)(_Components_DeleteAccountModal__WEBPACK_IMPORTED_MODULE_0__["default"], {
       deleteAccount: deleteAccount,
       toggleModal: toggleSetDisplayModal
     })]

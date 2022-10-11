@@ -8552,7 +8552,7 @@ function PostForm(_ref) {
     children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)(_Label__WEBPACK_IMPORTED_MODULE_4__["default"], {
       forInput: "post_body",
       value: "Post",
-      className: "text-lg"
+      className: "text-xl md:text-lg text-white md:text-black"
     }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)(_Input__WEBPACK_IMPORTED_MODULE_2__["default"], {
       type: "textarea",
       name: "post_body",

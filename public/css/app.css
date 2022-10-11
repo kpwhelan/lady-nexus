@@ -887,6 +887,9 @@ select {
 .max-h-36 {
   max-height: 9rem;
 }
+.max-h-52 {
+  max-height: 13rem;
+}
 .min-h-screen {
   min-height: 100vh;
 }
@@ -954,6 +957,9 @@ select {
 }
 .w-16 {
   width: 4rem;
+}
+.w-52 {
+  width: 13rem;
 }
 .max-w-xl {
   max-width: 36rem;
@@ -2024,6 +2030,16 @@ select {
 
   .md\:text-left {
     text-align: left;
+  }
+
+  .md\:text-lg {
+    font-size: 1.125rem;
+    line-height: 1.75rem;
+  }
+
+  .md\:text-black {
+    --tw-text-opacity: 1;
+    color: rgb(0 0 0 / var(--tw-text-opacity));
   }
 }
 @media (min-width: 1024px) {

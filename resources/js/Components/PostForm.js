@@ -111,7 +111,7 @@ function PostForm({ categories, className }) {
 
   return (
         <form className={className} onSubmit={submit}>
-            <Label forInput="post_body" value='Post' className={"text-lg"}/>
+            <Label forInput="post_body" value='Post' className={"text-xl md:text-lg text-white md:text-black"}/>
             <Input
                 type="textarea"
                 name="post_body"

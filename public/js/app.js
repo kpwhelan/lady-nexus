@@ -7691,7 +7691,7 @@ function LandingPageHeaderBar() {
   return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("div", {
     className: "p-4",
     children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("div", {
-      className: "bg-sage w-4/5 rounded-xl",
+      className: "bg-sage w-full md:w-4/5 rounded-xl",
       children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("img", {
         src: _assets_LadyNexus_transparent_background_png__WEBPACK_IMPORTED_MODULE_1__["default"],
         className: "w-80 h-50 rounded-full"
@@ -11665,11 +11665,23 @@ function Welcome(props) {
     children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)(_inertiajs_inertia_react__WEBPACK_IMPORTED_MODULE_1__.Head, {
       title: "LadyNexus"
     }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)(_Components_LandingPageHeaderBar__WEBPACK_IMPORTED_MODULE_2__["default"], {}), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxs)("div", {
-      className: "p-4 flex justify-center",
+      className: "p-4 md:flex justify-center items-center",
       children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("img", {
         src: _assets_landing_page_women_png__WEBPACK_IMPORTED_MODULE_4__["default"],
-        className: "w-6/12 max-h-1/5"
-      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)(_Components_RegistrationForm__WEBPACK_IMPORTED_MODULE_3__["default"], {})]
+        className: "w-100 md:w-6/12 max-h-1/5"
+      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxs)("div", {
+        className: "w-96 h-96 text-xl mt-5 ml-2 border-l-4 border-sage pl-3 pt-12 md:flex-row justify-center",
+        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("p", {
+          className: "mb-2",
+          children: "Lady Nexus is an invite only platform built for connecting women."
+        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("p", {
+          className: "mb-2",
+          children: "If you haven't received an invitation yet, ask around to see if you know someone who is a member."
+        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("p", {
+          className: "mb-2",
+          children: "Once you're a member yourself, invite as many as you can or would like to help grow this amazing community."
+        })]
+      })]
     })]
   });
 }

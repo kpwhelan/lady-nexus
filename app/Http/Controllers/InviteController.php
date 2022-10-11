@@ -13,6 +13,9 @@ class InviteController extends Controller {
         $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users'
+        ],
+        [
+            'email.unique' => 'There is already a user with that email address',
         ]);
 
         $name = ucwords($request->name);

@@ -10796,7 +10796,14 @@ function Invite(props) {
         }, 7000);
       },
       onError: function onError(error) {
-        setError(error);
+        if (error.name) {
+          setError(error.name);
+        } else if (error.email) {
+          setError(error.email);
+        } else {
+          setError(error);
+        }
+
         setTimeout(function () {
           setError(null);
         }, 7000);

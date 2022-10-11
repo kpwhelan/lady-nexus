@@ -2,6 +2,7 @@ import { useForm } from '@inertiajs/inertia-react';
 import React, { useState } from 'react'
 import Input from './Input'
 import Button from './Button';
+import axios from 'axios';
 
 function CommentInput({ posts, updatePosts, updatePostsForMyPosts, post_id }) {
     const { data, setData, post, processing, errors, reset } = useForm({

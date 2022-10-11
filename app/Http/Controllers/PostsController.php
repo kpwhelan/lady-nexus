@@ -10,6 +10,7 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\Storage;
 use Inertia\Inertia;
 
 class PostsController extends Controller {
@@ -22,11 +23,28 @@ class PostsController extends Controller {
     public function getMoreDashboardPosts(Request $request): JsonResponse {
         $offset = $request->offset;
 
-        $posts = Post::with(['user', 'category', 'comments', 'comments.sub_comments', 'comments.sub_comments.sub_comment_likes', 'comments.sub_comments.user', 'comments.comment_likes', 'post_likes'])
+        $posts = Post::with(['user', 'category', 'comments', 'comments.user', 'comments.sub_comments.user', 'comments.sub_comments', 'comments.sub_comments.user', 'comments.sub_comments.sub_comment_likes', 'comments.comment_likes', 'post_likes'])
             ->offset($offset)
             ->limit(20)
             ->orderBy('id', 'desc')
-            ->get();
+            ->get()
+            ->each(function ($post) {
+                if ($post->user->profile_picture_url) {
+                    $post->user->temp_profile_picture_url = Storage::temporaryUrl($post->user->profile_picture_url, now()->addHours(24));
+                }
+
+                $post->comments->each(function ($comment) {
+                    if ($comment->user->profile_picture_url) {
+                        $comment->user->temp_profile_picture_url = Storage::temporaryUrl($comment->user->profile_picture_url, now()->addHours(24));
+                    }
+
+                    $comment->sub_comments->each(function ($sub_comment) {
+                        if ($sub_comment->user->profile_picture_url) {
+                            $sub_comment->user->temp_profile_picture_url = Storage::temporaryUrl($sub_comment->user->profile_picture_url, now()->addHours(24));
+                        }
+                    });
+                });
+            });
 
         return response()->json([
             'status' => 'Success',
@@ -90,7 +108,27 @@ class PostsController extends Controller {
             'category_id.required' => 'You have to select a category!'
         ]);
 
-        $post = Post::with(['user', 'category', 'comments', 'comments.sub_comments', 'comments.sub_comments.sub_comment_likes', 'comments.sub_comments.user', 'comments.comment_likes', 'post_likes'])->find($request->post_id);
+        $post = Post::with(['user', 'category', 'comments', 'comments.user', 'comments.sub_comments.user', 'comments.sub_comments', 'comments.sub_comments.user', 'comments.sub_comments.sub_comment_likes', 'comments.comment_likes', 'post_likes'])
+            ->find($request->post_id)
+            ->each(function ($post) {
+                if ($post->user->profile_picture_url) {
+                    $post->user->temp_profile_picture_url = Storage::temporaryUrl($post->user->profile_picture_url, now()->addHours(24));
+                }
+
+                $post->comments->each(function ($comment) {
+                    if ($comment->user->profile_picture_url) {
+                        $comment->user->temp_profile_picture_url = Storage::temporaryUrl($comment->user->profile_picture_url, now()->addHours(24));
+                    }
+
+                    $comment->sub_comments->each(function ($sub_comment) {
+                        if ($sub_comment->user->profile_picture_url) {
+                            $sub_comment->user->temp_profile_picture_url = Storage::temporaryUrl($sub_comment->user->profile_picture_url, now()->addHours(24));
+                        }
+                    });
+                });
+            });
+
+
 
         if (!$post) {
             return response()->json(['message' => 'Something went wrong, please try again.'], 404);
@@ -112,11 +150,28 @@ class PostsController extends Controller {
         $offset = $request->offset;
 
         $posts = Post::where('user_id', Auth::user()->id)
-            ->with(['user', 'category', 'comments', 'comments.sub_comments', 'comments.sub_comments.sub_comment_likes', 'comments.sub_comments.user', 'comments.comment_likes', 'post_likes'])
+            ->with(['user', 'category', 'comments', 'comments.user', 'comments.sub_comments.user', 'comments.sub_comments', 'comments.sub_comments.user', 'comments.sub_comments.sub_comment_likes', 'comments.comment_likes', 'post_likes'])
             ->offset($offset)
             ->limit(20)
             ->orderBy('id', 'desc')
-            ->get();
+            ->get()
+            ->each(function ($post) {
+                if ($post->user->profile_picture_url) {
+                    $post->user->temp_profile_picture_url = Storage::temporaryUrl($post->user->profile_picture_url, now()->addHours(24));
+                }
+
+                $post->comments->each(function ($comment) {
+                    if ($comment->user->profile_picture_url) {
+                        $comment->user->temp_profile_picture_url = Storage::temporaryUrl($comment->user->profile_picture_url, now()->addHours(24));
+                    }
+
+                    $comment->sub_comments->each(function ($sub_comment) {
+                        if ($sub_comment->user->profile_picture_url) {
+                            $sub_comment->user->temp_profile_picture_url = Storage::temporaryUrl($sub_comment->user->profile_picture_url, now()->addHours(24));
+                        }
+                    });
+                });
+            });
 
         return response()->json([
             'posts'  => $posts,
@@ -126,12 +181,29 @@ class PostsController extends Controller {
     public function getMyPostsPage(Request $request) {
         $categories = Category::all();
         $my_comment_count = Comment::where('user_id', Auth::user()->id)->count();
-        $posts = Post::with(['user', 'category', 'comments', 'comments.sub_comments', 'comments.sub_comments.sub_comment_likes', 'comments.sub_comments.user', 'comments.comment_likes', 'post_likes'])
+        $posts = Post::with(['user', 'category', 'comments', 'comments.user', 'comments.sub_comments.user', 'comments.sub_comments', 'comments.sub_comments.user', 'comments.sub_comments.sub_comment_likes', 'comments.comment_likes', 'post_likes'])
             ->where('user_id', Auth::user()->id)
             ->offset($request->offset ? $request->offset : 0)
             ->limit(20)
             ->orderBy('id', 'desc')
-            ->get();
+            ->get()
+            ->each(function ($post) {
+                if ($post->user->profile_picture_url) {
+                    $post->user->temp_profile_picture_url = Storage::temporaryUrl($post->user->profile_picture_url, now()->addHours(24));
+                }
+
+                $post->comments->each(function ($comment) {
+                    if ($comment->user->profile_picture_url) {
+                        $comment->user->temp_profile_picture_url = Storage::temporaryUrl($comment->user->profile_picture_url, now()->addHours(24));
+                    }
+
+                    $comment->sub_comments->each(function ($sub_comment) {
+                        if ($sub_comment->user->profile_picture_url) {
+                            $sub_comment->user->temp_profile_picture_url = Storage::temporaryUrl($sub_comment->user->profile_picture_url, now()->addHours(24));
+                        }
+                    });
+                });
+            });
 
         return Inertia::render('MyPosts', [
             'posts' => $posts,
@@ -142,12 +214,29 @@ class PostsController extends Controller {
 
     public function getMyLikesPage(Request $request) {
         $categories = Category::all();
-        $posts = Post::with(['user', 'category', 'comments', 'comments.sub_comments', 'comments.sub_comments.sub_comment_likes', 'comments.sub_comments.user', 'comments.comment_likes', 'post_likes'])
+        $posts = Post::with(['user', 'category', 'comments', 'comments.user', 'comments.sub_comments.user', 'comments.sub_comments', 'comments.sub_comments.user', 'comments.sub_comments.sub_comment_likes', 'comments.comment_likes', 'post_likes'])
             ->whereRelation('post_likes', 'user_id', Auth::user()->id)
             ->offset($request->offset ? $request->offset : 0)
             ->limit(20)
             ->orderBy('id', 'desc')
-            ->get();
+            ->get()
+            ->each(function ($post) {
+                if ($post->user->profile_picture_url) {
+                    $post->user->temp_profile_picture_url = Storage::temporaryUrl($post->user->profile_picture_url, now()->addHours(24));
+                }
+
+                $post->comments->each(function ($comment) {
+                    if ($comment->user->profile_picture_url) {
+                        $comment->user->temp_profile_picture_url = Storage::temporaryUrl($comment->user->profile_picture_url, now()->addHours(24));
+                    }
+
+                    $comment->sub_comments->each(function ($sub_comment) {
+                        if ($sub_comment->user->profile_picture_url) {
+                            $sub_comment->user->temp_profile_picture_url = Storage::temporaryUrl($sub_comment->user->profile_picture_url, now()->addHours(24));
+                        }
+                    });
+                });
+            });
 
         return Inertia::render('MyLikes', [
             'posts' => $posts,
@@ -158,12 +247,29 @@ class PostsController extends Controller {
     public function getMoreLikedPosts(Request $request) {
         $offset = $request->offset;
 
-        $posts = Post::with(['user', 'category', 'comments', 'comments.sub_comments', 'comments.sub_comments.sub_comment_likes', 'comments.sub_comments.user', 'comments.comment_likes', 'post_likes'])
+        $posts = Post::with(['user', 'category', 'comments', 'comments.user', 'comments.sub_comments.user', 'comments.sub_comments', 'comments.sub_comments.user', 'comments.sub_comments.sub_comment_likes', 'comments.comment_likes', 'post_likes'])
             ->whereRelation('post_likes', 'user_id', Auth::user()->id)
             ->offset($request->offset ? $request->offset : 0)
             ->limit(20)
             ->orderBy('id', 'desc')
-            ->get();
+            ->get()
+            ->each(function ($post) {
+                if ($post->user->profile_picture_url) {
+                    $post->user->temp_profile_picture_url = Storage::temporaryUrl($post->user->profile_picture_url, now()->addHours(24));
+                }
+
+                $post->comments->each(function ($comment) {
+                    if ($comment->user->profile_picture_url) {
+                        $comment->user->temp_profile_picture_url = Storage::temporaryUrl($comment->user->profile_picture_url, now()->addHours(24));
+                    }
+
+                    $comment->sub_comments->each(function ($sub_comment) {
+                        if ($sub_comment->user->profile_picture_url) {
+                            $sub_comment->user->temp_profile_picture_url = Storage::temporaryUrl($sub_comment->user->profile_picture_url, now()->addHours(24));
+                        }
+                    });
+                });
+            });
 
         return response()->json([
             'posts'  => $posts,

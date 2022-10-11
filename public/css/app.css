@@ -658,6 +658,9 @@ select {
 .z-30 {
   z-index: 30;
 }
+.float-right {
+  float: right;
+}
 .m-3 {
   margin: 0.75rem;
 }
@@ -760,6 +763,12 @@ select {
 .ml-8 {
   margin-left: 2rem;
 }
+.ml-auto {
+  margin-left: auto;
+}
+.mr-auto {
+  margin-right: auto;
+}
 .block {
   display: block;
 }
@@ -824,6 +833,9 @@ select {
 }
 .h-36 {
   height: 9rem;
+}
+.h-20 {
+  height: 5rem;
 }
 .max-h-screen {
   max-height: 100vh;
@@ -922,6 +934,12 @@ select {
 .w-8\/12 {
   width: 66.666667%;
 }
+.w-20 {
+  width: 5rem;
+}
+.w-16 {
+  width: 4rem;
+}
 .max-w-xl {
   max-width: 36rem;
 }
@@ -991,11 +1009,17 @@ select {
 .grid-cols-1 {
   grid-template-columns: repeat(1, minmax(0, 1fr));
 }
+.flex-row {
+  flex-direction: row;
+}
 .flex-col {
   flex-direction: column;
 }
 .flex-wrap {
   flex-wrap: wrap;
+}
+.place-items-end {
+  place-items: end;
 }
 .content-center {
   align-content: center;
@@ -1207,6 +1231,10 @@ select {
   -o-object-fit: cover;
      object-fit: cover;
 }
+.object-right-bottom {
+  -o-object-position: right bottom;
+     object-position: right bottom;
+}
 .p-3 {
   padding: 0.75rem;
 }
@@ -1310,6 +1338,12 @@ select {
 }
 .text-center {
   text-align: center;
+}
+.align-middle {
+  vertical-align: middle;
+}
+.align-bottom {
+  vertical-align: bottom;
 }
 .font-sans {
   font-family: Nunito, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
@@ -1932,6 +1966,10 @@ select {
 
   .md\:justify-end {
     justify-content: flex-end;
+  }
+
+  .md\:justify-between {
+    justify-content: space-between;
   }
 
   .md\:border-t-0 {

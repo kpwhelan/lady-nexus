@@ -11,6 +11,7 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\Storage;
 
 class CommentsController extends Controller {
     public function createComment(Request $request) {
@@ -29,6 +30,10 @@ class CommentsController extends Controller {
 
         $comment->comment_likes = $comment->comment_likes;
         $comment->sub_comments = $comment->sub_comments;
+        $comment->user = $comment->user;
+        if ($comment->user->profile_picture_url) {
+            $comment->user->temp_profile_picture_url = Storage::temporaryUrl($comment->user->profile_picture_url, now()->addHours(24));
+        }
 
         return response()->json([
             'comment' => $comment
@@ -70,6 +75,11 @@ class CommentsController extends Controller {
 
         if (!$comment->save()) {
             return response()->json(['message' => 'Something went wrong, please try again.'], 500);
+        }
+
+        $comment->user = $comment->user;
+        if ($comment->user->profile_picture_url) {
+            $comment->user->temp_profile_picture_url = Storage::temporaryUrl($comment->user->profile_picture_url, now()->addHours(24));
         }
 
         return response()->json([
@@ -159,6 +169,11 @@ class CommentsController extends Controller {
 
         $sub_comment->sub_comment_likes = $sub_comment->sub_comment_likes;
         $sub_comment->user = $sub_comment->user;
+        $sub_comment->user = $sub_comment->user;
+
+        if ($sub_comment->user->profile_picture_url) {
+            $sub_comment->user->temp_profile_picture_url = Storage::temporaryUrl($sub_comment->user->profile_picture_url, now()->addHours(24));
+        }
 
         return response()->json([
             'sub_comment' => $sub_comment
@@ -199,6 +214,10 @@ class CommentsController extends Controller {
         }
 
         $sub_comment->sub_comment = $request->sub_comment_body;
+
+        if ($sub_comment->user->profile_picture_url) {
+            $sub_comment->user->temp_profile_picture_url = Storage::temporaryUrl($sub_comment->user->profile_picture_url, now()->addHours(24));
+        }
 
         if (!$sub_comment->save()) {
             return response()->json(['message' => 'Something went wrong, please try again.'], 500);

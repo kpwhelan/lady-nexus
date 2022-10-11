@@ -8,7 +8,6 @@ import React, { useEffect, useState } from 'react'
 function MyPosts(props) {
     const [posts, setPosts] = useState([]);
     const [user, setUser] = useState([]);
-    const [categories, setCategories] = useState([]);
     const [modalOpen, setModalOpen] = useState(false);
     const [offset, setOffset] = useState(0);
     const [categoryFilters, setCategoryFilters] = useState([]);
@@ -43,7 +42,6 @@ function MyPosts(props) {
             setPosts(props.posts)
         }
         setUser(props.auth.user)
-        setCategories(props.categories)
         setCategoryFilters(props.categories.map(category => (
             {value: category.name, label: category.name}
         )))
@@ -107,7 +105,7 @@ function MyPosts(props) {
                     </div>
 
                     <div className='hidden md:block flex-initial md:w-1/3 mr-2 mt-5'>
-                        <PostForm className="mt-4" categories={categories} />
+                        <PostForm className="mt-4" categories={props.categories} />
                     </div>
 
                     {modalOpen && <Modal toggleModal={toggleSetModalOpen} deletePost={deletePost} whatWeAreDelting='post' />}
@@ -120,7 +118,7 @@ function MyPosts(props) {
                             <p>No posts yet...</p>
                     </div>
                     <div>
-                        <PostForm categories={categories} />
+                        <PostForm categories={props.categories} />
                     </div>
                 </div>
             )

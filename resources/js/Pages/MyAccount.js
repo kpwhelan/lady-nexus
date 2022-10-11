@@ -59,7 +59,7 @@ function MyAccount(props) {
             <div className="flex-col md:flex md:flex-row justify-around">
                 <div className='mr-2 mt-5 mb-4'>
                 <h1 className='text-xl underline'>Account Details</h1>
-                    <ProfilePicture profilePictureUrl={props.auth.user.profile_picture_url} classes={"w-46 h-36 my-2"} />
+                    <ProfilePicture profilePictureUrl={props.auth.user.profile_picture_url} className={"w-46 h-36 my-2"} defaultSize="2x" />
                     <p className='bg-white rounded-xl p-2 max-w-fit mb-1'>{props.auth.user.first_name} {props.auth.user.last_name}</p>
                     <p className='bg-white rounded-xl p-2 max-w-fit mb-1'>Joined: {new Date(props.auth.user.created_at).toLocaleDateString('en-us', { weekday:"long", year:"numeric", month:"short", day:"numeric"})}</p>
                     <p className='bg-white rounded-xl p-2 w-fit mb-1'>Email: {props.auth.user.email}</p>

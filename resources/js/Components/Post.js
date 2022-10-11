@@ -6,6 +6,7 @@ import React, { useEffect, useState } from 'react'
 import CommentsContainer from './CommentsContainer'
 import Modal from './Modal';
 import PostFormEdit from './PostFormEdit';
+import ProfilePicture from './ProfilePicture';
 
 function Post({ post, className, dashboardPosts, myPosts, updatePosts, currentUser, updatePostsForMyPosts, categories }) {
     const [showComments, setShowComments] = useState(false);
@@ -149,20 +150,27 @@ function Post({ post, className, dashboardPosts, myPosts, updatePosts, currentUs
         <div className={`max-h-[40rem] w-100 bg-white rounded overflow-scroll shadow-lg m-5 transition ease-in-out delay-110 hover:-translate-y-2 hover:scale-102 ${className}`}>
             <div className="px-6 py-4">
                 <div className="font-bold text-xl mb-2">
-                    <p>{post.user.username}</p>
-                    <p className='text-sm font-normal'>{new Date(post.created_at).toLocaleDateString('en-us', { year:"numeric", month:"short", day:"numeric", hour:"numeric", minute:"numeric"})}</p>
+                    <div className='flex'>
+                        <ProfilePicture profilePictureUrl={post.user.temp_profile_picture_url} className={'h-12 w-12 mr-2'} defaultSize="1x" />
+                        <div>
+                            <p>{post.user.username}</p>
+                            <p className='text-sm font-normal'>{new Date(post.created_at).toLocaleDateString('en-us', { year:"numeric", month:"short", day:"numeric", hour:"numeric", minute:"numeric"})}</p>
+                        </div>
+                    </div>
                 </div>
 
-                <p className="text-gray-700 text-lg">
-                    {post.post}
-                </p>
+                <div className='ml-4'>
+                    <p className="text-gray-700 text-lg">
+                        {post.post}
+                    </p>
 
-                {currentUser.id === post.user_id &&
-                    <div className='mt-2'>
-                        <button id={post.id} onClick={toggleSetDisplayEditBox} className='text-xs mr-1'>Edit</button>
-                        <button id={post.id} data-type="post" onClick={toggleSetModalOpen} className='text-xs ml-1'>Delete</button>
-                    </div>
-                }
+                    {currentUser.id === post.user_id &&
+                        <div className='mt-2'>
+                            <button id={post.id} onClick={toggleSetDisplayEditBox} className='text-xs mr-1'>Edit</button>
+                            <button id={post.id} data-type="post" onClick={toggleSetModalOpen} className='text-xs ml-1'>Delete</button>
+                        </div>
+                    }
+                </div>
 
                 {displayEditBox && <PostFormEdit myPosts={myPosts} dashboardPosts={dashboardPosts} postData={post} categories={categories} previousCategoryId={post.category.id} toggleSetDisplayEditBox={toggleSetDisplayEditBox} updatePostsForDashboard={updatePosts} updatePostsForMyPosts={updatePostsForMyPosts}/>}
 

@@ -6707,8 +6707,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
-/* harmony import */ var _fortawesome_free_regular_svg_icons__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! @fortawesome/free-regular-svg-icons */ "./node_modules/@fortawesome/free-regular-svg-icons/index.mjs");
-/* harmony import */ var _fortawesome_free_solid_svg_icons__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! @fortawesome/free-solid-svg-icons */ "./node_modules/@fortawesome/free-solid-svg-icons/index.mjs");
+/* harmony import */ var _fortawesome_free_regular_svg_icons__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! @fortawesome/free-regular-svg-icons */ "./node_modules/@fortawesome/free-regular-svg-icons/index.mjs");
+/* harmony import */ var _fortawesome_free_solid_svg_icons__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! @fortawesome/free-solid-svg-icons */ "./node_modules/@fortawesome/free-solid-svg-icons/index.mjs");
 /* harmony import */ var _fortawesome_react_fontawesome__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @fortawesome/react-fontawesome */ "./node_modules/@fortawesome/react-fontawesome/index.es.js");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
@@ -6716,7 +6716,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _CommentInputEdit__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./CommentInputEdit */ "./resources/js/Components/CommentInputEdit.js");
 /* harmony import */ var _SubCommentInput__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./SubCommentInput */ "./resources/js/Components/SubCommentInput.js");
 /* harmony import */ var _SubComment__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./SubComment */ "./resources/js/Components/SubComment.js");
-/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
+/* harmony import */ var _ProfilePicture__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./ProfilePicture */ "./resources/js/Components/ProfilePicture.js");
+/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
 function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
 
 function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
@@ -6728,6 +6729,7 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
 function _iterableToArrayLimit(arr, i) { var _i = arr == null ? null : typeof Symbol !== "undefined" && arr[Symbol.iterator] || arr["@@iterator"]; if (_i == null) return; var _arr = []; var _n = true; var _d = false; var _s, _e; try { for (_i = _i.call(arr); !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
 
 function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
+
 
 
 
@@ -6841,66 +6843,91 @@ function Comment(_ref) {
     });
   };
 
-  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)(react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.Fragment, {
-    children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsxs)("div", {
+  var calcualateTimeStamp = function calcualateTimeStamp(itemTime) {
+    var hoursSince = Math.abs(new Date() - new Date(itemTime)) / 36e5;
+
+    if (hoursSince < 1) {
+      return Math.floor(hoursSince.toFixed(2) * 60) == 1 ? +Math.floor(hoursSince.toFixed(2) * 60) + ' minute ago' : Math.floor(hoursSince.toFixed(2) * 60) + ' minutes ago';
+    } else if (hoursSince < 24) {
+      return Math.floor(hoursSince) == 1 ? +Math.floor(hoursSince) + ' hour ago' : Math.floor(hoursSince) + ' hours ago';
+    } else if (hoursSince >= 24) {
+      return Math.floor(hoursSince / 24) == 1 ? Math.floor(hoursSince / 24) + ' day ago' : Math.floor(hoursSince / 24) + ' days ago';
+    }
+  };
+
+  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)(react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.Fragment, {
+    children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsxs)("div", {
       className: "px-6 py-4",
-      children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsxs)("div", {
+      children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsxs)("div", {
         className: "bg-white rounded-lg p-2 max-w-full",
-        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("p", {
-          className: "text-sm",
-          children: user.username
-        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsxs)("div", {
-          className: "md:flex",
-          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("p", {
+        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsxs)("div", {
+          className: "flex items-center",
+          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)(_ProfilePicture__WEBPACK_IMPORTED_MODULE_6__["default"], {
+            profilePictureUrl: comment.user.temp_profile_picture_url,
+            className: 'h-12 w-12 mr-2',
+            defaultSize: "2x"
+          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("p", {
+            className: "text-sm",
+            children: user.username
+          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("p", {
+            className: "text-xs ml-2",
+            children: calcualateTimeStamp(comment.created_at)
+          })]
+        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("div", {
+          className: "mt-2",
+          children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("p", {
             className: "text-gray-700 text-md ml-2",
             children: comment.comment
-          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsxs)("span", {
-            onClick: toggleLikeComment,
-            className: "cursor-pointer ml-4",
-            children: [isCommentLikeByUser ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)(_fortawesome_react_fontawesome__WEBPACK_IMPORTED_MODULE_0__.FontAwesomeIcon, {
-              icon: _fortawesome_free_solid_svg_icons__WEBPACK_IMPORTED_MODULE_7__.faHeart
-            }) : /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)(_fortawesome_react_fontawesome__WEBPACK_IMPORTED_MODULE_0__.FontAwesomeIcon, {
-              icon: _fortawesome_free_regular_svg_icons__WEBPACK_IMPORTED_MODULE_8__.faHeart
-            }), likeCount > 0 ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("sub", {
-              children: likeCount
-            }) : null]
+          })
+        })]
+      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsxs)("div", {
+        className: "flex items-center mt-2",
+        children: [currentUser.id === comment.user_id && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsxs)("div", {
+          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("button", {
+            id: comment.id,
+            onClick: toggleSetDisplayEditBox,
+            className: "text-xs mr-1",
+            children: "Edit"
+          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("button", {
+            id: comment.id,
+            "data-type": "comment",
+            onClick: toggleSetModalOpen,
+            className: "text-xs ml-1",
+            children: "Delete"
+          }), error && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("p", {
+            className: "bg-red-500/75 text-white mt-2 p-2 w-fit rounded-lg",
+            children: error
           })]
+        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsxs)("span", {
+          onClick: toggleLikeComment,
+          className: "cursor-pointer ml-2",
+          children: [isCommentLikeByUser ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)(_fortawesome_react_fontawesome__WEBPACK_IMPORTED_MODULE_0__.FontAwesomeIcon, {
+            icon: _fortawesome_free_solid_svg_icons__WEBPACK_IMPORTED_MODULE_8__.faHeart
+          }) : /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)(_fortawesome_react_fontawesome__WEBPACK_IMPORTED_MODULE_0__.FontAwesomeIcon, {
+            icon: _fortawesome_free_regular_svg_icons__WEBPACK_IMPORTED_MODULE_9__.faHeart
+          }), likeCount > 0 ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("sub", {
+            children: likeCount
+          }) : null]
         })]
-      }), currentUser.id === comment.user_id && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsxs)("div", {
-        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("button", {
-          id: comment.id,
-          onClick: toggleSetDisplayEditBox,
-          className: "text-xs mr-1",
-          children: "Edit"
-        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("button", {
-          id: comment.id,
-          "data-type": "comment",
-          onClick: toggleSetModalOpen,
-          className: "text-xs ml-1",
-          children: "Delete"
-        }), error && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("p", {
-          className: "bg-red-500/75 text-white mt-2 p-2 w-fit rounded-lg",
-          children: error
-        })]
-      }), displayEditBox && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)(_CommentInputEdit__WEBPACK_IMPORTED_MODULE_3__["default"], {
+      }), displayEditBox && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)(_CommentInputEdit__WEBPACK_IMPORTED_MODULE_3__["default"], {
         posts: posts,
         existingComment: comment.comment,
         updatePosts: updatePosts,
         updatePostsForMyPosts: updatePostsForMyPosts,
         commentId: comment.id,
         toggleSetDisplayEditBox: toggleSetDisplayEditBox
-      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsxs)("div", {
+      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsxs)("div", {
         className: "ml-4",
-        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsxs)("p", {
+        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsxs)("p", {
           onClick: toggleSetDisplaySubComments,
           className: "text-sm cursor-pointer underline mt-4",
-          children: ["View replies ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsxs)("span", {
+          children: ["View replies ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsxs)("span", {
             children: ["(", comment.sub_comments.length, ")"]
           })]
-        }), comment.sub_comments.length > 0 && displaySubComments && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("div", {
-          className: "ml-4 mt-2",
+        }), comment.sub_comments.length > 0 && displaySubComments && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("div", {
+          className: "ml-2 mt-2",
           children: theSubComments.map(function (sub_comment) {
-            return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)(_SubComment__WEBPACK_IMPORTED_MODULE_5__["default"], {
+            return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)(_SubComment__WEBPACK_IMPORTED_MODULE_5__["default"], {
               posts: posts,
               toggleSetModalOpen: toggleSetModalOpen,
               subComment: sub_comment,
@@ -6912,7 +6939,7 @@ function Comment(_ref) {
             }, "sub_comment_".concat(sub_comment.id));
           })
         })]
-      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)(_SubCommentInput__WEBPACK_IMPORTED_MODULE_4__["default"], {
+      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)(_SubCommentInput__WEBPACK_IMPORTED_MODULE_4__["default"], {
         posts: posts,
         post_id: comment.post_id,
         comment_id: comment.id,
@@ -6942,7 +6969,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 /* harmony import */ var _Input__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./Input */ "./resources/js/Components/Input.js");
 /* harmony import */ var _Button__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./Button */ "./resources/js/Components/Button.js");
-/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_4__);
+/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
 function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }
 
 function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
@@ -6962,6 +6991,7 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
 function _iterableToArrayLimit(arr, i) { var _i = arr == null ? null : typeof Symbol !== "undefined" && arr[Symbol.iterator] || arr["@@iterator"]; if (_i == null) return; var _arr = []; var _n = true; var _d = false; var _s, _e; try { for (_i = _i.call(arr); !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
 
 function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
+
 
 
 
@@ -7003,7 +7033,7 @@ function CommentInput(_ref) {
 
   var submit = function submit(e) {
     e.preventDefault();
-    axios.post(route('post-comment'), {
+    axios__WEBPACK_IMPORTED_MODULE_4___default().post(route('post-comment'), {
       comment_body: data.comment_body,
       post_id: data.post_id
     }).then(function (response) {
@@ -7037,11 +7067,11 @@ function CommentInput(_ref) {
     });
   };
 
-  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("div", {
+  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("div", {
     className: "mx-6",
-    children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("form", {
+    children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxs)("form", {
       onSubmit: submit,
-      children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_Input__WEBPACK_IMPORTED_MODULE_2__["default"], {
+      children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)(_Input__WEBPACK_IMPORTED_MODULE_2__["default"], {
         type: "textarea",
         name: "comment_body",
         value: data.comment_body,
@@ -7051,11 +7081,11 @@ function CommentInput(_ref) {
         handleChange: onHandleChange,
         placeholder: "Comment...",
         required: true
-      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_Button__WEBPACK_IMPORTED_MODULE_3__["default"], {
+      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)(_Button__WEBPACK_IMPORTED_MODULE_3__["default"], {
         className: "my-1",
         processing: processing,
         children: "Submit"
-      }), displayServerError && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("p", {
+      }), displayServerError && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("p", {
         className: "bg-red-500/75 text-white mt-2 w-fit rounded-lg p-2",
         children: serverError
       })]
@@ -7266,19 +7296,6 @@ function CommentsContainer(_ref) {
       return b.id - a.id;
     }));
   }, [posts]);
-
-  var calcualateTimeStamp = function calcualateTimeStamp(itemTime) {
-    var hoursSince = Math.abs(new Date() - new Date(itemTime)) / 36e5;
-
-    if (hoursSince < 1) {
-      return Math.floor(hoursSince.toFixed(2) * 60) == 1 ? +Math.floor(hoursSince.toFixed(2) * 60) + ' minute ago' : Math.floor(hoursSince.toFixed(2) * 60) + ' minutes ago';
-    } else if (hoursSince < 24) {
-      return Math.floor(hoursSince) == 1 ? +Math.floor(hoursSince) + ' hour ago' : Math.floor(hoursSince) + ' hours ago';
-    } else if (hoursSince >= 24) {
-      return Math.floor(hoursSince / 24) == 1 ? Math.floor(hoursSince / 24) + ' day ago' : Math.floor(hoursSince / 24) + ' days ago';
-    }
-  };
-
   return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
     className: "mx-10",
     children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_CommentInput__WEBPACK_IMPORTED_MODULE_2__["default"], {
@@ -7287,12 +7304,9 @@ function CommentsContainer(_ref) {
       updatePosts: updatePosts,
       updatePostsForMyPosts: updatePostsForMyPosts
     }), theComments.map(function (comment) {
-      return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
+      return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("div", {
         className: "bg-sage/10 m-3 p-2 rounded-lg",
-        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("p", {
-          className: "text-gray-700 text-sm",
-          children: calcualateTimeStamp(comment.created_at)
-        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_Comment__WEBPACK_IMPORTED_MODULE_1__["default"], {
+        children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_Comment__WEBPACK_IMPORTED_MODULE_1__["default"], {
           posts: posts,
           post_id: post_id,
           currentUser: currentUser,
@@ -7304,7 +7318,7 @@ function CommentsContainer(_ref) {
           deleteSubCommentError: deleteSubCommentError,
           subCommentIdToDelete: subCommentIdToDelete,
           commentIdToDelete: commentIdToDelete
-        })]
+        })
       }, comment.id);
     })]
   });
@@ -7930,7 +7944,7 @@ function PasswordResetForm(_ref) {
   };
 
   return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsxs)("div", {
-    className: "text-center w-11/12 mt-2",
+    className: "text-center w-11/12 my-2",
     children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)(_ValidationErrors__WEBPACK_IMPORTED_MODULE_6__["default"], {
       errors: errors
     }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsxs)("form", {
@@ -8006,8 +8020,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
-/* harmony import */ var _fortawesome_free_regular_svg_icons__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! @fortawesome/free-regular-svg-icons */ "./node_modules/@fortawesome/free-regular-svg-icons/index.mjs");
-/* harmony import */ var _fortawesome_free_solid_svg_icons__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! @fortawesome/free-solid-svg-icons */ "./node_modules/@fortawesome/free-solid-svg-icons/index.mjs");
+/* harmony import */ var _fortawesome_free_regular_svg_icons__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! @fortawesome/free-regular-svg-icons */ "./node_modules/@fortawesome/free-regular-svg-icons/index.mjs");
+/* harmony import */ var _fortawesome_free_solid_svg_icons__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! @fortawesome/free-solid-svg-icons */ "./node_modules/@fortawesome/free-solid-svg-icons/index.mjs");
 /* harmony import */ var _fortawesome_react_fontawesome__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @fortawesome/react-fontawesome */ "./node_modules/@fortawesome/react-fontawesome/index.es.js");
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_1__);
@@ -8015,7 +8029,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _CommentsContainer__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./CommentsContainer */ "./resources/js/Components/CommentsContainer.js");
 /* harmony import */ var _Modal__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./Modal */ "./resources/js/Components/Modal.js");
 /* harmony import */ var _PostFormEdit__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./PostFormEdit */ "./resources/js/Components/PostFormEdit.js");
-/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
+/* harmony import */ var _ProfilePicture__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./ProfilePicture */ "./resources/js/Components/ProfilePicture.js");
+/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
 function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
 
 function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
@@ -8027,6 +8042,7 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
 function _iterableToArrayLimit(arr, i) { var _i = arr == null ? null : typeof Symbol !== "undefined" && arr[Symbol.iterator] || arr["@@iterator"]; if (_i == null) return; var _arr = []; var _n = true; var _d = false; var _s, _e; try { for (_i = _i.call(arr); !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
 
 function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
+
 
 
 
@@ -8253,43 +8269,55 @@ function Post(_ref) {
     });
   };
 
-  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsxs)(react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.Fragment, {
-    children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsxs)("div", {
+  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsxs)(react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.Fragment, {
+    children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsxs)("div", {
       className: "max-h-[40rem] w-100 bg-white rounded overflow-scroll shadow-lg m-5 transition ease-in-out delay-110 hover:-translate-y-2 hover:scale-102 ".concat(className),
-      children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsxs)("div", {
+      children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsxs)("div", {
         className: "px-6 py-4",
-        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsxs)("div", {
+        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("div", {
           className: "font-bold text-xl mb-2",
-          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("p", {
-            children: post.user.username
-          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("p", {
-            className: "text-sm font-normal",
-            children: new Date(post.created_at).toLocaleDateString('en-us', {
-              year: "numeric",
-              month: "short",
-              day: "numeric",
-              hour: "numeric",
-              minute: "numeric"
-            })
+          children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsxs)("div", {
+            className: "flex",
+            children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)(_ProfilePicture__WEBPACK_IMPORTED_MODULE_6__["default"], {
+              profilePictureUrl: post.user.temp_profile_picture_url,
+              className: 'h-12 w-12 mr-2',
+              defaultSize: "1x"
+            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsxs)("div", {
+              children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("p", {
+                children: post.user.username
+              }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("p", {
+                className: "text-sm font-normal",
+                children: new Date(post.created_at).toLocaleDateString('en-us', {
+                  year: "numeric",
+                  month: "short",
+                  day: "numeric",
+                  hour: "numeric",
+                  minute: "numeric"
+                })
+              })]
+            })]
+          })
+        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsxs)("div", {
+          className: "ml-4",
+          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("p", {
+            className: "text-gray-700 text-lg",
+            children: post.post
+          }), currentUser.id === post.user_id && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsxs)("div", {
+            className: "mt-2",
+            children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("button", {
+              id: post.id,
+              onClick: toggleSetDisplayEditBox,
+              className: "text-xs mr-1",
+              children: "Edit"
+            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("button", {
+              id: post.id,
+              "data-type": "post",
+              onClick: toggleSetModalOpen,
+              className: "text-xs ml-1",
+              children: "Delete"
+            })]
           })]
-        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("p", {
-          className: "text-gray-700 text-lg",
-          children: post.post
-        }), currentUser.id === post.user_id && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsxs)("div", {
-          className: "mt-2",
-          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("button", {
-            id: post.id,
-            onClick: toggleSetDisplayEditBox,
-            className: "text-xs mr-1",
-            children: "Edit"
-          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("button", {
-            id: post.id,
-            "data-type": "post",
-            onClick: toggleSetModalOpen,
-            className: "text-xs ml-1",
-            children: "Delete"
-          })]
-        }), displayEditBox && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)(_PostFormEdit__WEBPACK_IMPORTED_MODULE_5__["default"], {
+        }), displayEditBox && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)(_PostFormEdit__WEBPACK_IMPORTED_MODULE_5__["default"], {
           myPosts: myPosts,
           dashboardPosts: dashboardPosts,
           postData: post,
@@ -8298,32 +8326,32 @@ function Post(_ref) {
           toggleSetDisplayEditBox: toggleSetDisplayEditBox,
           updatePostsForDashboard: updatePosts,
           updatePostsForMyPosts: updatePostsForMyPosts
-        }), error && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("p", {
+        }), error && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("p", {
           className: "bg-red-500/75 text-white mt-2 w-fit rounded-lg p-2",
           children: error
         })]
-      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsxs)("div", {
+      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsxs)("div", {
         className: "px-6 pt-4 pb-2",
-        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsxs)("span", {
+        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsxs)("span", {
           className: "inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2 cursor-default",
           children: ["#", post.category.name]
-        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsxs)("span", {
+        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsxs)("span", {
           onClick: toggleSetShowComment,
           className: "inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2 cursor-pointer transition ease-in-out delay-110 hover:-translate-y-1 hover:scale-110 hover:bg-sage hover:text-white duration-300",
           children: [post.comments.length, " ", post.comments.length == 1 ? 'comment' : 'comments']
-        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsxs)("span", {
+        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsxs)("span", {
           onClick: toggleLikePost,
           className: "cursor-pointer",
-          children: [isPostLikeByUser ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)(_fortawesome_react_fontawesome__WEBPACK_IMPORTED_MODULE_0__.FontAwesomeIcon, {
-            icon: _fortawesome_free_solid_svg_icons__WEBPACK_IMPORTED_MODULE_7__.faHeart
-          }) : /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)(_fortawesome_react_fontawesome__WEBPACK_IMPORTED_MODULE_0__.FontAwesomeIcon, {
-            icon: _fortawesome_free_regular_svg_icons__WEBPACK_IMPORTED_MODULE_8__.faHeart
-          }), likeCount > 0 ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("sub", {
+          children: [isPostLikeByUser ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)(_fortawesome_react_fontawesome__WEBPACK_IMPORTED_MODULE_0__.FontAwesomeIcon, {
+            icon: _fortawesome_free_solid_svg_icons__WEBPACK_IMPORTED_MODULE_8__.faHeart
+          }) : /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)(_fortawesome_react_fontawesome__WEBPACK_IMPORTED_MODULE_0__.FontAwesomeIcon, {
+            icon: _fortawesome_free_regular_svg_icons__WEBPACK_IMPORTED_MODULE_9__.faHeart
+          }), likeCount > 0 ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("sub", {
             children: likeCount
           }) : null]
         })]
-      }), showComments ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsxs)(react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.Fragment, {
-        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)(_CommentsContainer__WEBPACK_IMPORTED_MODULE_3__["default"], {
+      }), showComments ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsxs)(react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.Fragment, {
+        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)(_CommentsContainer__WEBPACK_IMPORTED_MODULE_3__["default"], {
           posts: dashboardPosts ? dashboardPosts : myPosts,
           comments: post.comments,
           updatePosts: updatePosts,
@@ -8335,13 +8363,13 @@ function Post(_ref) {
           deleteSubCommentError: deleteSubCommentError,
           commentIdToDelete: commentIdToDelete,
           subCommentIdToDelete: subCommentIdToDelete
-        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("button", {
+        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("button", {
           className: "bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 ml-6 mb-2 cursor-pointer transition ease-in-out delay-110 hover:-translate-y-1 hover:scale-110 hover:bg-sage hover:text-white duration-300\"",
           onClick: toggleSetShowComment,
           children: "Hide Comments"
         })]
-      }) : /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("div", {})]
-    }), modalOpen && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)(_Modal__WEBPACK_IMPORTED_MODULE_4__["default"], {
+      }) : /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("div", {})]
+    }), modalOpen && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)(_Modal__WEBPACK_IMPORTED_MODULE_4__["default"], {
       isModalOpen: modalOpen,
       toggleModal: toggleSetModalOpen,
       deletePost: deletePost,
@@ -8778,6 +8806,177 @@ function PostFormEdit(_ref) {
 
 /***/ }),
 
+/***/ "./resources/js/Components/ProfilePicture.js":
+/*!***************************************************!*\
+  !*** ./resources/js/Components/ProfilePicture.js ***!
+  \***************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var _fortawesome_free_regular_svg_icons__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @fortawesome/free-regular-svg-icons */ "./node_modules/@fortawesome/free-regular-svg-icons/index.mjs");
+/* harmony import */ var _fortawesome_react_fontawesome__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @fortawesome/react-fontawesome */ "./node_modules/@fortawesome/react-fontawesome/index.es.js");
+/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
+
+
+
+
+
+
+function ProfilePicture(_ref) {
+  var profilePictureUrl = _ref.profilePictureUrl,
+      className = _ref.className,
+      defaultSize = _ref.defaultSize;
+  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)(react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.Fragment, {
+    children: profilePictureUrl ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("div", {
+      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("img", {
+        className: "object-cover aspect-square rounded-full ".concat(className),
+        src: profilePictureUrl
+      })
+    }) : /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("div", {
+      className: "my-2 mr-2 border-2 border-solid border-slate-900 w-fit h-fit py-1 px-2 rounded-full",
+      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)(_fortawesome_react_fontawesome__WEBPACK_IMPORTED_MODULE_1__.FontAwesomeIcon, {
+        size: defaultSize,
+        icon: _fortawesome_free_regular_svg_icons__WEBPACK_IMPORTED_MODULE_3__.faUser
+      })
+    })
+  });
+}
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (ProfilePicture);
+
+/***/ }),
+
+/***/ "./resources/js/Components/ProfilePictureUploadForm.js":
+/*!*************************************************************!*\
+  !*** ./resources/js/Components/ProfilePictureUploadForm.js ***!
+  \*************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _inertiajs_inertia_react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @inertiajs/inertia-react */ "./node_modules/@inertiajs/inertia-react/dist/index.js");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var _Button__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./Button */ "./resources/js/Components/Button.js");
+/* harmony import */ var _Input__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./Input */ "./resources/js/Components/Input.js");
+/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
+function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
+
+function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
+
+function _iterableToArrayLimit(arr, i) { var _i = arr == null ? null : typeof Symbol !== "undefined" && arr[Symbol.iterator] || arr["@@iterator"]; if (_i == null) return; var _arr = []; var _n = true; var _d = false; var _s, _e; try { for (_i = _i.call(arr); !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
+
+function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
+
+
+
+
+
+
+
+
+
+
+function ProfilePictureUploadForm(_ref) {
+  var toggleUploadForm = _ref.toggleUploadForm;
+
+  var _useForm = (0,_inertiajs_inertia_react__WEBPACK_IMPORTED_MODULE_0__.useForm)({
+    profile_picture: null
+  }),
+      data = _useForm.data,
+      setData = _useForm.setData,
+      post = _useForm.post,
+      progress = _useForm.progress,
+      reset = _useForm.reset;
+
+  var _useState = (0,react__WEBPACK_IMPORTED_MODULE_2__.useState)(null),
+      _useState2 = _slicedToArray(_useState, 2),
+      error = _useState2[0],
+      setError = _useState2[1];
+
+  var onHandleChange = function onHandleChange(event) {
+    setData('profile_picture', event.target.files[0]);
+  };
+
+  function submit(e) {
+    e.preventDefault();
+    post(route('upload-profile-picture'), {
+      onSuccess: function onSuccess() {
+        reset();
+        toggleUploadForm();
+      },
+      onError: function onError(error) {
+        if (error.message) {
+          setError(error.message);
+        } else if (error.mimes) {
+          setError(error.mimes);
+        } else if (error.profile_picture) {
+          setError(error.profile_picture);
+        } else {
+          setError(error);
+        }
+
+        setTimeout(function () {
+          setError(null);
+        }, 7000);
+      }
+    });
+  }
+
+  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxs)(react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.Fragment, {
+    children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("div", {
+      className: "my-2 flex",
+      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxs)("form", {
+        onSubmit: submit,
+        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)(_Input__WEBPACK_IMPORTED_MODULE_4__["default"], {
+          type: "file",
+          name: "profile_picture",
+          className: "w-full",
+          autoComplete: "profile_picture",
+          isFocused: false,
+          handleChange: onHandleChange,
+          placeholder: "",
+          required: true
+        }), progress && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)(react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.Fragment, {
+          children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("div", {
+            className: "w-full bg-gray-200 rounded-full",
+            children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxs)("div", {
+              className: "bg-sage text-sm font-medium text-blue-100 text-center p-0.5 leading-none rounded-full",
+              style: {
+                width: progress.percentage + '%'
+              },
+              children: [" ", progress.percentage, "%"]
+            })
+          })
+        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)(_Button__WEBPACK_IMPORTED_MODULE_3__["default"], {
+          className: "mt-1",
+          children: "Upload"
+        })]
+      })
+    }), error && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("p", {
+      className: "bg-red-500/75 text-white mt-2 w-fit p-2 rounded-lg",
+      children: error
+    })]
+  });
+}
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (ProfilePictureUploadForm);
+
+/***/ }),
+
 /***/ "./resources/js/Components/RegistrationForm.js":
 /*!*****************************************************!*\
   !*** ./resources/js/Components/RegistrationForm.js ***!
@@ -9029,12 +9228,13 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
-/* harmony import */ var _fortawesome_free_regular_svg_icons__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @fortawesome/free-regular-svg-icons */ "./node_modules/@fortawesome/free-regular-svg-icons/index.mjs");
-/* harmony import */ var _fortawesome_free_solid_svg_icons__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @fortawesome/free-solid-svg-icons */ "./node_modules/@fortawesome/free-solid-svg-icons/index.mjs");
+/* harmony import */ var _fortawesome_free_regular_svg_icons__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @fortawesome/free-regular-svg-icons */ "./node_modules/@fortawesome/free-regular-svg-icons/index.mjs");
+/* harmony import */ var _fortawesome_free_solid_svg_icons__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @fortawesome/free-solid-svg-icons */ "./node_modules/@fortawesome/free-solid-svg-icons/index.mjs");
 /* harmony import */ var _fortawesome_react_fontawesome__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @fortawesome/react-fontawesome */ "./node_modules/@fortawesome/react-fontawesome/index.es.js");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
-/* harmony import */ var _SubCommentInputEdit__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./SubCommentInputEdit */ "./resources/js/Components/SubCommentInputEdit.js");
-/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
+/* harmony import */ var _ProfilePicture__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./ProfilePicture */ "./resources/js/Components/ProfilePicture.js");
+/* harmony import */ var _SubCommentInputEdit__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./SubCommentInputEdit */ "./resources/js/Components/SubCommentInputEdit.js");
+/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
 function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
 
 function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
@@ -9046,6 +9246,7 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
 function _iterableToArrayLimit(arr, i) { var _i = arr == null ? null : typeof Symbol !== "undefined" && arr[Symbol.iterator] || arr["@@iterator"]; if (_i == null) return; var _arr = []; var _n = true; var _d = false; var _s, _e; try { for (_i = _i.call(arr); !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
 
 function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
+
 
 
 
@@ -9131,51 +9332,60 @@ function SubComment(_ref) {
     }
   };
 
-  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
+  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("div", {
     id: subComment.id,
     className: "rounded-lg px-2 py-1 max-w-fit my-2",
-    children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
-      className: "flex",
-      children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("p", {
-        className: "text-sm",
-        children: [subComment.user.username, " - "]
-      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("p", {
-        className: "text-sm",
-        children: calcualateTimeStamp(subComment.created_at)
-      })]
-    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
-      className: "md:flex",
-      children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("p", {
+    children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("div", {
+      className: "flex flex-wrap",
+      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("div", {
+        className: "flex items-center",
+        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_ProfilePicture__WEBPACK_IMPORTED_MODULE_2__["default"], {
+          defaultSize: "2x",
+          profilePictureUrl: subComment.user.temp_profile_picture_url,
+          className: 'h-12 w-12 mr-2'
+        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("p", {
+          className: "text-sm",
+          children: subComment.user.username
+        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("p", {
+          className: "text-xs ml-2",
+          children: calcualateTimeStamp(subComment.created_at)
+        })]
+      })
+    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("div", {
+      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("p", {
         className: "text-gray-700 text-md ml-3",
         children: subComment.sub_comment
-      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("span", {
+      })
+    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("div", {
+      className: "flex items-center mt-2 ml-2",
+      children: [currentUser.id === subComment.user_id && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("div", {
+        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("button", {
+          id: subComment.id,
+          onClick: toggleSetDisplayEditBox,
+          className: "text-sm mr-1",
+          children: "Edit"
+        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("button", {
+          id: subComment.id,
+          "data-type": "sub_comment",
+          onClick: toggleSetModalOpen,
+          className: "text-sm ml-1",
+          children: "Delete"
+        }), error && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("p", {
+          className: "bg-red-500/75 text-white mt-2 p-2 w-fit rounded-lg",
+          children: error
+        })]
+      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("span", {
         onClick: toggleLikeSubComment,
         className: "cursor-pointer ml-4",
-        children: [isSubCommentLikedByUser ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_fortawesome_react_fontawesome__WEBPACK_IMPORTED_MODULE_0__.FontAwesomeIcon, {
-          icon: _fortawesome_free_solid_svg_icons__WEBPACK_IMPORTED_MODULE_4__.faHeart
-        }) : /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_fortawesome_react_fontawesome__WEBPACK_IMPORTED_MODULE_0__.FontAwesomeIcon, {
-          icon: _fortawesome_free_regular_svg_icons__WEBPACK_IMPORTED_MODULE_5__.faHeart
-        }), subCommentLikeCount > 0 ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("sub", {
+        children: [isSubCommentLikedByUser ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_fortawesome_react_fontawesome__WEBPACK_IMPORTED_MODULE_0__.FontAwesomeIcon, {
+          icon: _fortawesome_free_solid_svg_icons__WEBPACK_IMPORTED_MODULE_5__.faHeart
+        }) : /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_fortawesome_react_fontawesome__WEBPACK_IMPORTED_MODULE_0__.FontAwesomeIcon, {
+          icon: _fortawesome_free_regular_svg_icons__WEBPACK_IMPORTED_MODULE_6__.faHeart
+        }), subCommentLikeCount > 0 ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("sub", {
           children: subCommentLikeCount
         }) : null]
       })]
-    }), currentUser.id === subComment.user_id && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
-      children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("button", {
-        id: subComment.id,
-        onClick: toggleSetDisplayEditBox,
-        className: "text-sm mr-1",
-        children: "Edit"
-      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("button", {
-        id: subComment.id,
-        "data-type": "sub_comment",
-        onClick: toggleSetModalOpen,
-        className: "text-sm ml-1",
-        children: "Delete"
-      }), error && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("p", {
-        className: "bg-red-500/75 text-white mt-2 p-2 w-fit rounded-lg",
-        children: error
-      })]
-    }), displayEditBox && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_SubCommentInputEdit__WEBPACK_IMPORTED_MODULE_2__["default"], {
+    }), displayEditBox && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_SubCommentInputEdit__WEBPACK_IMPORTED_MODULE_3__["default"], {
       posts: posts,
       updatePosts: updatePosts,
       updatePostsForMyPosts: updatePostsForMyPosts,
@@ -10819,10 +11029,12 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var _Components_DeleteAccountModal__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @/Components/DeleteAccountModal */ "./resources/js/Components/DeleteAccountModal.js");
 /* harmony import */ var _Components_PasswordResetForm__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @/Components/PasswordResetForm */ "./resources/js/Components/PasswordResetForm.js");
-/* harmony import */ var _Layouts_Authenticated__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @/Layouts/Authenticated */ "./resources/js/Layouts/Authenticated.js");
-/* harmony import */ var _inertiajs_inertia_react__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @inertiajs/inertia-react */ "./node_modules/@inertiajs/inertia-react/dist/index.js");
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
-/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
+/* harmony import */ var _Components_ProfilePictureUploadForm__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @/Components/ProfilePictureUploadForm */ "./resources/js/Components/ProfilePictureUploadForm.js");
+/* harmony import */ var _Layouts_Authenticated__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @/Layouts/Authenticated */ "./resources/js/Layouts/Authenticated.js");
+/* harmony import */ var _inertiajs_inertia_react__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @inertiajs/inertia-react */ "./node_modules/@inertiajs/inertia-react/dist/index.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var _Components_ProfilePicture__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @/Components/ProfilePicture */ "./resources/js/Components/ProfilePicture.js");
+/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
 function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
 
 function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
@@ -10843,36 +11055,45 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
 
 
+
+
 function MyAccount(props) {
-  var _useState = (0,react__WEBPACK_IMPORTED_MODULE_4__.useState)(false),
+  var _useState = (0,react__WEBPACK_IMPORTED_MODULE_5__.useState)(false),
       _useState2 = _slicedToArray(_useState, 2),
       displayPasswordReset = _useState2[0],
       setDisplayPasswordReset = _useState2[1];
 
-  var _useState3 = (0,react__WEBPACK_IMPORTED_MODULE_4__.useState)(false),
+  var _useState3 = (0,react__WEBPACK_IMPORTED_MODULE_5__.useState)(false),
       _useState4 = _slicedToArray(_useState3, 2),
       displayModal = _useState4[0],
       setDisplayModal = _useState4[1];
 
-  var _useState5 = (0,react__WEBPACK_IMPORTED_MODULE_4__.useState)(null),
+  var _useState5 = (0,react__WEBPACK_IMPORTED_MODULE_5__.useState)(false),
       _useState6 = _slicedToArray(_useState5, 2),
-      error = _useState6[0],
-      setError = _useState6[1];
+      displayUpload = _useState6[0],
+      setDisplayUpload = _useState6[1];
+
+  var _useState7 = (0,react__WEBPACK_IMPORTED_MODULE_5__.useState)(null),
+      _useState8 = _slicedToArray(_useState7, 2),
+      error = _useState8[0],
+      setError = _useState8[1];
 
   var toggleSetDisplayPasswordReset = function toggleSetDisplayPasswordReset() {
-    if (displayPasswordReset) {
-      setDisplayPasswordReset(false);
-    } else if (!displayPasswordReset) {
-      setDisplayPasswordReset(true);
-    }
+    displayPasswordReset ? setDisplayPasswordReset(false) : setDisplayPasswordReset(true);
+    setDisplayModal(false);
+    setDisplayUpload(false);
   };
 
   var toggleSetDisplayModal = function toggleSetDisplayModal() {
-    if (displayModal) {
-      setDisplayModal(false);
-    } else if (!displayModal) {
-      setDisplayModal(true);
-    }
+    displayModal ? setDisplayModal(false) : setDisplayModal(true);
+    setDisplayPasswordReset(false);
+    toggleSetDisplayUpload(false);
+  };
+
+  var toggleSetDisplayUpload = function toggleSetDisplayUpload() {
+    displayUpload ? setDisplayUpload(false) : setDisplayUpload(true);
+    setDisplayPasswordReset(false);
+    setDisplayModal(false);
   };
 
   var deleteAccount = function deleteAccount() {
@@ -10893,24 +11114,28 @@ function MyAccount(props) {
     });
   };
 
-  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxs)(_Layouts_Authenticated__WEBPACK_IMPORTED_MODULE_2__["default"], {
+  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsxs)(_Layouts_Authenticated__WEBPACK_IMPORTED_MODULE_3__["default"], {
     auth: props.auth,
     errors: props.errors,
-    children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)(_inertiajs_inertia_react__WEBPACK_IMPORTED_MODULE_3__.Head, {
+    children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)(_inertiajs_inertia_react__WEBPACK_IMPORTED_MODULE_4__.Head, {
       title: "My Account"
-    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("div", {
+    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("div", {
       className: "ml-8 mt-2",
-      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxs)("div", {
+      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsxs)("div", {
         className: "flex-col md:flex md:flex-row justify-around",
-        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxs)("div", {
+        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsxs)("div", {
           className: "mr-2 mt-5 mb-4",
-          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("h1", {
-            className: "text-xl",
+          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("h1", {
+            className: "text-xl underline",
             children: "Account Details"
-          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxs)("p", {
+          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)(_Components_ProfilePicture__WEBPACK_IMPORTED_MODULE_6__["default"], {
+            profilePictureUrl: props.auth.user.profile_picture_url,
+            className: "w-46 h-36 my-2",
+            defaultSize: "2x"
+          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsxs)("p", {
             className: "bg-white rounded-xl p-2 max-w-fit mb-1",
             children: [props.auth.user.first_name, " ", props.auth.user.last_name]
-          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxs)("p", {
+          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsxs)("p", {
             className: "bg-white rounded-xl p-2 max-w-fit mb-1",
             children: ["Joined: ", new Date(props.auth.user.created_at).toLocaleDateString('en-us', {
               weekday: "long",
@@ -10918,50 +11143,56 @@ function MyAccount(props) {
               month: "short",
               day: "numeric"
             })]
-          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxs)("p", {
+          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsxs)("p", {
             className: "bg-white rounded-xl p-2 w-fit mb-1",
             children: ["Email: ", props.auth.user.email]
-          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxs)("p", {
+          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsxs)("p", {
             className: "bg-white rounded-xl p-2 max-w-fit mb-1",
             children: ["Username: ", props.auth.user.username]
-          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxs)("p", {
+          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsxs)("p", {
             className: "bg-white rounded-xl p-2 max-w-fit mb-1",
             children: [props.post_count, " ", props.post_count == 1 ? 'post' : 'posts']
-          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxs)("p", {
+          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsxs)("p", {
             className: "bg-white rounded-xl p-2 max-w-fit mb-1",
             children: [props.comment_count > 0 ? props.comment_count : 0, " ", props.comment_count == 1 ? 'comment' : 'comments']
-          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxs)("p", {
+          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsxs)("p", {
             className: "bg-white rounded-xl p-2 max-w-fit mb-1",
             children: [props.sub_comment_count > 0 ? props.sub_comment_count : 0, " ", props.sub_comment_count == 1 ? 'comment reply' : 'comment replies']
-          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxs)("p", {
+          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsxs)("p", {
             className: "bg-white rounded-xl p-2 max-w-fit mb-1",
             children: [props.post_like_count > 0 ? props.post_like_count : 0, " ", props.post_like_count == 1 ? 'liked post' : 'liked posts']
-          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxs)("p", {
+          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsxs)("p", {
             className: "bg-white rounded-xl p-2 max-w-fit mb-1",
             children: [props.comment_like_count > 0 ? props.comment_like_count : 0, " ", props.comment_like_count == 1 ? 'liked comment' : 'liked comments']
-          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxs)("p", {
+          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsxs)("p", {
             className: "bg-white rounded-xl p-2 max-w-fit mb-1",
             children: [props.sub_comment_like_count > 0 ? props.sub_comment_like_count : 0, " ", props.sub_comment_like_count == 1 ? 'liked comment reply' : 'liked comment replies']
           })]
-        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxs)("div", {
+        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsxs)("div", {
           className: "",
-          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("button", {
+          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("button", {
             onClick: toggleSetDisplayPasswordReset,
             className: "inline-flex items-center mr-1 px-4 py-2 bg-sage border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest active:bg-gray-900 transition ease-in-out duration-150",
             children: "Change Password"
-          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("button", {
+          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("button", {
             onClick: toggleSetDisplayModal,
             className: "inline-flex items-center ml-1 px-4 py-2 bg-red-500/75 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest active:bg-gray-900 transition ease-in-out duration-150",
             children: "Delete Account"
-          }), displayPasswordReset && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)(_Components_PasswordResetForm__WEBPACK_IMPORTED_MODULE_1__["default"], {
+          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("button", {
+            onClick: toggleSetDisplayUpload,
+            className: "inline-flex items-center ml-1 mt-2 px-4 py-2 bg-sage border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest active:bg-gray-900 transition ease-in-out duration-150",
+            children: "Upload Profile Picture"
+          }), displayPasswordReset && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)(_Components_PasswordResetForm__WEBPACK_IMPORTED_MODULE_1__["default"], {
             userId: props.auth.user.id
-          }), error && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("p", {
+          }), error && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("p", {
             className: "bg-red-500/75 text-white mt-2 w-fit p-2 rounded-lg",
             children: error
+          }), displayUpload && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)(_Components_ProfilePictureUploadForm__WEBPACK_IMPORTED_MODULE_2__["default"], {
+            toggleUploadForm: toggleSetDisplayUpload
           })]
         })]
       })
-    }), displayModal && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)(_Components_DeleteAccountModal__WEBPACK_IMPORTED_MODULE_0__["default"], {
+    }), displayModal && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)(_Components_DeleteAccountModal__WEBPACK_IMPORTED_MODULE_0__["default"], {
       deleteAccount: deleteAccount,
       toggleModal: toggleSetDisplayModal
     })]
@@ -11032,35 +11263,30 @@ function MyLikes(props) {
       user = _useState4[0],
       setUser = _useState4[1];
 
-  var _useState5 = (0,react__WEBPACK_IMPORTED_MODULE_6__.useState)([]),
+  var _useState5 = (0,react__WEBPACK_IMPORTED_MODULE_6__.useState)(false),
       _useState6 = _slicedToArray(_useState5, 2),
-      categories = _useState6[0],
-      setCategories = _useState6[1];
+      modalOpen = _useState6[0],
+      setModalOpen = _useState6[1];
 
-  var _useState7 = (0,react__WEBPACK_IMPORTED_MODULE_6__.useState)(false),
+  var _useState7 = (0,react__WEBPACK_IMPORTED_MODULE_6__.useState)(0),
       _useState8 = _slicedToArray(_useState7, 2),
-      modalOpen = _useState8[0],
-      setModalOpen = _useState8[1];
+      offset = _useState8[0],
+      setOffset = _useState8[1];
 
-  var _useState9 = (0,react__WEBPACK_IMPORTED_MODULE_6__.useState)(0),
+  var _useState9 = (0,react__WEBPACK_IMPORTED_MODULE_6__.useState)([]),
       _useState10 = _slicedToArray(_useState9, 2),
-      offset = _useState10[0],
-      setOffset = _useState10[1];
+      categoryFilters = _useState10[0],
+      setCategoryFilters = _useState10[1];
 
-  var _useState11 = (0,react__WEBPACK_IMPORTED_MODULE_6__.useState)([]),
+  var _useState11 = (0,react__WEBPACK_IMPORTED_MODULE_6__.useState)(false),
       _useState12 = _slicedToArray(_useState11, 2),
-      categoryFilters = _useState12[0],
-      setCategoryFilters = _useState12[1];
+      isFilterSet = _useState12[0],
+      setIsFilterSet = _useState12[1];
 
-  var _useState13 = (0,react__WEBPACK_IMPORTED_MODULE_6__.useState)(false),
+  var _useState13 = (0,react__WEBPACK_IMPORTED_MODULE_6__.useState)([]),
       _useState14 = _slicedToArray(_useState13, 2),
-      isFilterSet = _useState14[0],
-      setIsFilterSet = _useState14[1];
-
-  var _useState15 = (0,react__WEBPACK_IMPORTED_MODULE_6__.useState)([]),
-      _useState16 = _slicedToArray(_useState15, 2),
-      preFilterPosts = _useState16[0],
-      setPreFilterPosts = _useState16[1];
+      preFilterPosts = _useState14[0],
+      setPreFilterPosts = _useState14[1];
 
   var updatePosts = function updatePosts(newPosts) {
     setPosts(_toConsumableArray(newPosts));
@@ -11094,7 +11320,6 @@ function MyLikes(props) {
     }
 
     setUser(props.auth.user);
-    setCategories(props.categories);
     setCategoryFilters(props.categories.map(function (category) {
       return {
         value: category.name,
@@ -11164,7 +11389,7 @@ function MyLikes(props) {
         className: "hidden md:block flex-initial md:w-1/3 mr-2 mt-5",
         children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)(_Components_PostForm__WEBPACK_IMPORTED_MODULE_2__["default"], {
           className: "mt-4",
-          categories: categories
+          categories: props.categories
         })
       }), modalOpen && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)(_Components_Modal__WEBPACK_IMPORTED_MODULE_0__["default"], {
         toggleModal: toggleSetModalOpen,
@@ -11182,7 +11407,7 @@ function MyLikes(props) {
         className: "flex-initial w-1/3 mr-2 mt-5",
         children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)(_Components_PostForm__WEBPACK_IMPORTED_MODULE_2__["default"], {
           className: "mt-4",
-          categories: categories
+          categories: props.categories
         })
       })]
     })]
@@ -11251,35 +11476,30 @@ function MyPosts(props) {
       user = _useState4[0],
       setUser = _useState4[1];
 
-  var _useState5 = (0,react__WEBPACK_IMPORTED_MODULE_5__.useState)([]),
+  var _useState5 = (0,react__WEBPACK_IMPORTED_MODULE_5__.useState)(false),
       _useState6 = _slicedToArray(_useState5, 2),
-      categories = _useState6[0],
-      setCategories = _useState6[1];
+      modalOpen = _useState6[0],
+      setModalOpen = _useState6[1];
 
-  var _useState7 = (0,react__WEBPACK_IMPORTED_MODULE_5__.useState)(false),
+  var _useState7 = (0,react__WEBPACK_IMPORTED_MODULE_5__.useState)(0),
       _useState8 = _slicedToArray(_useState7, 2),
-      modalOpen = _useState8[0],
-      setModalOpen = _useState8[1];
+      offset = _useState8[0],
+      setOffset = _useState8[1];
 
-  var _useState9 = (0,react__WEBPACK_IMPORTED_MODULE_5__.useState)(0),
+  var _useState9 = (0,react__WEBPACK_IMPORTED_MODULE_5__.useState)([]),
       _useState10 = _slicedToArray(_useState9, 2),
-      offset = _useState10[0],
-      setOffset = _useState10[1];
+      categoryFilters = _useState10[0],
+      setCategoryFilters = _useState10[1];
 
-  var _useState11 = (0,react__WEBPACK_IMPORTED_MODULE_5__.useState)([]),
+  var _useState11 = (0,react__WEBPACK_IMPORTED_MODULE_5__.useState)(false),
       _useState12 = _slicedToArray(_useState11, 2),
-      categoryFilters = _useState12[0],
-      setCategoryFilters = _useState12[1];
+      isFilterSet = _useState12[0],
+      setIsFilterSet = _useState12[1];
 
-  var _useState13 = (0,react__WEBPACK_IMPORTED_MODULE_5__.useState)(false),
+  var _useState13 = (0,react__WEBPACK_IMPORTED_MODULE_5__.useState)([]),
       _useState14 = _slicedToArray(_useState13, 2),
-      isFilterSet = _useState14[0],
-      setIsFilterSet = _useState14[1];
-
-  var _useState15 = (0,react__WEBPACK_IMPORTED_MODULE_5__.useState)([]),
-      _useState16 = _slicedToArray(_useState15, 2),
-      preFilterPosts = _useState16[0],
-      setPreFilterPosts = _useState16[1];
+      preFilterPosts = _useState14[0],
+      setPreFilterPosts = _useState14[1];
 
   var updatePosts = function updatePosts(newPosts) {
     setPosts(_toConsumableArray(newPosts));
@@ -11313,7 +11533,6 @@ function MyPosts(props) {
     }
 
     setUser(props.auth.user);
-    setCategories(props.categories);
     setCategoryFilters(props.categories.map(function (category) {
       return {
         value: category.name,
@@ -11389,7 +11608,7 @@ function MyPosts(props) {
         className: "hidden md:block flex-initial md:w-1/3 mr-2 mt-5",
         children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)(_Components_PostForm__WEBPACK_IMPORTED_MODULE_1__["default"], {
           className: "mt-4",
-          categories: categories
+          categories: props.categories
         })
       }), modalOpen && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)(Modal, {
         toggleModal: toggleSetModalOpen,
@@ -11405,7 +11624,7 @@ function MyPosts(props) {
         })
       }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("div", {
         children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)(_Components_PostForm__WEBPACK_IMPORTED_MODULE_1__["default"], {
-          categories: categories
+          categories: props.categories
         })
       })]
     })]

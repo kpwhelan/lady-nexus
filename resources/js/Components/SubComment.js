@@ -2,6 +2,7 @@ import { faHeart } from '@fortawesome/free-regular-svg-icons';
 import { faHeart as faHeartSolid } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React, { useEffect, useState } from 'react'
+import ProfilePicture from './ProfilePicture';
 import SubCommentInputEdit from './SubCommentInputEdit';
 
 function SubComment({ subComment,
@@ -66,12 +67,28 @@ function SubComment({ subComment,
 
   return (
     <div key={`sub_comment_${subComment.id}`} id={subComment.id} className="rounded-lg px-2 py-1 max-w-fit my-2">
-        <div className='flex'>
-            <p className='text-sm'>{subComment.user.username} - </p>
-            <p className='text-sm'>{calcualateTimeStamp(subComment.created_at)}</p>
+        <div className='flex flex-wrap'>
+            <div className='flex items-center'>
+                <ProfilePicture defaultSize="2x" profilePictureUrl={subComment.user.temp_profile_picture_url} className={'h-12 w-12 mr-2'} />
+                <p className='text-sm'>{subComment.user.username}</p>
+                <p className='text-xs ml-2'>{calcualateTimeStamp(subComment.created_at)}</p>
+            </div>
         </div>
-        <div className='md:flex'>
+        <div>
             <p className="text-gray-700 text-md ml-3">{subComment.sub_comment}</p>
+        </div>
+
+        <div className='flex items-center mt-2 ml-2'>
+            {currentUser.id === subComment.user_id &&
+            <div>
+                <button id={subComment.id} onClick={toggleSetDisplayEditBox} className='text-sm mr-1'>Edit</button>
+                <button id={subComment.id} data-type="sub_comment" onClick={toggleSetModalOpen} className='text-sm ml-1'>Delete</button>
+                {error &&
+                    <p className='bg-red-500/75 text-white mt-2 p-2 w-fit rounded-lg'>{error}</p>
+                }
+            </div>
+            }
+
             <span onClick={toggleLikeSubComment} className='cursor-pointer ml-4'>
                 {isSubCommentLikedByUser ? (
                         <FontAwesomeIcon icon={faHeartSolid} />
@@ -84,15 +101,6 @@ function SubComment({ subComment,
                 {subCommentLikeCount > 0 ? <sub>{subCommentLikeCount}</sub> : null}
             </span>
         </div>
-        {currentUser.id === subComment.user_id &&
-        <div>
-            <button id={subComment.id} onClick={toggleSetDisplayEditBox} className='text-sm mr-1'>Edit</button>
-            <button id={subComment.id} data-type="sub_comment" onClick={toggleSetModalOpen} className='text-sm ml-1'>Delete</button>
-            {error &&
-                <p className='bg-red-500/75 text-white mt-2 p-2 w-fit rounded-lg'>{error}</p>
-            }
-        </div>
-        }
 
         {displayEditBox &&
             <SubCommentInputEdit posts={posts} updatePosts={updatePosts} updatePostsForMyPosts={updatePostsForMyPosts} subCommentId={subComment.id} existingSubComment={subComment.sub_comment} toggleSetDisplayEditBox={toggleSetDisplayEditBox} />

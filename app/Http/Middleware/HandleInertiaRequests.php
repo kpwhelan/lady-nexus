@@ -35,7 +35,7 @@ class HandleInertiaRequests extends Middleware
     public function share(Request $request)
     {
         $user = $request->user();
-        if ($user && $user->profile_picture_url) {
+        if ($user && $user->profile_picture_url != null) {
             $user->profile_picture_url = Storage::temporaryUrl($user->profile_picture_url, now()->addHours(24));
         }
 

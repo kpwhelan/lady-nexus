@@ -13,21 +13,21 @@ function MyAccount(props) {
     const [error, setError] = useState(null);
 
     const toggleSetDisplayPasswordReset = () => {
-        displayPasswordReset ? setDisplayPasswordReset(false) : setDisplayPasswordReset(true);
         setDisplayModal(false);
         setDisplayUpload(false);
+        displayPasswordReset ? setDisplayPasswordReset(false) : setDisplayPasswordReset(true);
     }
 
     const toggleSetDisplayModal = () => {
-        displayModal ? setDisplayModal(false) : setDisplayModal(true);
         setDisplayPasswordReset(false);
-        toggleSetDisplayUpload(false);
+        setDisplayUpload(false);
+        displayModal ? setDisplayModal(false) : setDisplayModal(true);
     }
 
     const toggleSetDisplayUpload = () => {
-        displayUpload ? setDisplayUpload(false) : setDisplayUpload(true);
         setDisplayPasswordReset(false);
         setDisplayModal(false);
+        displayUpload ? setDisplayUpload(false) : setDisplayUpload(true);
     }
 
     const deleteAccount = () => {

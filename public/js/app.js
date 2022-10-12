@@ -10919,21 +10919,21 @@ function MyAccount(props) {
       setError = _useState8[1];
 
   var toggleSetDisplayPasswordReset = function toggleSetDisplayPasswordReset() {
-    displayPasswordReset ? setDisplayPasswordReset(false) : setDisplayPasswordReset(true);
     setDisplayModal(false);
     setDisplayUpload(false);
+    displayPasswordReset ? setDisplayPasswordReset(false) : setDisplayPasswordReset(true);
   };
 
   var toggleSetDisplayModal = function toggleSetDisplayModal() {
-    displayModal ? setDisplayModal(false) : setDisplayModal(true);
     setDisplayPasswordReset(false);
-    toggleSetDisplayUpload(false);
+    setDisplayUpload(false);
+    displayModal ? setDisplayModal(false) : setDisplayModal(true);
   };
 
   var toggleSetDisplayUpload = function toggleSetDisplayUpload() {
-    displayUpload ? setDisplayUpload(false) : setDisplayUpload(true);
     setDisplayPasswordReset(false);
     setDisplayModal(false);
+    displayUpload ? setDisplayUpload(false) : setDisplayUpload(true);
   };
 
   var deleteAccount = function deleteAccount() {
@@ -11501,7 +11501,7 @@ __webpack_require__.r(__webpack_exports__);
 function Welcome(props) {
   return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)(react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.Fragment, {
     children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_inertiajs_inertia_react__WEBPACK_IMPORTED_MODULE_1__.Head, {
-      title: "LadyNexus"
+      title: "Lady Nexus"
     }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_Components_LandingPageHeaderBar__WEBPACK_IMPORTED_MODULE_2__["default"], {}), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("div", {
       className: "p-4 md:flex justify-center items-center",
       children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("img", {

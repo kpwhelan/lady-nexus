@@ -9,8 +9,7 @@ function CommentInputEdit({ posts, updatePosts, updatePostsForMyPosts, existingC
         comment_id: commentId
     });
 
-    const [ serverError, setServerError ] = useState('');
-    const [ displayServerError, setDisplayServerError ] = useState(false);
+    const [ error, setError ] = useState(null);
 
     const onHandleChange = (event) => {
         setData(event.target.name, event.target.type === 'checkbox' ? event.target.checked : event.target.value);
@@ -43,14 +42,15 @@ function CommentInputEdit({ posts, updatePosts, updatePostsForMyPosts, existingC
             }
         })
         .catch(error => {
-            if (error.response) {
-                setServerError(error.response.data.message);
-                setDisplayServerError(true);
-
-                setTimeout(() => {
-                    setDisplayServerError(false)
-                }, 5000);
+            if (error.sub_comment_body) {
+                setError(error.sub_comment_body)
+            } else if (error.response) {
+                setError(error.response.data.message);
             }
+
+            setTimeout(() => {
+                setError(null)
+            }, 7000);
         })
     };
 
@@ -74,8 +74,8 @@ function CommentInputEdit({ posts, updatePosts, updatePostsForMyPosts, existingC
                 Submit
             </Button>
 
-            {displayServerError &&
-                <p className='bg-red-500/75 text-white mt-2 w-fit p-2 rounded-lg'>{serverError}</p>
+            {error &&
+                <p className='bg-red-500/75 text-white mt-2 w-fit p-2 rounded-lg'>{error}</p>
             }
         </form>
     </div>

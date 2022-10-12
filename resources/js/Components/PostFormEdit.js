@@ -10,8 +10,8 @@ function PostFormEdit({ className, postData, categories, previousCategoryId, tog
         post_id: postData.id,
         category_id: previousCategoryId
     });
-    const [displayError, setDisplayError] = useState(false);
-    const [error, setError] = useState('');
+
+    const [error, setError] = useState(null);
     const [isCategorySelected, setIsCategorySelected] = useState(false);
     const [categoryId, setCategoryId] = useState(null);
 
@@ -98,14 +98,17 @@ function PostFormEdit({ className, postData, categories, previousCategoryId, tog
             }
         })
         .catch(error => {
-            if (error.response) {
+            if (error.post_body) {
+                setError(error.post_body)
+            } else if (error.category_id) {
+                setError(error.category_id)
+            } else if (error.response) {
                 setError(error.response.data.message);
-                setDisplayError(true);
-
-                setTimeout(() => {
-                    setDisplayError(false)
-                }, 5000);
             }
+
+            setTimeout(() => {
+                setError(null)
+            }, 7000);
         })
     };
 
@@ -132,7 +135,7 @@ function PostFormEdit({ className, postData, categories, previousCategoryId, tog
                 Submit
             </Button>
 
-            {displayError &&
+            {error &&
                 <p className='bg-red-500/75 text-white mt-2 p-2 w-fit rounded-lg'>{error}</p>
             }
         </form>

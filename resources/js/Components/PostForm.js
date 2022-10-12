@@ -37,8 +37,7 @@ function PostForm({ categories, className }) {
 
     const [isCategorySelected, setIsCategorySelected] = useState(false);
     const [categoryId, setCategoryId] = useState(null);
-    const [error, setError] = useState('');
-    const [displayError, setDisplayError] = useState(false);
+    const [error, setError] = useState(null);
 
     const onHandleChange = (event) => {
         setData(event.target.name, event.target.type === 'checkbox' ? event.target.checked : event.target.value);
@@ -96,15 +95,15 @@ function PostForm({ categories, className }) {
             onError: error => {
                 if (error.message) {
                     setError(error.message);
-                    setDisplayError(true);
                 } else if (error.category_id) {
                     setError (error.category_id)
-                    setDisplayError(true);
+                } else if (error.post_body) {
+                    setError(error.post_body)
                 }
 
                 setTimeout(() => {
-                    setDisplayError(false)
-                }, 5000);
+                    setError(null)
+                }, 7000);
             }
         });
     };
@@ -133,7 +132,7 @@ function PostForm({ categories, className }) {
                 Submit
             </Button>
 
-            {displayError &&
+            {error &&
                 <p className='bg-red-500/75 text-white mt-2 p-2 w-fit rounded-lg'>{error}</p>
             }
         </form>

@@ -7017,15 +7017,10 @@ function CommentInput(_ref) {
       errors = _useForm.errors,
       reset = _useForm.reset;
 
-  var _useState = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)(''),
+  var _useState = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)(null),
       _useState2 = _slicedToArray(_useState, 2),
-      serverError = _useState2[0],
-      setServerError = _useState2[1];
-
-  var _useState3 = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)(false),
-      _useState4 = _slicedToArray(_useState3, 2),
-      displayServerError = _useState4[0],
-      setDisplayServerError = _useState4[1];
+      error = _useState2[0],
+      setError = _useState2[1];
 
   var onHandleChange = function onHandleChange(event) {
     setData(event.target.name, event.target.type === 'checkbox' ? event.target.checked : event.target.value);
@@ -7057,13 +7052,15 @@ function CommentInput(_ref) {
         reset();
       }
     })["catch"](function (error) {
-      if (error.response) {
-        setServerError(error.response.data.message);
-        setDisplayServerError(true);
-        setTimeout(function () {
-          setDisplayServerError(false);
-        }, 5000);
+      if (error.comment_body) {
+        setError(error.comment_body);
+      } else if (error.response) {
+        setError(error.response.data.message);
       }
+
+      setTimeout(function () {
+        setError(null);
+      }, 7000);
     });
   };
 
@@ -7085,9 +7082,9 @@ function CommentInput(_ref) {
         className: "my-1",
         processing: processing,
         children: "Submit"
-      }), displayServerError && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("p", {
+      }), error && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("p", {
         className: "bg-red-500/75 text-white mt-2 w-fit rounded-lg p-2",
-        children: serverError
+        children: error
       })]
     })
   });
@@ -7151,15 +7148,10 @@ function CommentInputEdit(_ref) {
       errors = _useForm.errors,
       reset = _useForm.reset;
 
-  var _useState = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)(''),
+  var _useState = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)(null),
       _useState2 = _slicedToArray(_useState, 2),
-      serverError = _useState2[0],
-      setServerError = _useState2[1];
-
-  var _useState3 = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)(false),
-      _useState4 = _slicedToArray(_useState3, 2),
-      displayServerError = _useState4[0],
-      setDisplayServerError = _useState4[1];
+      error = _useState2[0],
+      setError = _useState2[1];
 
   var onHandleChange = function onHandleChange(event) {
     setData(event.target.name, event.target.type === 'checkbox' ? event.target.checked : event.target.value);
@@ -7198,13 +7190,15 @@ function CommentInputEdit(_ref) {
         toggleSetDisplayEditBox(false);
       }
     })["catch"](function (error) {
-      if (error.response) {
-        setServerError(error.response.data.message);
-        setDisplayServerError(true);
-        setTimeout(function () {
-          setDisplayServerError(false);
-        }, 5000);
+      if (error.sub_comment_body) {
+        setError(error.sub_comment_body);
+      } else if (error.response) {
+        setError(error.response.data.message);
       }
+
+      setTimeout(function () {
+        setError(null);
+      }, 7000);
     });
   };
 
@@ -7227,9 +7221,9 @@ function CommentInputEdit(_ref) {
         className: "mt-1",
         processing: processing,
         children: "Submit"
-      }), displayServerError && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("p", {
+      }), error && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("p", {
         className: "bg-red-500/75 text-white mt-2 w-fit p-2 rounded-lg",
-        children: serverError
+        children: error
       })]
     })
   });
@@ -8469,15 +8463,10 @@ function PostForm(_ref) {
       categoryId = _useState6[0],
       setCategoryId = _useState6[1];
 
-  var _useState7 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(''),
+  var _useState7 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(null),
       _useState8 = _slicedToArray(_useState7, 2),
       error = _useState8[0],
       setError = _useState8[1];
-
-  var _useState9 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(false),
-      _useState10 = _slicedToArray(_useState9, 2),
-      displayError = _useState10[0],
-      setDisplayError = _useState10[1];
 
   var onHandleChange = function onHandleChange(event) {
     setData(event.target.name, event.target.type === 'checkbox' ? event.target.checked : event.target.value);
@@ -8533,15 +8522,15 @@ function PostForm(_ref) {
       onError: function onError(error) {
         if (error.message) {
           setError(error.message);
-          setDisplayError(true);
         } else if (error.category_id) {
           setError(error.category_id);
-          setDisplayError(true);
+        } else if (error.post_body) {
+          setError(error.post_body);
         }
 
         setTimeout(function () {
-          setDisplayError(false);
-        }, 5000);
+          setError(null);
+        }, 7000);
       }
     });
   };
@@ -8581,7 +8570,7 @@ function PostForm(_ref) {
       className: "mt-1",
       processing: processing,
       children: "Submit"
-    }), displayError && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("p", {
+    }), error && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("p", {
       className: "bg-red-500/75 text-white mt-2 p-2 w-fit rounded-lg",
       children: error
     })]
@@ -8651,25 +8640,20 @@ function PostFormEdit(_ref) {
       errors = _useForm.errors,
       reset = _useForm.reset;
 
-  var _useState = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)(false),
+  var _useState = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)(null),
       _useState2 = _slicedToArray(_useState, 2),
-      displayError = _useState2[0],
-      setDisplayError = _useState2[1];
+      error = _useState2[0],
+      setError = _useState2[1];
 
-  var _useState3 = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)(''),
+  var _useState3 = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)(false),
       _useState4 = _slicedToArray(_useState3, 2),
-      error = _useState4[0],
-      setError = _useState4[1];
+      isCategorySelected = _useState4[0],
+      setIsCategorySelected = _useState4[1];
 
-  var _useState5 = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)(false),
+  var _useState5 = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)(null),
       _useState6 = _slicedToArray(_useState5, 2),
-      isCategorySelected = _useState6[0],
-      setIsCategorySelected = _useState6[1];
-
-  var _useState7 = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)(null),
-      _useState8 = _slicedToArray(_useState7, 2),
-      categoryId = _useState8[0],
-      setCategoryId = _useState8[1];
+      categoryId = _useState6[0],
+      setCategoryId = _useState6[1];
 
   var onHandleChange = function onHandleChange(event) {
     setData(event.target.name, event.target.type === 'checkbox' ? event.target.checked : event.target.value);
@@ -8754,13 +8738,17 @@ function PostFormEdit(_ref) {
         }
       }
     })["catch"](function (error) {
-      if (error.response) {
+      if (error.post_body) {
+        setError(error.post_body);
+      } else if (error.category_id) {
+        setError(error.category_id);
+      } else if (error.response) {
         setError(error.response.data.message);
-        setDisplayError(true);
-        setTimeout(function () {
-          setDisplayError(false);
-        }, 5000);
       }
+
+      setTimeout(function () {
+        setError(null);
+      }, 7000);
     });
   };
 
@@ -8795,7 +8783,7 @@ function PostFormEdit(_ref) {
       className: "mt-1 mr-1",
       processing: processing,
       children: "Submit"
-    }), displayError && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("p", {
+    }), error && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("p", {
       className: "bg-red-500/75 text-white mt-2 p-2 w-fit rounded-lg",
       children: error
     })]

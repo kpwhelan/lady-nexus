@@ -92,7 +92,7 @@ function Comment({ posts,
 
   return (
     <>
-    <div className="px-6 py-4">
+    <div className="md:px-6 py-4">
         <div className='bg-white rounded-lg p-2 max-w-full'>
             <div className='flex items-center'>
                 <ProfilePicture profilePictureUrl={comment.user.temp_profile_picture_url} className={'h-12 w-12 mr-2'} defaultSize="2x" />
@@ -100,7 +100,7 @@ function Comment({ posts,
                 <p className='text-xs ml-2'>{calcualateTimeStamp(comment.created_at)}</p>
             </div>
             <div className='mt-2'>
-                <p className="text-gray-700 text-md ml-2">{comment.comment}</p>
+                <p className="text-gray-700 text-md ml-2 overflow-auto">{comment.comment}</p>
             </div>
         </div>
 

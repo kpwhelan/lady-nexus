@@ -66,6 +66,7 @@ Route::prefix('posts')->middleware(['auth', 'verified'])->group(function() {
     Route::post('/toggle-like', [PostsController::class, 'toggleLike']);
     Route::get('my-likes', [PostsController::class, 'getMyLikesPage'])->name('my-likes');
     Route::get('/fetch-more-liked-posts', [PostsController::class, 'fetchMoreLikedPosts']);
+    Route::get('user-profile-posts', [PostsController::class, 'getUserProfilePosts'])->name('get-user-profile-posts');
 });
 
 //Need to add auth middleware once front end complete

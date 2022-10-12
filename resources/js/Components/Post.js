@@ -7,6 +7,7 @@ import CommentsContainer from './CommentsContainer'
 import Modal from './Modal';
 import PostFormEdit from './PostFormEdit';
 import ProfilePicture from './ProfilePicture';
+import UserProfile from './UserProfile';
 
 function Post({ post, className, dashboardPosts, myPosts, updatePosts, currentUser, updatePostsForMyPosts, categories }) {
     const [showComments, setShowComments] = useState(false);
@@ -20,6 +21,8 @@ function Post({ post, className, dashboardPosts, myPosts, updatePosts, currentUs
     const [isPostLikeByUser, setIsPostLikedByUser] = useState(false);
     const [likeCount, setLikeCount] = useState(0);
     const [error, setError] = useState(null);
+    const [displayUserProfile, setDisplayUserProfile] = useState(false);
+    const [profileUser, setProfileUser] = useState(null);
 
     useEffect(() => {
         if (post.post_likes.find(like => like.user_id == currentUser.id)) {
@@ -145,15 +148,21 @@ function Post({ post, className, dashboardPosts, myPosts, updatePosts, currentUs
         });
     }
 
+    const toggleSetDisplayUserProfile = () => {
+        setProfileUser(post.user);
+
+        displayUserProfile ? setDisplayUserProfile(false) : setDisplayUserProfile(true);
+    }
+
     return (
         <>
         <div className={`max-h-[40rem] w-100 bg-white rounded overflow-scroll shadow-lg m-5 transition ease-in-out delay-110 hover:-translate-y-2 hover:scale-102 ${className}`}>
-            <div className="px-6 py-4">
+            <div className="p-2 md:px-6 py-4">
                 <div className="font-bold text-xl mb-2">
                     <div className='flex'>
                         <ProfilePicture profilePictureUrl={post.user.temp_profile_picture_url} className={'h-12 w-12 mr-2'} defaultSize="1x" />
                         <div>
-                            <p>{post.user.username}</p>
+                            <p onClick={toggleSetDisplayUserProfile} className='underline cursor-pointer'>{post.user.username}</p>
                             <p className='text-sm font-normal'>{new Date(post.created_at).toLocaleDateString('en-us', { year:"numeric", month:"short", day:"numeric", hour:"numeric", minute:"numeric"})}</p>
                         </div>
                     </div>
@@ -215,6 +224,10 @@ function Post({ post, className, dashboardPosts, myPosts, updatePosts, currentUs
 
         {modalOpen &&
             <Modal isModalOpen={modalOpen} toggleModal={toggleSetModalOpen} deletePost={deletePost} deleteComment={deleteComment} deleteSubComment={deleteSubComment} whatWeAreDeleting={whatWeAreDeleting} />
+        }
+
+        {displayUserProfile &&
+            <UserProfile currentUser={currentUser} user={profileUser} toggleSetDisplayUserProfile={toggleSetDisplayUserProfile} />
         }
         </>
     )

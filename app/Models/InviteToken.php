@@ -10,6 +10,7 @@ class InviteToken extends Model {
 
     protected $fillable = [
         'token',
-        'email'
+        'email',
+        'active'
     ];
 }

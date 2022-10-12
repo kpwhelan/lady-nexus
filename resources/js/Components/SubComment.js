@@ -66,7 +66,7 @@ function SubComment({ subComment,
     }
 
   return (
-    <div key={`sub_comment_${subComment.id}`} id={subComment.id} className="rounded-lg px-2 py-1 max-w-fit my-2">
+    <div key={`sub_comment_${subComment.id}`} id={subComment.id} className="rounded-lg md:px-2 py-1 md:max-w-fit my-2">
         <div className='flex flex-wrap'>
             <div className='flex items-center'>
                 <ProfilePicture defaultSize="2x" profilePictureUrl={subComment.user.temp_profile_picture_url} className={'h-12 w-12 mr-2'} />

@@ -7291,7 +7291,7 @@ function CommentsContainer(_ref) {
     }));
   }, [posts]);
   return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
-    className: "mx-10",
+    className: "mb:mx-10",
     children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_CommentInput__WEBPACK_IMPORTED_MODULE_2__["default"], {
       posts: posts,
       post_id: post_id,
@@ -9168,7 +9168,7 @@ function SubComment(_ref) {
 
   return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("div", {
     id: subComment.id,
-    className: "rounded-lg px-2 py-1 max-w-fit my-2",
+    className: "rounded-lg md:px-2 py-1 md:max-w-fit my-2",
     children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("div", {
       className: "flex flex-wrap",
       children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("div", {

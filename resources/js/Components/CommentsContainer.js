@@ -22,7 +22,7 @@ function CommentsContainer({
     }, [posts])
 
   return (
-    <div className='mx-10'>
+    <div className='mb:mx-10'>
         <CommentInput posts={posts} post_id={post_id} updatePosts={updatePosts} updatePostsForMyPosts={updatePostsForMyPosts} />
 
         {theComments.map(comment => (

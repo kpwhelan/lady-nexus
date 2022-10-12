@@ -56,7 +56,7 @@ function SubCommentInput({ posts, post_id, comment_id, updatePosts, updatePostsF
                 type="textarea"
                 name="sub_comment_body"
                 value={data.sub_comment_body}
-                className="w-2/3 rounded-lg h-10"
+                className="w-full md:w-2/3 rounded-lg h-10"
                 autoComplete="sub_comment_body"
                 isFocused={false}
                 handleChange={onHandleChange}

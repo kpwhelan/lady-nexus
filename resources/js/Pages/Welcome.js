@@ -7,7 +7,7 @@ import imagewomen from '../../assets/landing-page-women.png';
 export default function Welcome(props) {
     return (
         <>
-            <Head title="LadyNexus" />
+            <Head title="Lady Nexus" />
             <LandingPageHeaderBar />
             <div className='p-4 md:flex justify-center items-center'>
                 <img src={imagewomen} className="w-100 md:w-6/12 max-h-1/5"></img>

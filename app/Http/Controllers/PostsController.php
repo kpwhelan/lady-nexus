@@ -109,26 +109,25 @@ class PostsController extends Controller {
         ]);
 
         $post = Post::with(['user', 'category', 'comments', 'comments.user', 'comments.sub_comments.user', 'comments.sub_comments', 'comments.sub_comments.user', 'comments.sub_comments.sub_comment_likes', 'comments.comment_likes', 'post_likes'])
-            ->find($request->post_id)
-            ->each(function ($post) {
-                if ($post->user->profile_picture_url) {
-                    $post->user->temp_profile_picture_url = Storage::temporaryUrl($post->user->profile_picture_url, now()->addHours(24));
+            ->find($request->post_id);
+
+        $post->each(function ($post) {
+            if ($post->user->profile_picture_url) {
+                $post->user->temp_profile_picture_url = Storage::temporaryUrl($post->user->profile_picture_url, now()->addHours(24));
+            }
+
+            $post->comments->each(function ($comment) {
+                if ($comment->user->profile_picture_url) {
+                    $comment->user->temp_profile_picture_url = Storage::temporaryUrl($comment->user->profile_picture_url, now()->addHours(24));
                 }
 
-                $post->comments->each(function ($comment) {
-                    if ($comment->user->profile_picture_url) {
-                        $comment->user->temp_profile_picture_url = Storage::temporaryUrl($comment->user->profile_picture_url, now()->addHours(24));
+                $comment->sub_comments->each(function ($sub_comment) {
+                    if ($sub_comment->user->profile_picture_url) {
+                        $sub_comment->user->temp_profile_picture_url = Storage::temporaryUrl($sub_comment->user->profile_picture_url, now()->addHours(24));
                     }
-
-                    $comment->sub_comments->each(function ($sub_comment) {
-                        if ($sub_comment->user->profile_picture_url) {
-                            $sub_comment->user->temp_profile_picture_url = Storage::temporaryUrl($sub_comment->user->profile_picture_url, now()->addHours(24));
-                        }
-                    });
                 });
             });
-
-
+        });
 
         if (!$post) {
             return response()->json(['message' => 'Something went wrong, please try again.'], 404);

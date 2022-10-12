@@ -10268,7 +10268,6 @@ function Register() {
           value: data.username,
           className: "mt-1 block w-full",
           autoComplete: "name",
-          isFocused: true,
           handleChange: onHandleChange,
           required: true
         })]

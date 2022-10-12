@@ -67,6 +67,10 @@ class RegisteredUserController extends Controller
 
         Auth::login($user);
 
+        InviteToken::where('token', $token->token)->update([
+            'active' => false
+        ]);
+
         return redirect(RouteServiceProvider::HOME);
     }
 }

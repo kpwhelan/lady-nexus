@@ -148,8 +148,8 @@ function Post({ post, className, dashboardPosts, myPosts, updatePosts, currentUs
         });
     }
 
-    const toggleSetDisplayUserProfile = () => {
-        setProfileUser(post.user);
+    const toggleSetDisplayUserProfile = (user) => {
+        setProfileUser(user);
 
         displayUserProfile ? setDisplayUserProfile(false) : setDisplayUserProfile(true);
     }
@@ -162,7 +162,7 @@ function Post({ post, className, dashboardPosts, myPosts, updatePosts, currentUs
                     <div className='flex'>
                         <ProfilePicture profilePictureUrl={post.user.temp_profile_picture_url} className={'h-12 w-12 mr-2'} defaultSize="1x" />
                         <div>
-                            <p onClick={toggleSetDisplayUserProfile} className='underline cursor-pointer'>{post.user.username}</p>
+                            <p onClick={() => toggleSetDisplayUserProfile(post.user)} className='underline cursor-pointer'>{post.user.username}</p>
                             <p className='text-sm font-normal'>{new Date(post.created_at).toLocaleDateString('en-us', { year:"numeric", month:"short", day:"numeric", hour:"numeric", minute:"numeric"})}</p>
                         </div>
                     </div>
@@ -216,6 +216,7 @@ function Post({ post, className, dashboardPosts, myPosts, updatePosts, currentUs
                         deleteSubCommentError={deleteSubCommentError}
                         commentIdToDelete={commentIdToDelete}
                         subCommentIdToDelete={subCommentIdToDelete}
+                        toggleSetDisplayUserProfile={toggleSetDisplayUserProfile}
                      />
                     <button className='bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 ml-6 mb-2 cursor-pointer transition ease-in-out delay-110 hover:-translate-y-1 hover:scale-110 hover:bg-sage hover:text-white duration-300"' onClick={toggleSetShowComment}>Hide Comments</button>
                 </>

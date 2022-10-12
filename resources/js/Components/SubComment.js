@@ -12,7 +12,8 @@ function SubComment({ subComment,
     updatePosts,
     updatePostsForMyPosts,
     deleteSubCommentError,
-    subCommentIdToDelete
+    subCommentIdToDelete,
+    toggleSetDisplayUserProfile
  }) {
     const [isSubCommentLikedByUser, setIsSubCommentLikedByUser] = useState(false);
     const [subCommentLikeCount, setSubCommentLikeCount] = useState(0);
@@ -70,7 +71,7 @@ function SubComment({ subComment,
         <div className='flex flex-wrap'>
             <div className='flex items-center'>
                 <ProfilePicture defaultSize="2x" profilePictureUrl={subComment.user.temp_profile_picture_url} className={'h-12 w-12 mr-2'} />
-                <p className='text-sm'>{subComment.user.username}</p>
+                <p className='text-sm underline cursor-pointer' onClick={() => toggleSetDisplayUserProfile(subComment.user)}>{subComment.user.username}</p>
                 <p className='text-xs ml-2'>{calcualateTimeStamp(subComment.created_at)}</p>
             </div>
         </div>

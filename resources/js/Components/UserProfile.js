@@ -33,7 +33,7 @@ function UserProfile({ user, toggleSetDisplayUserProfile, currentUser }) {
   return (
     <div className="fixed top-20 bottom-2 right-2 left-2 md:inset-3 bg-sage/70 backdrop-blur-sm">
         <div className='overflow-scroll md:flex fixed inset-2 md:inset-4 md:top-16 md:bottom-16 md:left-48 md:right-48 bg-white/80 md:p-5'>
-        <div onClick={toggleSetDisplayUserProfile} className="cursor-pointer">
+        <div onClick={toggleSetDisplayUserProfile} className="cursor-pointer fixed top-6 right-6 md:static">
             <FontAwesomeIcon icon={faX} />
         </div>
             <div className='bg-white md:h-full p-2 md:ml-auto'>

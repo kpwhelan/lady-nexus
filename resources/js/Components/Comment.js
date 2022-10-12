@@ -7,6 +7,7 @@ import CommentInputEdit from './CommentInputEdit';
 import SubCommentInput from './SubCommentInput';
 import SubComment from './SubComment';
 import ProfilePicture from './ProfilePicture';
+import UserProfile from './UserProfile';
 
 function Comment({ posts,
     comment,
@@ -18,6 +19,7 @@ function Comment({ posts,
     subCommentIdToDelete,
     deleteCommentError,
     deleteSubCommentError,
+    toggleSetDisplayUserProfile
      }) {
     const [user, setUser] = useState([]);
     const [displayEditBox, setDisplayEditBox] = useState(false);
@@ -26,6 +28,8 @@ function Comment({ posts,
     const [likeCount, setLikeCount] = useState(0);
     const [displaySubComments, setDisplaySubComments] = useState(false);
     const [theSubComments, setTheSubComments] = useState([]);
+    const [displayUserProfile, setDisplayUserProfile] = useState(false);
+    const [profileUser, setProfileUser] = useState(null);
 
     useEffect(() => {
         setTheSubComments(comment.sub_comments.sort((a,b) => a.id - b.id));
@@ -96,7 +100,7 @@ function Comment({ posts,
         <div className='bg-white rounded-lg p-2 max-w-full'>
             <div className='flex items-center'>
                 <ProfilePicture profilePictureUrl={comment.user.temp_profile_picture_url} className={'h-12 w-12 mr-2'} defaultSize="2x" />
-                <p className='text-sm'>{user.username}</p>
+                <p onClick={() => toggleSetDisplayUserProfile(user)} className='text-sm underline cursor-pointer'>{user.username}</p>
                 <p className='text-xs ml-2'>{calcualateTimeStamp(comment.created_at)}</p>
             </div>
             <div className='mt-2'>
@@ -145,6 +149,7 @@ function Comment({ posts,
                             updatePostsForMyPosts={updatePostsForMyPosts}
                             subCommentIdToDelete={subCommentIdToDelete}
                             deleteSubCommentError={deleteSubCommentError}
+                            toggleSetDisplayUserProfile={toggleSetDisplayUserProfile}
                         />
                     ))}
                 </div>

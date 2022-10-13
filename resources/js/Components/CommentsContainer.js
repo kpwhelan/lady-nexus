@@ -13,7 +13,9 @@ function CommentsContainer({
     deleteSubCommentError,
     commentIdToDelete,
     subCommentIdToDelete,
-    toggleSetDisplayUserProfile
+    toggleSetDisplayUserProfile,
+    follow,
+    unfollow
 }) {
     //you did this because every time the modal for deletion came up it was reversing the comments
     const [theComments, setTheComments] = useState([]);

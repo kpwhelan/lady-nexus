@@ -20,7 +20,9 @@ class User extends Authenticatable {
         'password',
         'username',
         'active',
-        'profile_picture_url'
+        'profile_picture_url',
+        'follows',
+        'followed_by'
     ];
 
     protected $hidden = [
@@ -30,10 +32,14 @@ class User extends Authenticatable {
 
     protected $casts = [
         'email_verified_at' => 'datetime',
+        'follows' => 'array',
+        'followed_by' => 'array'
     ];
 
     protected $attributes = [
-        'active' => true
+        'active' => true,
+        'follows' => [],
+        'followed_by' => [],
     ];
 
     public function posts(): HasMany {

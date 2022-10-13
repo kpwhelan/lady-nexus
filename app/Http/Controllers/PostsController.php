@@ -6,6 +6,7 @@ use App\Models\Category;
 use App\Models\Comment;
 use App\Models\Post;
 use App\Models\PostLike;
+use App\Models\User;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -304,6 +305,7 @@ class PostsController extends Controller {
     public function getUserProfilePosts(Request $request) {
         $limit = $request->limit;
         $user_id = $request->user_id;
+        $user_post_count = count(User::find($user_id)->posts);
 
         $posts = Post::with(['user', 'category', 'comments', 'comments.user', 'comments.sub_comments.user', 'comments.sub_comments', 'comments.sub_comments.user', 'comments.sub_comments.sub_comment_likes', 'comments.comment_likes', 'post_likes'])
             ->where('user_id', $user_id)
@@ -330,7 +332,7 @@ class PostsController extends Controller {
 
 
         return response()->json([
-            'posts' => $posts
+            'posts' => $posts,
         ]);
     }
 }

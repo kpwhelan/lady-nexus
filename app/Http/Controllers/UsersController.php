@@ -38,4 +38,47 @@ class UsersController extends Controller {
 
         return redirect(route('my-account'));
     }
+
+    public function follow(Request $request) {
+        $user_id_to_follow = $request->user_id_to_follow;
+
+        $user = User::find(Auth::user()->id);
+        $user_to_follow = User::find($user_id_to_follow);
+
+        $current_follows = $user->follows;
+        // $current_follows[] = $user_id_to_follow;
+        array_push($current_follows, $user_id_to_follow);
+
+        $user->update([
+            'follows' => $current_follows
+        ]);
+
+        $user_to_follow_current_followers = $user_to_follow->followed_by;
+        $user_to_follow_current_followers[] = $user->id;
+
+        $user_to_follow->update([
+            'followed_by' => $user_to_follow_current_followers
+        ]);
+    }
+
+    public function unfollow(Request $request) {
+        $user_id_to_unfollow = $request->user_id_to_unfollow;
+
+        $user = User::find(Auth::user()->id);
+        $user_to_unfollow = User::find($user_id_to_unfollow);
+
+        $current_follows = $user->follows;
+        unset($current_follows[array_search($user_id_to_unfollow, $current_follows)]);
+
+        $user->update([
+            'follows' => $current_follows
+        ]);
+
+        $user_to_unfollow_current_followers = $user_to_unfollow->followed_by;
+        unset($user_to_unfollow_current_followers[array_search($user->id, $user_to_unfollow_current_followers)]);
+
+        $user_to_unfollow->update([
+            'followed_by' => $user_to_unfollow_current_followers
+        ]);
+    }
 }

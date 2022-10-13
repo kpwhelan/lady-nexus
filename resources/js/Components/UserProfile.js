@@ -4,7 +4,7 @@ import ProfilePicture from './ProfilePicture';
 import { faX } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
-function UserProfile({ user, toggleSetDisplayUserProfile, currentUser }) {
+function UserProfile({ user, toggleSetDisplayUserProfile, currentUser, categories }) {
     const [limit, setLimit] = useState(20);
     const [posts, setPosts] = useState([]);
 
@@ -45,7 +45,7 @@ function UserProfile({ user, toggleSetDisplayUserProfile, currentUser }) {
             <div className="md:mr-auto overflow-scroll bg-white md:h-full md:p-2 w-5/5 md:w-3/5 md:max-w-3/5" onScroll={handleScroll}>
                 {posts ? (
                     posts.map(post => (
-                        <Post key={`profile_post_${post.id}`} post={post} currentUser={currentUser} />
+                        <Post key={`profile_post_${post.id}`} post={post} currentUser={currentUser} categories={categories} />
                     ))
                 )
                 :

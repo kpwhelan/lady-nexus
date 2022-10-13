@@ -91,6 +91,8 @@ Route::prefix('account')->middleware(['auth', 'verified'])->group(function() {
 
 Route::prefix('user')->middleware(['auth', 'verified'])->group(function() {
     Route::post('upload-profile-picture', [UsersController::class, 'uploadProfilePicture'])->name('upload-profile-picture');
+    Route::post('follow', [UsersController::class, 'follow'])->name('follow');
+    Route::post('unfollow', [UsersController::class, 'unfollow'])->name('unfollow');
 });
 
 Route::post('/invite', [InviteController::class, 'sendInvite'])->name('send-invite');

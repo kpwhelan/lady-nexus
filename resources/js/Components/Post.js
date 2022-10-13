@@ -1,5 +1,7 @@
 import { faHeart } from '@fortawesome/free-regular-svg-icons';
 import { faHeart as faHeartSolid } from '@fortawesome/free-solid-svg-icons';
+import { faHandshake as faHandshakeSolid  } from '@fortawesome/free-solid-svg-icons';
+import { faHandshake } from '@fortawesome/free-regular-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import axios from 'axios';
 import React, { useEffect, useState } from 'react'
@@ -23,10 +25,20 @@ function Post({ post, className, dashboardPosts, myPosts, updatePosts, currentUs
     const [error, setError] = useState(null);
     const [displayUserProfile, setDisplayUserProfile] = useState(false);
     const [profileUser, setProfileUser] = useState(null);
+    const [isFollowedByUser, setIsFollowedByUser] = useState(false);
+    const [displayFollowButton, setDisplayFollowButton] = useState(false);
 
     useEffect(() => {
         if (post.post_likes.find(like => like.user_id == currentUser.id)) {
             setIsPostLikedByUser(true)
+        }
+
+        if (post.user.id != currentUser.id) {
+            if (post.user.followed_by?.find(follower => follower == currentUser.id)) {
+                setIsFollowedByUser(true);
+            }
+
+            setDisplayFollowButton(true);
         }
 
         setLikeCount(post.post_likes.length)
@@ -154,9 +166,39 @@ function Post({ post, className, dashboardPosts, myPosts, updatePosts, currentUs
         displayUserProfile ? setDisplayUserProfile(false) : setDisplayUserProfile(true);
     }
 
+    const follow = () => {
+        axios.post(route('follow'), {
+            user_id_to_follow: post.user.id
+        }).then(() => {
+            setIsFollowedByUser(true)
+        })
+    }
+
+    const unfollow = () => {
+        axios.post(route('unfollow'), {
+            user_id_to_unfollow: post.user.id
+        }).then(() => {
+            setIsFollowedByUser(false)
+        })
+    }
+
     return (
         <>
         <div className={`max-h-[40rem] w-100 bg-white rounded overflow-scroll shadow-lg m-5 transition ease-in-out delay-110 hover:-translate-y-2 hover:scale-102 ${className}`}>
+            {(isFollowedByUser && displayFollowButton) &&
+                <div className='float-right mr-2 mt-2 cursor-pointer text-center' onClick={unfollow}>
+                    <FontAwesomeIcon icon={faHandshakeSolid} size={'2x'} />
+                    <p className='text-xs'>Following</p>
+                </div>
+            }
+
+            {(displayFollowButton && !isFollowedByUser) &&
+                <div className='float-right mr-2 mt-2 cursor-pointer text-center' onClick={follow}>
+                    <FontAwesomeIcon icon={faHandshake} size={'2x'} />
+                    <p className='text-xs'>Follow</p>
+                </div>
+            }
+
             <div className="p-2 md:px-6 py-4">
                 <div className="font-bold text-xl mb-2">
                     <div className='flex'>
@@ -228,7 +270,7 @@ function Post({ post, className, dashboardPosts, myPosts, updatePosts, currentUs
         }
 
         {displayUserProfile &&
-            <UserProfile currentUser={currentUser} user={profileUser} toggleSetDisplayUserProfile={toggleSetDisplayUserProfile} />
+            <UserProfile currentUser={currentUser} categories={categories} user={profileUser} toggleSetDisplayUserProfile={toggleSetDisplayUserProfile} />
         }
         </>
     )

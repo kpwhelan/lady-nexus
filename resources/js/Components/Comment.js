@@ -1,5 +1,7 @@
 import { faHeart } from '@fortawesome/free-regular-svg-icons';
 import { faHeart as faHeartSolid } from '@fortawesome/free-solid-svg-icons';
+import { faHandshake as faHandshakeSolid  } from '@fortawesome/free-solid-svg-icons';
+import { faHandshake } from '@fortawesome/free-regular-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React, { useEffect, useState } from 'react'
 import axios from 'axios'
@@ -7,7 +9,6 @@ import CommentInputEdit from './CommentInputEdit';
 import SubCommentInput from './SubCommentInput';
 import SubComment from './SubComment';
 import ProfilePicture from './ProfilePicture';
-import UserProfile from './UserProfile';
 
 function Comment({ posts,
     comment,
@@ -19,7 +20,7 @@ function Comment({ posts,
     subCommentIdToDelete,
     deleteCommentError,
     deleteSubCommentError,
-    toggleSetDisplayUserProfile
+    toggleSetDisplayUserProfile,
      }) {
     const [user, setUser] = useState([]);
     const [displayEditBox, setDisplayEditBox] = useState(false);
@@ -28,8 +29,8 @@ function Comment({ posts,
     const [likeCount, setLikeCount] = useState(0);
     const [displaySubComments, setDisplaySubComments] = useState(false);
     const [theSubComments, setTheSubComments] = useState([]);
-    const [displayUserProfile, setDisplayUserProfile] = useState(false);
-    const [profileUser, setProfileUser] = useState(null);
+    const [isFollowedByUser, setIsFollowedByUser] = useState(false);
+    const [displayFollowButton, setDisplayFollowButton] = useState(false);
 
     useEffect(() => {
         setTheSubComments(comment.sub_comments.sort((a,b) => a.id - b.id));
@@ -41,6 +42,14 @@ function Comment({ posts,
         }
 
         setLikeCount(comment.comment_likes.length)
+
+        if (comment.user.id != currentUser.id) {
+            if (comment.user.followed_by?.find(follower => follower == currentUser.id)) {
+                setIsFollowedByUser(true);
+            }
+
+            setDisplayFollowButton(true);
+        }
     }, [])
 
     useEffect(() => {
@@ -94,10 +103,40 @@ function Comment({ posts,
         }
     }
 
+    const follow = () => {
+        axios.post(route('follow'), {
+            user_id_to_follow: comment.user.id
+        }).then(() => {
+            setIsFollowedByUser(true)
+        })
+    }
+
+    const unfollow = () => {
+        axios.post(route('unfollow'), {
+            user_id_to_unfollow: comment.user.id
+        }).then(() => {
+            setIsFollowedByUser(false)
+        })
+    }
+
   return (
     <>
     <div className="md:px-6 py-4">
         <div className='bg-white rounded-lg p-2 max-w-full'>
+            {(isFollowedByUser && displayFollowButton) &&
+                <div className='float-right mr-2 mt-2 cursor-pointer text-center' onClick={unfollow}>
+                    <FontAwesomeIcon icon={faHandshakeSolid} size={'1x'} />
+                    <p className='text-xs'>Following</p>
+                </div>
+            }
+
+            {(displayFollowButton && !isFollowedByUser) &&
+                <div className='float-right mr-2 mt-2 cursor-pointer text-center' onClick={follow}>
+                    <FontAwesomeIcon icon={faHandshake} size={'1x'} />
+                    <p className='text-xs'>Follow</p>
+                </div>
+            }
+
             <div className='flex items-center'>
                 <ProfilePicture profilePictureUrl={comment.user.temp_profile_picture_url} className={'h-12 w-12 mr-2'} defaultSize="2x" />
                 <p onClick={() => toggleSetDisplayUserProfile(user)} className='text-sm underline cursor-pointer'>{user.username}</p>

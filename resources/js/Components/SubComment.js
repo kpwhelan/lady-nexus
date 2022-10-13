@@ -1,5 +1,7 @@
 import { faHeart } from '@fortawesome/free-regular-svg-icons';
 import { faHeart as faHeartSolid } from '@fortawesome/free-solid-svg-icons';
+import { faHandshake as faHandshakeSolid  } from '@fortawesome/free-solid-svg-icons';
+import { faHandshake } from '@fortawesome/free-regular-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React, { useEffect, useState } from 'react'
 import ProfilePicture from './ProfilePicture';
@@ -13,12 +15,14 @@ function SubComment({ subComment,
     updatePostsForMyPosts,
     deleteSubCommentError,
     subCommentIdToDelete,
-    toggleSetDisplayUserProfile
+    toggleSetDisplayUserProfile,
  }) {
     const [isSubCommentLikedByUser, setIsSubCommentLikedByUser] = useState(false);
     const [subCommentLikeCount, setSubCommentLikeCount] = useState(0);
     const [displayEditBox, setDisplayEditBox] = useState(false);
     const [error, setError] = useState(null);
+    const [isFollowedByUser, setIsFollowedByUser] = useState(false);
+    const [displayFollowButton, setDisplayFollowButton] = useState(false);
 
     useEffect(() => {
         if (subComment.sub_comment_likes.find(like => like.user_id == currentUser.id)) {
@@ -26,6 +30,14 @@ function SubComment({ subComment,
         }
 
         setSubCommentLikeCount(subComment.sub_comment_likes.length)
+
+        if (subComment.user.id != currentUser.id) {
+            if (subComment.user.followed_by?.find(follower => follower == currentUser.id)) {
+                setIsFollowedByUser(true);
+            }
+
+            setDisplayFollowButton(true);
+        }
     }, [])
 
     useEffect(() => {
@@ -66,8 +78,37 @@ function SubComment({ subComment,
         }
     }
 
+    const follow = () => {
+        axios.post(route('follow'), {
+            user_id_to_follow: subComment.user.id
+        }).then(() => {
+            setIsFollowedByUser(true)
+        })
+    }
+
+    const unfollow = () => {
+        axios.post(route('unfollow'), {
+            user_id_to_unfollow: subComment.user.id
+        }).then(() => {
+            setIsFollowedByUser(false)
+        })
+    }
+
   return (
-    <div key={`sub_comment_${subComment.id}`} id={subComment.id} className="rounded-lg md:px-2 py-1 md:max-w-fit my-2">
+    <div key={`sub_comment_${subComment.id}`} id={subComment.id} className="rounded-lg md:px-2 py-1 w-2/3 my-2 border-2 border-stone-50">
+        {(isFollowedByUser && displayFollowButton) &&
+            <div className='float-right mr-2 mt-2 cursor-pointer text-center' onClick={unfollow}>
+                <FontAwesomeIcon icon={faHandshakeSolid} size={'1x'} />
+                <p className='text-xs'>Following</p>
+            </div>
+        }
+
+        {(displayFollowButton && !isFollowedByUser) &&
+            <div className='float-right mr-2 mt-2 cursor-pointer text-center' onClick={follow}>
+                <FontAwesomeIcon icon={faHandshake} size={'1x'} />
+                <p className='text-xs'>Follow</p>
+            </div>
+        }
         <div className='flex flex-wrap'>
             <div className='flex items-center'>
                 <ProfilePicture defaultSize="2x" profilePictureUrl={subComment.user.temp_profile_picture_url} className={'h-12 w-12 mr-2'} />
@@ -76,7 +117,7 @@ function SubComment({ subComment,
             </div>
         </div>
         <div>
-            <p className="text-gray-700 text-md ml-3">{subComment.sub_comment}</p>
+            <p className="text-gray-700 text-md ml-3 mt-1">{subComment.sub_comment}</p>
         </div>
 
         <div className='flex items-center mt-2 ml-2'>

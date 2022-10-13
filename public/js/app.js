@@ -6707,8 +6707,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
-/* harmony import */ var _fortawesome_free_regular_svg_icons__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! @fortawesome/free-regular-svg-icons */ "./node_modules/@fortawesome/free-regular-svg-icons/index.mjs");
-/* harmony import */ var _fortawesome_free_solid_svg_icons__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! @fortawesome/free-solid-svg-icons */ "./node_modules/@fortawesome/free-solid-svg-icons/index.mjs");
+/* harmony import */ var _fortawesome_free_regular_svg_icons__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! @fortawesome/free-regular-svg-icons */ "./node_modules/@fortawesome/free-regular-svg-icons/index.mjs");
+/* harmony import */ var _fortawesome_free_solid_svg_icons__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! @fortawesome/free-solid-svg-icons */ "./node_modules/@fortawesome/free-solid-svg-icons/index.mjs");
 /* harmony import */ var _fortawesome_react_fontawesome__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @fortawesome/react-fontawesome */ "./node_modules/@fortawesome/react-fontawesome/index.es.js");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
@@ -6717,8 +6717,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _SubCommentInput__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./SubCommentInput */ "./resources/js/Components/SubCommentInput.js");
 /* harmony import */ var _SubComment__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./SubComment */ "./resources/js/Components/SubComment.js");
 /* harmony import */ var _ProfilePicture__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./ProfilePicture */ "./resources/js/Components/ProfilePicture.js");
-/* harmony import */ var _UserProfile__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./UserProfile */ "./resources/js/Components/UserProfile.js");
-/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
+/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
 function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
 
 function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
@@ -6730,6 +6729,7 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
 function _iterableToArrayLimit(arr, i) { var _i = arr == null ? null : typeof Symbol !== "undefined" && arr[Symbol.iterator] || arr["@@iterator"]; if (_i == null) return; var _arr = []; var _n = true; var _d = false; var _s, _e; try { for (_i = _i.call(arr); !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
 
 function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
+
 
 
 
@@ -6795,13 +6795,13 @@ function Comment(_ref) {
 
   var _useState15 = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)(false),
       _useState16 = _slicedToArray(_useState15, 2),
-      displayUserProfile = _useState16[0],
-      setDisplayUserProfile = _useState16[1];
+      isFollowedByUser = _useState16[0],
+      setIsFollowedByUser = _useState16[1];
 
-  var _useState17 = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)(null),
+  var _useState17 = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)(false),
       _useState18 = _slicedToArray(_useState17, 2),
-      profileUser = _useState18[0],
-      setProfileUser = _useState18[1];
+      displayFollowButton = _useState18[0],
+      setDisplayFollowButton = _useState18[1];
 
   (0,react__WEBPACK_IMPORTED_MODULE_1__.useEffect)(function () {
     setTheSubComments(comment.sub_comments.sort(function (a, b) {
@@ -6816,6 +6816,18 @@ function Comment(_ref) {
     }
 
     setLikeCount(comment.comment_likes.length);
+
+    if (comment.user.id != currentUser.id) {
+      var _comment$user$followe;
+
+      if ((_comment$user$followe = comment.user.followed_by) !== null && _comment$user$followe !== void 0 && _comment$user$followe.find(function (follower) {
+        return follower == currentUser.id;
+      })) {
+        setIsFollowedByUser(true);
+      }
+
+      setDisplayFollowButton(true);
+    }
   }, []);
   (0,react__WEBPACK_IMPORTED_MODULE_1__.useEffect)(function () {
     if (comment.id == commentIdToDelete) {
@@ -6868,82 +6880,118 @@ function Comment(_ref) {
     }
   };
 
-  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)(react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.Fragment, {
-    children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsxs)("div", {
+  var follow = function follow() {
+    axios__WEBPACK_IMPORTED_MODULE_2___default().post(route('follow'), {
+      user_id_to_follow: comment.user.id
+    }).then(function () {
+      setIsFollowedByUser(true);
+    });
+  };
+
+  var unfollow = function unfollow() {
+    axios__WEBPACK_IMPORTED_MODULE_2___default().post(route('unfollow'), {
+      user_id_to_unfollow: comment.user.id
+    }).then(function () {
+      setIsFollowedByUser(false);
+    });
+  };
+
+  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)(react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.Fragment, {
+    children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsxs)("div", {
       className: "md:px-6 py-4",
-      children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsxs)("div", {
+      children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsxs)("div", {
         className: "bg-white rounded-lg p-2 max-w-full",
-        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsxs)("div", {
+        children: [isFollowedByUser && displayFollowButton && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsxs)("div", {
+          className: "float-right mr-2 mt-2 cursor-pointer text-center",
+          onClick: unfollow,
+          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)(_fortawesome_react_fontawesome__WEBPACK_IMPORTED_MODULE_0__.FontAwesomeIcon, {
+            icon: _fortawesome_free_solid_svg_icons__WEBPACK_IMPORTED_MODULE_8__.faHandshake,
+            size: '1x'
+          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("p", {
+            className: "text-xs",
+            children: "Following"
+          })]
+        }), displayFollowButton && !isFollowedByUser && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsxs)("div", {
+          className: "float-right mr-2 mt-2 cursor-pointer text-center",
+          onClick: follow,
+          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)(_fortawesome_react_fontawesome__WEBPACK_IMPORTED_MODULE_0__.FontAwesomeIcon, {
+            icon: _fortawesome_free_regular_svg_icons__WEBPACK_IMPORTED_MODULE_9__.faHandshake,
+            size: '1x'
+          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("p", {
+            className: "text-xs",
+            children: "Follow"
+          })]
+        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsxs)("div", {
           className: "flex items-center",
-          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)(_ProfilePicture__WEBPACK_IMPORTED_MODULE_6__["default"], {
+          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)(_ProfilePicture__WEBPACK_IMPORTED_MODULE_6__["default"], {
             profilePictureUrl: comment.user.temp_profile_picture_url,
             className: 'h-12 w-12 mr-2',
             defaultSize: "2x"
-          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)("p", {
+          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("p", {
             onClick: function onClick() {
               return toggleSetDisplayUserProfile(user);
             },
             className: "text-sm underline cursor-pointer",
             children: user.username
-          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)("p", {
+          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("p", {
             className: "text-xs ml-2",
             children: calcualateTimeStamp(comment.created_at)
           })]
-        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)("div", {
+        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("div", {
           className: "mt-2",
-          children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)("p", {
+          children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("p", {
             className: "text-gray-700 text-md ml-2 overflow-auto",
             children: comment.comment
           })
         })]
-      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsxs)("div", {
+      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsxs)("div", {
         className: "flex items-center mt-2",
-        children: [currentUser.id === comment.user_id && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsxs)("div", {
-          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)("button", {
+        children: [currentUser.id === comment.user_id && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsxs)("div", {
+          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("button", {
             id: comment.id,
             onClick: toggleSetDisplayEditBox,
             className: "text-xs mr-1",
             children: "Edit"
-          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)("button", {
+          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("button", {
             id: comment.id,
             "data-type": "comment",
             onClick: toggleSetModalOpen,
             className: "text-xs ml-1",
             children: "Delete"
-          }), error && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)("p", {
+          }), error && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("p", {
             className: "bg-red-500/75 text-white mt-2 p-2 w-fit rounded-lg",
             children: error
           })]
-        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsxs)("span", {
+        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsxs)("span", {
           onClick: toggleLikeComment,
           className: "cursor-pointer ml-2",
-          children: [isCommentLikeByUser ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)(_fortawesome_react_fontawesome__WEBPACK_IMPORTED_MODULE_0__.FontAwesomeIcon, {
-            icon: _fortawesome_free_solid_svg_icons__WEBPACK_IMPORTED_MODULE_9__.faHeart
-          }) : /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)(_fortawesome_react_fontawesome__WEBPACK_IMPORTED_MODULE_0__.FontAwesomeIcon, {
-            icon: _fortawesome_free_regular_svg_icons__WEBPACK_IMPORTED_MODULE_10__.faHeart
-          }), likeCount > 0 ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)("sub", {
+          children: [isCommentLikeByUser ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)(_fortawesome_react_fontawesome__WEBPACK_IMPORTED_MODULE_0__.FontAwesomeIcon, {
+            icon: _fortawesome_free_solid_svg_icons__WEBPACK_IMPORTED_MODULE_8__.faHeart
+          }) : /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)(_fortawesome_react_fontawesome__WEBPACK_IMPORTED_MODULE_0__.FontAwesomeIcon, {
+            icon: _fortawesome_free_regular_svg_icons__WEBPACK_IMPORTED_MODULE_9__.faHeart
+          }), likeCount > 0 ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("sub", {
             children: likeCount
           }) : null]
         })]
-      }), displayEditBox && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)(_CommentInputEdit__WEBPACK_IMPORTED_MODULE_3__["default"], {
+      }), displayEditBox && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)(_CommentInputEdit__WEBPACK_IMPORTED_MODULE_3__["default"], {
         posts: posts,
         existingComment: comment.comment,
         updatePosts: updatePosts,
         updatePostsForMyPosts: updatePostsForMyPosts,
         commentId: comment.id,
         toggleSetDisplayEditBox: toggleSetDisplayEditBox
-      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsxs)("div", {
+      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsxs)("div", {
         className: "ml-4",
-        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsxs)("p", {
+        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsxs)("p", {
           onClick: toggleSetDisplaySubComments,
           className: "text-sm cursor-pointer underline mt-4",
-          children: ["View replies ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsxs)("span", {
+          children: ["View replies ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsxs)("span", {
             children: ["(", comment.sub_comments.length, ")"]
           })]
-        }), comment.sub_comments.length > 0 && displaySubComments && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)("div", {
+        }), comment.sub_comments.length > 0 && displaySubComments && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("div", {
           className: "ml-2 mt-2",
           children: theSubComments.map(function (sub_comment) {
-            return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)(_SubComment__WEBPACK_IMPORTED_MODULE_5__["default"], {
+            return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)(_SubComment__WEBPACK_IMPORTED_MODULE_5__["default"], {
               posts: posts,
               toggleSetModalOpen: toggleSetModalOpen,
               subComment: sub_comment,
@@ -6956,7 +7004,7 @@ function Comment(_ref) {
             }, "sub_comment_".concat(sub_comment.id));
           })
         })]
-      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)(_SubCommentInput__WEBPACK_IMPORTED_MODULE_4__["default"], {
+      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)(_SubCommentInput__WEBPACK_IMPORTED_MODULE_4__["default"], {
         posts: posts,
         post_id: comment.post_id,
         comment_id: comment.id,
@@ -7295,7 +7343,9 @@ function CommentsContainer(_ref) {
       deleteSubCommentError = _ref.deleteSubCommentError,
       commentIdToDelete = _ref.commentIdToDelete,
       subCommentIdToDelete = _ref.subCommentIdToDelete,
-      toggleSetDisplayUserProfile = _ref.toggleSetDisplayUserProfile;
+      toggleSetDisplayUserProfile = _ref.toggleSetDisplayUserProfile,
+      follow = _ref.follow,
+      unfollow = _ref.unfollow;
 
   //you did this because every time the modal for deletion came up it was reversing the comments
   var _useState = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)([]),
@@ -8071,6 +8121,8 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
 
 
+
+
 function Post(_ref) {
   var post = _ref.post,
       className = _ref.className,
@@ -8146,11 +8198,33 @@ function Post(_ref) {
       profileUser = _useState26[0],
       setProfileUser = _useState26[1];
 
+  var _useState27 = (0,react__WEBPACK_IMPORTED_MODULE_2__.useState)(false),
+      _useState28 = _slicedToArray(_useState27, 2),
+      isFollowedByUser = _useState28[0],
+      setIsFollowedByUser = _useState28[1];
+
+  var _useState29 = (0,react__WEBPACK_IMPORTED_MODULE_2__.useState)(false),
+      _useState30 = _slicedToArray(_useState29, 2),
+      displayFollowButton = _useState30[0],
+      setDisplayFollowButton = _useState30[1];
+
   (0,react__WEBPACK_IMPORTED_MODULE_2__.useEffect)(function () {
     if (post.post_likes.find(function (like) {
       return like.user_id == currentUser.id;
     })) {
       setIsPostLikedByUser(true);
+    }
+
+    if (post.user.id != currentUser.id) {
+      var _post$user$followed_b;
+
+      if ((_post$user$followed_b = post.user.followed_by) !== null && _post$user$followed_b !== void 0 && _post$user$followed_b.find(function (follower) {
+        return follower == currentUser.id;
+      })) {
+        setIsFollowedByUser(true);
+      }
+
+      setDisplayFollowButton(true);
     }
 
     setLikeCount(post.post_likes.length);
@@ -8299,10 +8373,46 @@ function Post(_ref) {
     displayUserProfile ? setDisplayUserProfile(false) : setDisplayUserProfile(true);
   };
 
+  var follow = function follow() {
+    axios__WEBPACK_IMPORTED_MODULE_1___default().post(route('follow'), {
+      user_id_to_follow: post.user.id
+    }).then(function () {
+      setIsFollowedByUser(true);
+    });
+  };
+
+  var unfollow = function unfollow() {
+    axios__WEBPACK_IMPORTED_MODULE_1___default().post(route('unfollow'), {
+      user_id_to_unfollow: post.user.id
+    }).then(function () {
+      setIsFollowedByUser(false);
+    });
+  };
+
   return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsxs)(react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.Fragment, {
     children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsxs)("div", {
       className: "max-h-[40rem] w-100 bg-white rounded overflow-scroll shadow-lg m-5 transition ease-in-out delay-110 hover:-translate-y-2 hover:scale-102 ".concat(className),
-      children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsxs)("div", {
+      children: [isFollowedByUser && displayFollowButton && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsxs)("div", {
+        className: "float-right mr-2 mt-2 cursor-pointer text-center",
+        onClick: unfollow,
+        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)(_fortawesome_react_fontawesome__WEBPACK_IMPORTED_MODULE_0__.FontAwesomeIcon, {
+          icon: _fortawesome_free_solid_svg_icons__WEBPACK_IMPORTED_MODULE_9__.faHandshake,
+          size: '2x'
+        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)("p", {
+          className: "text-xs",
+          children: "Following"
+        })]
+      }), displayFollowButton && !isFollowedByUser && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsxs)("div", {
+        className: "float-right mr-2 mt-2 cursor-pointer text-center",
+        onClick: follow,
+        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)(_fortawesome_react_fontawesome__WEBPACK_IMPORTED_MODULE_0__.FontAwesomeIcon, {
+          icon: _fortawesome_free_regular_svg_icons__WEBPACK_IMPORTED_MODULE_10__.faHandshake,
+          size: '2x'
+        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)("p", {
+          className: "text-xs",
+          children: "Follow"
+        })]
+      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsxs)("div", {
         className: "p-2 md:px-6 py-4",
         children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)("div", {
           className: "font-bold text-xl mb-2",
@@ -8413,6 +8523,7 @@ function Post(_ref) {
       whatWeAreDeleting: whatWeAreDeleting
     }), displayUserProfile && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)(_UserProfile__WEBPACK_IMPORTED_MODULE_7__["default"], {
       currentUser: currentUser,
+      categories: categories,
       user: profileUser,
       toggleSetDisplayUserProfile: toggleSetDisplayUserProfile
     })]
@@ -9135,6 +9246,8 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
 
 
+
+
 function SubComment(_ref) {
   var subComment = _ref.subComment,
       currentUser = _ref.currentUser,
@@ -9166,6 +9279,16 @@ function SubComment(_ref) {
       error = _useState8[0],
       setError = _useState8[1];
 
+  var _useState9 = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)(false),
+      _useState10 = _slicedToArray(_useState9, 2),
+      isFollowedByUser = _useState10[0],
+      setIsFollowedByUser = _useState10[1];
+
+  var _useState11 = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)(false),
+      _useState12 = _slicedToArray(_useState11, 2),
+      displayFollowButton = _useState12[0],
+      setDisplayFollowButton = _useState12[1];
+
   (0,react__WEBPACK_IMPORTED_MODULE_1__.useEffect)(function () {
     if (subComment.sub_comment_likes.find(function (like) {
       return like.user_id == currentUser.id;
@@ -9174,6 +9297,18 @@ function SubComment(_ref) {
     }
 
     setSubCommentLikeCount(subComment.sub_comment_likes.length);
+
+    if (subComment.user.id != currentUser.id) {
+      var _subComment$user$foll;
+
+      if ((_subComment$user$foll = subComment.user.followed_by) !== null && _subComment$user$foll !== void 0 && _subComment$user$foll.find(function (follower) {
+        return follower == currentUser.id;
+      })) {
+        setIsFollowedByUser(true);
+      }
+
+      setDisplayFollowButton(true);
+    }
   }, []);
   (0,react__WEBPACK_IMPORTED_MODULE_1__.useEffect)(function () {
     if (subComment.id == subCommentIdToDelete) {
@@ -9212,10 +9347,46 @@ function SubComment(_ref) {
     }
   };
 
+  var follow = function follow() {
+    axios.post(route('follow'), {
+      user_id_to_follow: subComment.user.id
+    }).then(function () {
+      setIsFollowedByUser(true);
+    });
+  };
+
+  var unfollow = function unfollow() {
+    axios.post(route('unfollow'), {
+      user_id_to_unfollow: subComment.user.id
+    }).then(function () {
+      setIsFollowedByUser(false);
+    });
+  };
+
   return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("div", {
     id: subComment.id,
-    className: "rounded-lg md:px-2 py-1 md:max-w-fit my-2",
-    children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("div", {
+    className: "rounded-lg md:px-2 py-1 w-2/3 my-2 border-2 border-stone-50",
+    children: [isFollowedByUser && displayFollowButton && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("div", {
+      className: "float-right mr-2 mt-2 cursor-pointer text-center",
+      onClick: unfollow,
+      children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_fortawesome_react_fontawesome__WEBPACK_IMPORTED_MODULE_0__.FontAwesomeIcon, {
+        icon: _fortawesome_free_solid_svg_icons__WEBPACK_IMPORTED_MODULE_5__.faHandshake,
+        size: '1x'
+      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("p", {
+        className: "text-xs",
+        children: "Following"
+      })]
+    }), displayFollowButton && !isFollowedByUser && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("div", {
+      className: "float-right mr-2 mt-2 cursor-pointer text-center",
+      onClick: follow,
+      children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_fortawesome_react_fontawesome__WEBPACK_IMPORTED_MODULE_0__.FontAwesomeIcon, {
+        icon: _fortawesome_free_regular_svg_icons__WEBPACK_IMPORTED_MODULE_6__.faHandshake,
+        size: '1x'
+      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("p", {
+        className: "text-xs",
+        children: "Follow"
+      })]
+    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("div", {
       className: "flex flex-wrap",
       children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("div", {
         className: "flex items-center",
@@ -9236,7 +9407,7 @@ function SubComment(_ref) {
       })
     }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("div", {
       children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("p", {
-        className: "text-gray-700 text-md ml-3",
+        className: "text-gray-700 text-md ml-3 mt-1",
         children: subComment.sub_comment
       })
     }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("div", {
@@ -9621,7 +9792,8 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 function UserProfile(_ref) {
   var user = _ref.user,
       toggleSetDisplayUserProfile = _ref.toggleSetDisplayUserProfile,
-      currentUser = _ref.currentUser;
+      currentUser = _ref.currentUser,
+      categories = _ref.categories;
 
   var _useState = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(20),
       _useState2 = _slicedToArray(_useState, 2),
@@ -9695,7 +9867,8 @@ function UserProfile(_ref) {
         children: posts ? posts.map(function (post) {
           return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_Post__WEBPACK_IMPORTED_MODULE_1__["default"], {
             post: post,
-            currentUser: currentUser
+            currentUser: currentUser,
+            categories: categories
           }, "profile_post_".concat(post.id));
         }) : /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("div", {
           "class": "flex justify-center items-center",

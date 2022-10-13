@@ -376,7 +376,7 @@ class PostsController extends Controller {
     }
 
     public function getMyFollowPostsPage() {
-        $following_user_ids = User::find(Auth::user()->id)->follows;
+        $following_user_ids = User::find(Auth::user()->id)->follows ?? [];
         $categories = Category::all();
 
         $posts = Post::with(['user', 'category', 'comments', 'comments.user', 'comments.sub_comments.user', 'comments.sub_comments', 'comments.sub_comments.user', 'comments.sub_comments.sub_comment_likes', 'comments.comment_likes', 'post_likes'])

@@ -1,5 +1,7 @@
 import { faHeart } from '@fortawesome/free-regular-svg-icons';
 import { faHeart as faHeartSolid } from '@fortawesome/free-solid-svg-icons';
+import { faHandshake as faHandshakeSolid  } from '@fortawesome/free-solid-svg-icons';
+import { faHandshake } from '@fortawesome/free-regular-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import axios from 'axios';
 import React, { useEffect, useState } from 'react'
@@ -7,6 +9,7 @@ import CommentsContainer from './CommentsContainer'
 import Modal from './Modal';
 import PostFormEdit from './PostFormEdit';
 import ProfilePicture from './ProfilePicture';
+import UserProfile from './UserProfile';
 
 function Post({ post, className, dashboardPosts, myPosts, updatePosts, currentUser, updatePostsForMyPosts, categories }) {
     const [showComments, setShowComments] = useState(false);
@@ -20,10 +23,22 @@ function Post({ post, className, dashboardPosts, myPosts, updatePosts, currentUs
     const [isPostLikeByUser, setIsPostLikedByUser] = useState(false);
     const [likeCount, setLikeCount] = useState(0);
     const [error, setError] = useState(null);
+    const [displayUserProfile, setDisplayUserProfile] = useState(false);
+    const [profileUser, setProfileUser] = useState(null);
+    const [isFollowedByUser, setIsFollowedByUser] = useState(false);
+    const [displayFollowButton, setDisplayFollowButton] = useState(false);
 
     useEffect(() => {
         if (post.post_likes.find(like => like.user_id == currentUser.id)) {
             setIsPostLikedByUser(true)
+        }
+
+        if (post.user.id != currentUser.id) {
+            if (post.user.followed_by?.find(follower => follower == currentUser.id)) {
+                setIsFollowedByUser(true);
+            }
+
+            setDisplayFollowButton(true);
         }
 
         setLikeCount(post.post_likes.length)
@@ -145,15 +160,51 @@ function Post({ post, className, dashboardPosts, myPosts, updatePosts, currentUs
         });
     }
 
+    const toggleSetDisplayUserProfile = (user) => {
+        setProfileUser(user);
+
+        displayUserProfile ? setDisplayUserProfile(false) : setDisplayUserProfile(true);
+    }
+
+    const follow = () => {
+        axios.post(route('follow'), {
+            user_id_to_follow: post.user.id
+        }).then(() => {
+            setIsFollowedByUser(true)
+        })
+    }
+
+    const unfollow = () => {
+        axios.post(route('unfollow'), {
+            user_id_to_unfollow: post.user.id
+        }).then(() => {
+            setIsFollowedByUser(false)
+        })
+    }
+
     return (
         <>
         <div className={`max-h-[40rem] w-100 bg-white rounded overflow-scroll shadow-lg m-5 transition ease-in-out delay-110 hover:-translate-y-2 hover:scale-102 ${className}`}>
-            <div className="px-6 py-4">
+            {(isFollowedByUser && displayFollowButton) &&
+                <div className='float-right mr-2 mt-2 cursor-pointer text-center' onClick={unfollow}>
+                    <FontAwesomeIcon icon={faHandshakeSolid} size={'2x'} />
+                    <p className='text-xs'>Following</p>
+                </div>
+            }
+
+            {(displayFollowButton && !isFollowedByUser) &&
+                <div className='float-right mr-2 mt-2 cursor-pointer text-center' onClick={follow}>
+                    <FontAwesomeIcon icon={faHandshake} size={'2x'} />
+                    <p className='text-xs'>Follow</p>
+                </div>
+            }
+
+            <div className="p-2 md:px-6 py-4">
                 <div className="font-bold text-xl mb-2">
                     <div className='flex'>
                         <ProfilePicture profilePictureUrl={post.user.temp_profile_picture_url} className={'h-12 w-12 mr-2'} defaultSize="1x" />
                         <div>
-                            <p>{post.user.username}</p>
+                            <p onClick={() => toggleSetDisplayUserProfile(post.user)} className='underline cursor-pointer'>{post.user.username}</p>
                             <p className='text-sm font-normal'>{new Date(post.created_at).toLocaleDateString('en-us', { year:"numeric", month:"short", day:"numeric", hour:"numeric", minute:"numeric"})}</p>
                         </div>
                     </div>
@@ -207,6 +258,7 @@ function Post({ post, className, dashboardPosts, myPosts, updatePosts, currentUs
                         deleteSubCommentError={deleteSubCommentError}
                         commentIdToDelete={commentIdToDelete}
                         subCommentIdToDelete={subCommentIdToDelete}
+                        toggleSetDisplayUserProfile={toggleSetDisplayUserProfile}
                      />
                     <button className='bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 ml-6 mb-2 cursor-pointer transition ease-in-out delay-110 hover:-translate-y-1 hover:scale-110 hover:bg-sage hover:text-white duration-300"' onClick={toggleSetShowComment}>Hide Comments</button>
                 </>
@@ -215,6 +267,10 @@ function Post({ post, className, dashboardPosts, myPosts, updatePosts, currentUs
 
         {modalOpen &&
             <Modal isModalOpen={modalOpen} toggleModal={toggleSetModalOpen} deletePost={deletePost} deleteComment={deleteComment} deleteSubComment={deleteSubComment} whatWeAreDeleting={whatWeAreDeleting} />
+        }
+
+        {displayUserProfile &&
+            <UserProfile currentUser={currentUser} categories={categories} user={profileUser} toggleSetDisplayUserProfile={toggleSetDisplayUserProfile} />
         }
         </>
     )

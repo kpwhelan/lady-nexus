@@ -6,6 +6,7 @@ use App\Models\Category;
 use App\Models\Comment;
 use App\Models\Post;
 use App\Models\PostLike;
+use App\Models\User;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -144,12 +145,14 @@ class PostsController extends Controller {
     }
 
     public function retrieveMorePosts(Request $request) {
-        $offset = $request->offset;
+        $limit = $request->limit;
+        $current_posts_length = $request->current_posts_length;
+        $skip = $current_posts_length > 0 ? $current_posts_length : 0;
 
         $posts = Post::where('user_id', Auth::user()->id)
             ->with(['user', 'category', 'comments', 'comments.user', 'comments.sub_comments.user', 'comments.sub_comments', 'comments.sub_comments.user', 'comments.sub_comments.sub_comment_likes', 'comments.comment_likes', 'post_likes'])
-            ->offset($offset)
-            ->limit(20)
+            ->skip($skip)
+            ->limit($limit)
             ->orderBy('id', 'desc')
             ->get()
             ->each(function ($post) {
@@ -180,7 +183,6 @@ class PostsController extends Controller {
         $my_comment_count = Comment::where('user_id', Auth::user()->id)->count();
         $posts = Post::with(['user', 'category', 'comments', 'comments.user', 'comments.sub_comments.user', 'comments.sub_comments', 'comments.sub_comments.user', 'comments.sub_comments.sub_comment_likes', 'comments.comment_likes', 'post_likes'])
             ->where('user_id', Auth::user()->id)
-            ->offset($request->offset ? $request->offset : 0)
             ->limit(20)
             ->orderBy('id', 'desc')
             ->get()
@@ -242,12 +244,14 @@ class PostsController extends Controller {
     }
 
     public function getMoreLikedPosts(Request $request) {
-        $offset = $request->offset;
+        $limit = $request->limit;
+        $current_posts_length = $request->current_posts_length;
+        $skip = $current_posts_length > 0 ? $current_posts_length : 0;
 
         $posts = Post::with(['user', 'category', 'comments', 'comments.user', 'comments.sub_comments.user', 'comments.sub_comments', 'comments.sub_comments.user', 'comments.sub_comments.sub_comment_likes', 'comments.comment_likes', 'post_likes'])
             ->whereRelation('post_likes', 'user_id', Auth::user()->id)
-            ->offset($request->offset ? $request->offset : 0)
-            ->limit(20)
+            ->skip($skip)
+            ->limit($limit)
             ->orderBy('id', 'desc')
             ->get()
             ->each(function ($post) {
@@ -299,5 +303,144 @@ class PostsController extends Controller {
         }
 
         return response()->json();
+    }
+
+    public function getUserProfilePosts(Request $request) {
+        $limit = $request->limit;
+        $user_id = $request->user_id;
+        $user_post_count = count(User::find($user_id)->posts);
+
+        $posts = Post::with(['user', 'category', 'comments', 'comments.user', 'comments.sub_comments.user', 'comments.sub_comments', 'comments.sub_comments.user', 'comments.sub_comments.sub_comment_likes', 'comments.comment_likes', 'post_likes'])
+            ->where('user_id', $user_id)
+            ->limit($limit)
+            ->orderBy('id', 'desc')
+            ->get()
+            ->each(function ($post) {
+                if ($post->user->profile_picture_url) {
+                    $post->user->temp_profile_picture_url = Storage::temporaryUrl($post->user->profile_picture_url, now()->addHours(24));
+                }
+
+                $post->comments->each(function ($comment) {
+                    if ($comment->user->profile_picture_url) {
+                        $comment->user->temp_profile_picture_url = Storage::temporaryUrl($comment->user->profile_picture_url, now()->addHours(24));
+                    }
+
+                    $comment->sub_comments->each(function ($sub_comment) {
+                        if ($sub_comment->user->profile_picture_url) {
+                            $sub_comment->user->temp_profile_picture_url = Storage::temporaryUrl($sub_comment->user->profile_picture_url, now()->addHours(24));
+                        }
+                    });
+                });
+            });
+
+
+        return response()->json([
+            'posts' => $posts,
+        ]);
+    }
+
+    public function getMoreUserProfilePosts(Request $request) {
+        $user_id = $request->user_id;
+        $limit = $request->limit;
+        $current_posts_length = $request->current_posts_length;
+        $skip = $current_posts_length > 0 ? $current_posts_length : 0;
+
+        $posts = Post::with(['user', 'category', 'comments', 'comments.user', 'comments.sub_comments.user', 'comments.sub_comments', 'comments.sub_comments.user', 'comments.sub_comments.sub_comment_likes', 'comments.comment_likes', 'post_likes'])
+            ->where('user_id', $user_id)
+            ->skip($skip)
+            ->limit($limit)
+            ->orderBy('id', 'desc')
+            ->get()
+            ->each(function ($post) {
+                if ($post->user->profile_picture_url) {
+                    $post->user->temp_profile_picture_url = Storage::temporaryUrl($post->user->profile_picture_url, now()->addHours(24));
+                }
+
+                $post->comments->each(function ($comment) {
+                    if ($comment->user->profile_picture_url) {
+                        $comment->user->temp_profile_picture_url = Storage::temporaryUrl($comment->user->profile_picture_url, now()->addHours(24));
+                    }
+
+                    $comment->sub_comments->each(function ($sub_comment) {
+                        if ($sub_comment->user->profile_picture_url) {
+                            $sub_comment->user->temp_profile_picture_url = Storage::temporaryUrl($sub_comment->user->profile_picture_url, now()->addHours(24));
+                        }
+                    });
+                });
+            });
+
+
+        return response()->json([
+            'posts' => $posts,
+        ]);
+    }
+
+    public function getMyFollowPostsPage() {
+        $following_user_ids = User::find(Auth::user()->id)->follows;
+        $categories = Category::all();
+
+        $posts = Post::with(['user', 'category', 'comments', 'comments.user', 'comments.sub_comments.user', 'comments.sub_comments', 'comments.sub_comments.user', 'comments.sub_comments.sub_comment_likes', 'comments.comment_likes', 'post_likes'])
+            ->whereIn('user_id', $following_user_ids)
+            ->limit(20)
+            ->orderBy('id', 'desc')
+            ->get()
+            ->each(function ($post) {
+                if ($post->user->profile_picture_url) {
+                    $post->user->temp_profile_picture_url = Storage::temporaryUrl($post->user->profile_picture_url, now()->addHours(24));
+                }
+
+                $post->comments->each(function ($comment) {
+                    if ($comment->user->profile_picture_url) {
+                        $comment->user->temp_profile_picture_url = Storage::temporaryUrl($comment->user->profile_picture_url, now()->addHours(24));
+                    }
+
+                    $comment->sub_comments->each(function ($sub_comment) {
+                        if ($sub_comment->user->profile_picture_url) {
+                            $sub_comment->user->temp_profile_picture_url = Storage::temporaryUrl($sub_comment->user->profile_picture_url, now()->addHours(24));
+                        }
+                    });
+                });
+            });
+
+        return Inertia::render('MyFollows', [
+            'posts' => $posts,
+            'categories' => $categories
+        ]);
+    }
+
+    public function fetchMoreFollowPosts(Request $request) {
+        $limit = $request->limit;
+        $current_posts_length = $request->current_posts_length;
+        $skip = $current_posts_length > 0 ? $current_posts_length : 0;
+        $following_user_ids = User::find(Auth::user()->id)->follows;
+
+        $posts = Post::with(['user', 'category', 'comments', 'comments.user', 'comments.sub_comments.user', 'comments.sub_comments', 'comments.sub_comments.user', 'comments.sub_comments.sub_comment_likes', 'comments.comment_likes', 'post_likes'])
+            ->whereIn('user_id', $following_user_ids)
+            ->skip($skip)
+            ->limit($limit)
+            ->orderBy('id', 'desc')
+            ->get()
+            ->each(function ($post) {
+                if ($post->user->profile_picture_url) {
+                    $post->user->temp_profile_picture_url = Storage::temporaryUrl($post->user->profile_picture_url, now()->addHours(24));
+                }
+
+                $post->comments->each(function ($comment) {
+                    if ($comment->user->profile_picture_url) {
+                        $comment->user->temp_profile_picture_url = Storage::temporaryUrl($comment->user->profile_picture_url, now()->addHours(24));
+                    }
+
+                    $comment->sub_comments->each(function ($sub_comment) {
+                        if ($sub_comment->user->profile_picture_url) {
+                            $sub_comment->user->temp_profile_picture_url = Storage::temporaryUrl($sub_comment->user->profile_picture_url, now()->addHours(24));
+                        }
+                    });
+                });
+            });
+
+
+        return response()->json([
+            'posts' => $posts,
+        ]);
     }
 }

@@ -43,6 +43,9 @@ export default function Authenticated({ auth, header, children}) {
                                 <NavLink href={route('my-likes')} active={route().current('my-likes')}>
                                     My Likes
                                 </NavLink>
+                                <NavLink href={route('get-my-follow-posts-page')} active={route().current('get-my-follow-posts-page')}>
+                                    My Follows
+                                </NavLink>
                                 <NavLink href={route('invite')} active={route().current('invite')}>
                                     Invite
                                 </NavLink>

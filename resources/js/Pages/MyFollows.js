@@ -6,7 +6,7 @@ import Authenticated from '@/Layouts/Authenticated'
 import { Head } from '@inertiajs/inertia-react'
 import React, { useState, useEffect } from 'react'
 
-function MyLikes(props) {
+function MyFollows(props) {
     const [posts, setPosts] = useState([]);
     const [user, setUser] = useState([]);
     const [modalOpen, setModalOpen] = useState(false);
@@ -27,9 +27,9 @@ function MyLikes(props) {
         }
     }
 
-    const fetchMoreLikedPosts = () => {
+    const fetchMoreFollowPosts = () => {
         const currentPostsLength = posts.length
-        axios.get('/posts/fetch-more-liked-posts', {params: {
+        axios.get(route('fetch-more-follow-posts'), {params: {
             current_posts_length: currentPostsLength,
             limit: limit
         }})
@@ -52,8 +52,8 @@ function MyLikes(props) {
     },[]);
 
     const handleScroll = (e) => {
-        if (posts.length >= 20 && (e.target.scrollHeight - e.target.scrollTop === e.target.clientHeight)) {
-            fetchMoreLikedPosts();
+        if (posts.length >= 20 && (e.target.scrollHeight - e.target.scrollTop == e.target.clientHeight)) {
+            fetchMoreFollowPosts();
         }
     }
 
@@ -126,4 +126,4 @@ function MyLikes(props) {
   )
 }
 
-export default MyLikes
+export default MyFollows

@@ -53,8 +53,6 @@ Route::get('invite', function () {
     return Inertia::render('Invite');
 })->middleware(['auth'])->name('invite');
 
-//Need to add auth middleware once front end complete
-//Also need to reinstate CSRF
 Route::prefix('posts')->middleware(['auth', 'verified'])->group(function() {
     Route::get('/more-dashboard-posts', [PostsController::class, 'getMoreDashboardPosts'])->name('more-dashboard-posts');
     Route::get('categories', [PostsController::class, 'getCategories'])->name('get-categories');
@@ -62,14 +60,16 @@ Route::prefix('posts')->middleware(['auth', 'verified'])->group(function() {
     Route::delete('delete/{id}', [PostsController::class, 'deletePost'])->name('delete-post');
     Route::post('update', [PostsController::class, 'updatePost'])->name('post-update-post');
     Route::get('my-posts', [PostsController::class, 'getMyPostsPage'])->name('my-posts');
-    Route::get('fetch-more-posts', [PostsController::class, 'retrieveMorePosts']);
+    Route::get('fetch-more-posts', [PostsController::class, 'retrieveMorePosts'])->name('fetch-more-posts');
     Route::post('/toggle-like', [PostsController::class, 'toggleLike']);
     Route::get('my-likes', [PostsController::class, 'getMyLikesPage'])->name('my-likes');
     Route::get('/fetch-more-liked-posts', [PostsController::class, 'fetchMoreLikedPosts']);
+    Route::get('user-profile-posts', [PostsController::class, 'getUserProfilePosts'])->name('get-user-profile-posts');
+    Route::get('fetch-more-user-profile-posts', [PostsController::class, 'getMoreUserProfilePosts'])->name('get-more-user-profile-posts');
+    Route::get('my-follow-posts', [PostsController::class, 'getMyFollowPostsPage'])->name('get-my-follow-posts-page');
+    Route::get('fetch-more-follow-posts', [PostsController::class, 'fetchMoreFollowPosts'])->name('fetch-more-follow-posts');
 });
 
-//Need to add auth middleware once front end complete
-//Also need to reinstate CSRF
 Route::prefix('comments')->middleware(['auth', 'verified'])->group(function() {
     Route::post('create', [CommentsController::class, 'createComment'])->name('post-comment');
     Route::delete('delete/{id}', [CommentsController::class, 'deleteComment'])->name('delete-comment');
@@ -90,6 +90,8 @@ Route::prefix('account')->middleware(['auth', 'verified'])->group(function() {
 
 Route::prefix('user')->middleware(['auth', 'verified'])->group(function() {
     Route::post('upload-profile-picture', [UsersController::class, 'uploadProfilePicture'])->name('upload-profile-picture');
+    Route::post('follow', [UsersController::class, 'follow'])->name('follow');
+    Route::post('unfollow', [UsersController::class, 'unfollow'])->name('unfollow');
 });
 
 Route::post('/invite', [InviteController::class, 'sendInvite'])->name('send-invite');

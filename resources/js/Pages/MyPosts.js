@@ -9,7 +9,7 @@ function MyPosts(props) {
     const [posts, setPosts] = useState([]);
     const [user, setUser] = useState([]);
     const [modalOpen, setModalOpen] = useState(false);
-    const [offset, setOffset] = useState(0);
+    const [limit, setLimit] = useState(20);
     const [categoryFilters, setCategoryFilters] = useState([]);
     const [isFilterSet, setIsFilterSet] = useState(false);
     const [preFilterPosts, setPreFilterPosts] = useState([]);
@@ -27,13 +27,16 @@ function MyPosts(props) {
     }
 
     const fetchMorePosts = () => {
-        axios.get('/posts/fetch-my-posts', {params: {
-            offset: offset
+        const currentPostsLength = posts.length
+        axios.get(route('fetch-more-posts'), {params: {
+            current_posts_length: currentPostsLength,
+            limit: limit
         }})
         .then(response => {
-            let newOffset = offset + 20;
-            setOffset(newOffset)
+            const newLimit = limit + 20;
+            setLimit(newLimit)
             setPosts(posts => [...posts, ...response.data.posts]);
+            // setPosts(response.data.posts);
         });
     }
 
@@ -55,7 +58,7 @@ function MyPosts(props) {
     }, [props.posts])
 
     const handleScroll = (e) => {
-        if (posts.length >= 20 && e.target.scrollHeight - e.target.scrollTop === e.target.clientHeight) {
+        if (posts.length >= 20 && (e.target.scrollHeight - e.target.scrollTop === e.target.clientHeight)) {
             fetchMorePosts();
         }
     }

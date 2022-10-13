@@ -65,4 +65,8 @@ class User extends Authenticatable {
     public function sub_comment_likes(): HasMany {
         return $this->hasMany(SubCommentLike::class);
     }
+
+    public function follows() {
+        return $this->follows;
+    }
 }

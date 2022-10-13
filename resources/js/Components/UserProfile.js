@@ -20,13 +20,27 @@ function UserProfile({ user, toggleSetDisplayUserProfile, currentUser, categorie
         });
     }
 
+    const getMorePosts = () => {
+        const currentPostsLength = posts.length
+        axios.get(route('get-more-user-profile-posts'), {params: {
+            current_posts_length: currentPostsLength,
+            limit: limit,
+            user_id: user.id
+        }})
+        .then(response => {
+            let newLimit = limit + 20;
+            setLimit(newLimit)
+            setPosts(posts => [...posts, ...response.data.posts]);
+        });
+    }
+
     useEffect(() => {
         getPosts()
     }, [])
 
     const handleScroll = (e) => {
-        if (posts.length >= 20 && e.target.scrollHeight - e.target.scrollTop === e.target.clientHeight) {
-            getPosts();
+        if (posts.length >= 20 && (e.target.scrollHeight - e.target.scrollTop === e.target.clientHeight)) {
+            getMorePosts();
         }
     }
 

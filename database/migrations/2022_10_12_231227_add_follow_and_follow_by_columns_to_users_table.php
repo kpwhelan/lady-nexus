@@ -9,8 +9,8 @@ return new class extends Migration
 
     public function up() {
         Schema::table('users', function (Blueprint $table) {
-            $table->json('follows');
-            $table->json('followed_by');
+            $table->json('follows')->nullable();
+            $table->json('followed_by')->nullable();
         });
     }
 

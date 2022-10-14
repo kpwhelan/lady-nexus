@@ -8675,6 +8675,10 @@ function PostForm(_ref) {
   var submit = function submit(e) {
     e.preventDefault();
     post(route('create-post'), {
+      onSuccess: function onSuccess() {
+        toggleIsCategorySelected();
+        reset();
+      },
       onError: function onError(error) {
         if (error.message) {
           setError(error.message);
@@ -8701,7 +8705,7 @@ function PostForm(_ref) {
     }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)(_Input__WEBPACK_IMPORTED_MODULE_2__["default"], {
       type: "textarea",
       name: "post_body",
-      value: data.comment_body,
+      value: data.post_body,
       className: "w-full",
       autoComplete: "post_body",
       isFocused: false,
@@ -11050,9 +11054,9 @@ function Dashboard(props) {
     children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)(_inertiajs_inertia_react__WEBPACK_IMPORTED_MODULE_2__.Head, {
       title: "Nexus"
     }), posts ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsxs)("div", {
-      className: "sm:flex-col md:flex md:flex-row justify-around",
+      className: "sm:flex-col md:flex h-screen md:flex-row justify-around",
       children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsxs)("div", {
-        className: "flex-initial md:w-2/3 max-h-screen overflow-scroll",
+        className: "flex-initial md:w-2/3 h-screen overflow-scroll",
         onScroll: handleScroll,
         children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("div", {
           className: "ml-6 mt-2 mb-2 w-3/6",
@@ -11600,9 +11604,9 @@ function MyFollows(props) {
     children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)(_inertiajs_inertia_react__WEBPACK_IMPORTED_MODULE_5__.Head, {
       title: "My Posts"
     }), posts ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsxs)("div", {
-      className: "sm:flex-col md:flex md:flex-row justify-around",
+      className: "sm:flex-col md:flex md:flex-row justify-around h-screen",
       children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsxs)("div", {
-        className: "flex-initial md:w-2/3 max-h-screen overflow-scroll",
+        className: "flex-initial md:w-2/3 h-screen overflow-scroll",
         onScroll: handleScroll,
         children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("div", {
           className: "ml-6 mt-2 w-3/6",
@@ -11818,9 +11822,9 @@ function MyLikes(props) {
     children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)(_inertiajs_inertia_react__WEBPACK_IMPORTED_MODULE_5__.Head, {
       title: "My Posts"
     }), posts ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsxs)("div", {
-      className: "sm:flex-col md:flex md:flex-row justify-around",
+      className: "sm:flex-col md:flex md:flex-row justify-around h-screen",
       children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsxs)("div", {
-        className: "flex-initial md:w-2/3 max-h-screen overflow-scroll",
+        className: "flex-initial md:w-2/3 h-screen overflow-scroll",
         onScroll: handleScroll,
         children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("div", {
           className: "ml-6 mt-2 w-3/6",
@@ -12040,9 +12044,9 @@ function MyPosts(props) {
     children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)(_inertiajs_inertia_react__WEBPACK_IMPORTED_MODULE_4__.Head, {
       title: "My Posts"
     }), posts ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsxs)("div", {
-      className: "sm:flex-col md:flex md:flex-row justify-around",
+      className: "sm:flex-col h-screen md:flex md:flex-row justify-around",
       children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsxs)("div", {
-        className: "flex-initial md:w-2/3 max-h-screen overflow-scroll",
+        className: "flex-initial md:w-2/3 h-screen overflow-scroll",
         onScroll: handleScroll,
         children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("div", {
           className: "ml-6 mt-2 w-3/6",

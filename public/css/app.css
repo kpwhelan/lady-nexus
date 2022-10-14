@@ -845,6 +845,11 @@ select {
 .min-h-full {
   min-height: 100%;
 }
+.min-h-fit {
+  min-height: -webkit-fit-content;
+  min-height: -moz-fit-content;
+  min-height: fit-content;
+}
 .w-5 {
   width: 1.25rem;
 }

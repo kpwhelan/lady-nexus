@@ -24,7 +24,7 @@ class PostsController extends Controller {
     public function getMoreDashboardPosts(Request $request): JsonResponse {
         $offset = $request->offset;
 
-        $posts = Post::with(['user', 'category', 'comments', 'comments.user', 'comments.sub_comments.user', 'comments.sub_comments', 'comments.sub_comments.user', 'comments.sub_comments.sub_comment_likes', 'comments.comment_likes', 'post_likes'])
+        $posts = Post::with(['user', 'user.posts', 'category', 'comments', 'comments.user', 'comments.sub_comments.user', 'comments.sub_comments', 'comments.sub_comments.user', 'comments.sub_comments.sub_comment_likes', 'comments.comment_likes', 'post_likes'])
             ->offset($offset)
             ->limit(20)
             ->orderBy('id', 'desc')
@@ -109,7 +109,7 @@ class PostsController extends Controller {
             'category_id.required' => 'You have to select a category!'
         ]);
 
-        $post = Post::with(['user', 'category', 'comments', 'comments.user', 'comments.sub_comments.user', 'comments.sub_comments', 'comments.sub_comments.user', 'comments.sub_comments.sub_comment_likes', 'comments.comment_likes', 'post_likes'])
+        $post = Post::with(['user', 'user.posts', 'category', 'comments', 'comments.user', 'comments.sub_comments.user', 'comments.sub_comments', 'comments.sub_comments.user', 'comments.sub_comments.sub_comment_likes', 'comments.comment_likes', 'post_likes'])
             ->find($request->post_id);
 
         if ($post->user->profile_picture_url) {
@@ -150,7 +150,7 @@ class PostsController extends Controller {
         $skip = $current_posts_length > 0 ? $current_posts_length : 0;
 
         $posts = Post::where('user_id', Auth::user()->id)
-            ->with(['user', 'category', 'comments', 'comments.user', 'comments.sub_comments.user', 'comments.sub_comments', 'comments.sub_comments.user', 'comments.sub_comments.sub_comment_likes', 'comments.comment_likes', 'post_likes'])
+            ->with(['user', 'user.posts', 'category', 'comments', 'comments.user', 'comments.sub_comments.user', 'comments.sub_comments', 'comments.sub_comments.user', 'comments.sub_comments.sub_comment_likes', 'comments.comment_likes', 'post_likes'])
             ->skip($skip)
             ->limit($limit)
             ->orderBy('id', 'desc')
@@ -181,7 +181,7 @@ class PostsController extends Controller {
     public function getMyPostsPage(Request $request) {
         $categories = Category::all();
         $my_comment_count = Comment::where('user_id', Auth::user()->id)->count();
-        $posts = Post::with(['user', 'category', 'comments', 'comments.user', 'comments.sub_comments.user', 'comments.sub_comments', 'comments.sub_comments.user', 'comments.sub_comments.sub_comment_likes', 'comments.comment_likes', 'post_likes'])
+        $posts = Post::with(['user', 'user.posts', 'category', 'comments', 'comments.user', 'comments.sub_comments.user', 'comments.sub_comments', 'comments.sub_comments.user', 'comments.sub_comments.sub_comment_likes', 'comments.comment_likes', 'post_likes'])
             ->where('user_id', Auth::user()->id)
             ->limit(20)
             ->orderBy('id', 'desc')
@@ -213,7 +213,7 @@ class PostsController extends Controller {
 
     public function getMyLikesPage(Request $request) {
         $categories = Category::all();
-        $posts = Post::with(['user', 'category', 'comments', 'comments.user', 'comments.sub_comments.user', 'comments.sub_comments', 'comments.sub_comments.user', 'comments.sub_comments.sub_comment_likes', 'comments.comment_likes', 'post_likes'])
+        $posts = Post::with(['user', 'user.posts', 'category', 'comments', 'comments.user', 'comments.sub_comments.user', 'comments.sub_comments', 'comments.sub_comments.user', 'comments.sub_comments.sub_comment_likes', 'comments.comment_likes', 'post_likes'])
             ->whereRelation('post_likes', 'user_id', Auth::user()->id)
             ->offset($request->offset ? $request->offset : 0)
             ->limit(20)
@@ -248,7 +248,7 @@ class PostsController extends Controller {
         $current_posts_length = $request->current_posts_length;
         $skip = $current_posts_length > 0 ? $current_posts_length : 0;
 
-        $posts = Post::with(['user', 'category', 'comments', 'comments.user', 'comments.sub_comments.user', 'comments.sub_comments', 'comments.sub_comments.user', 'comments.sub_comments.sub_comment_likes', 'comments.comment_likes', 'post_likes'])
+        $posts = Post::with(['user', 'user.posts', 'category', 'comments', 'comments.user', 'comments.sub_comments.user', 'comments.sub_comments', 'comments.sub_comments.user', 'comments.sub_comments.sub_comment_likes', 'comments.comment_likes', 'post_likes'])
             ->whereRelation('post_likes', 'user_id', Auth::user()->id)
             ->skip($skip)
             ->limit($limit)
@@ -308,9 +308,9 @@ class PostsController extends Controller {
     public function getUserProfilePosts(Request $request) {
         $limit = $request->limit;
         $user_id = $request->user_id;
-        $user_post_count = count(User::find($user_id)->posts);
+        // $user_post_count = count(User::find($user_id)->posts);
 
-        $posts = Post::with(['user', 'category', 'comments', 'comments.user', 'comments.sub_comments.user', 'comments.sub_comments', 'comments.sub_comments.user', 'comments.sub_comments.sub_comment_likes', 'comments.comment_likes', 'post_likes'])
+        $posts = Post::with(['user', 'user.posts', 'category', 'comments', 'comments.user', 'comments.sub_comments.user', 'comments.sub_comments', 'comments.sub_comments.user', 'comments.sub_comments.sub_comment_likes', 'comments.comment_likes', 'post_likes'])
             ->where('user_id', $user_id)
             ->limit($limit)
             ->orderBy('id', 'desc')
@@ -379,7 +379,7 @@ class PostsController extends Controller {
         $following_user_ids = User::find(Auth::user()->id)->follows ?? [];
         $categories = Category::all();
 
-        $posts = Post::with(['user', 'category', 'comments', 'comments.user', 'comments.sub_comments.user', 'comments.sub_comments', 'comments.sub_comments.user', 'comments.sub_comments.sub_comment_likes', 'comments.comment_likes', 'post_likes'])
+        $posts = Post::with(['user', 'user.posts', 'category', 'comments', 'comments.user', 'comments.sub_comments.user', 'comments.sub_comments', 'comments.sub_comments.user', 'comments.sub_comments.sub_comment_likes', 'comments.comment_likes', 'post_likes'])
             ->whereIn('user_id', $following_user_ids)
             ->limit(20)
             ->orderBy('id', 'desc')
@@ -414,7 +414,7 @@ class PostsController extends Controller {
         $skip = $current_posts_length > 0 ? $current_posts_length : 0;
         $following_user_ids = User::find(Auth::user()->id)->follows;
 
-        $posts = Post::with(['user', 'category', 'comments', 'comments.user', 'comments.sub_comments.user', 'comments.sub_comments', 'comments.sub_comments.user', 'comments.sub_comments.sub_comment_likes', 'comments.comment_likes', 'post_likes'])
+        $posts = Post::with(['user', 'user.posts', 'category', 'comments', 'comments.user', 'comments.sub_comments.user', 'comments.sub_comments', 'comments.sub_comments.user', 'comments.sub_comments.sub_comment_likes', 'comments.comment_likes', 'post_likes'])
             ->whereIn('user_id', $following_user_ids)
             ->skip($skip)
             ->limit($limit)

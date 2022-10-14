@@ -46,8 +46,10 @@ class UsersController extends Controller {
         $user_to_follow = User::find($user_id_to_follow);
 
         $current_follows = $user->follows;
-        // $current_follows[] = $user_id_to_follow;
-        array_push($current_follows, $user_id_to_follow);
+        if (!$current_follows) {
+            $current_follows = [];
+        }
+        $current_follows[] = $user_id_to_follow;
 
         $user->update([
             'follows' => $current_follows

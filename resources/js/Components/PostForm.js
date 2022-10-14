@@ -7,6 +7,7 @@ import axios from 'axios';
 
 function PostForm({ categories, className }) {
     const [theCategories, setTheCategories] = useState([]);
+    const [success, setSuccess] = useState(null);
 
     useEffect(() => {
         if (categories) {
@@ -21,7 +22,8 @@ function PostForm({ categories, className }) {
 
     const { data, setData, post, processing, errors, reset } = useForm({
         post_body: '',
-        category_id: ''
+        category_id: '',
+        current_route: route().current()
     });
 
     const postFormSayings = () => {
@@ -95,6 +97,11 @@ function PostForm({ categories, className }) {
             onSuccess: () => {
                 toggleIsCategorySelected()
                 reset()
+                setSuccess('Posted successfully!')
+
+                setTimeout(() => {
+                    setSuccess(null);
+                }, 7000);
             },
             onError: error => {
                 if (error.message) {
@@ -136,6 +143,10 @@ function PostForm({ categories, className }) {
              <Button className="mt-1" processing={processing}>
                 Submit
             </Button>
+
+            {success &&
+                <p className='bg-sage/75 text-white mt-2 w-fit rounded-lg py-1 px-4'>{success}</p>
+            }
 
             {error &&
                 <p className='bg-red-500/75 text-white mt-2 p-2 w-fit rounded-lg'>{error}</p>

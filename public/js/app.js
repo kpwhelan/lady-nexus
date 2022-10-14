@@ -8583,6 +8583,11 @@ function PostForm(_ref) {
       theCategories = _useState2[0],
       setTheCategories = _useState2[1];
 
+  var _useState3 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(null),
+      _useState4 = _slicedToArray(_useState3, 2),
+      success = _useState4[0],
+      setSuccess = _useState4[1];
+
   (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(function () {
     if (categories) {
       setTheCategories(categories);
@@ -8595,7 +8600,8 @@ function PostForm(_ref) {
 
   var _useForm = (0,_inertiajs_inertia_react__WEBPACK_IMPORTED_MODULE_1__.useForm)({
     post_body: '',
-    category_id: ''
+    category_id: '',
+    current_route: route().current()
   }),
       data = _useForm.data,
       setData = _useForm.setData,
@@ -8609,20 +8615,20 @@ function PostForm(_ref) {
     return sayings[Math.floor(Math.random() * sayings.length)];
   };
 
-  var _useState3 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(false),
-      _useState4 = _slicedToArray(_useState3, 2),
-      isCategorySelected = _useState4[0],
-      setIsCategorySelected = _useState4[1];
-
-  var _useState5 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(null),
+  var _useState5 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(false),
       _useState6 = _slicedToArray(_useState5, 2),
-      categoryId = _useState6[0],
-      setCategoryId = _useState6[1];
+      isCategorySelected = _useState6[0],
+      setIsCategorySelected = _useState6[1];
 
   var _useState7 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(null),
       _useState8 = _slicedToArray(_useState7, 2),
-      error = _useState8[0],
-      setError = _useState8[1];
+      categoryId = _useState8[0],
+      setCategoryId = _useState8[1];
+
+  var _useState9 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(null),
+      _useState10 = _slicedToArray(_useState9, 2),
+      error = _useState10[0],
+      setError = _useState10[1];
 
   var onHandleChange = function onHandleChange(event) {
     setData(event.target.name, event.target.type === 'checkbox' ? event.target.checked : event.target.value);
@@ -8678,6 +8684,10 @@ function PostForm(_ref) {
       onSuccess: function onSuccess() {
         toggleIsCategorySelected();
         reset();
+        setSuccess('Posted successfully!');
+        setTimeout(function () {
+          setSuccess(null);
+        }, 7000);
       },
       onError: function onError(error) {
         if (error.message) {
@@ -8733,6 +8743,9 @@ function PostForm(_ref) {
       className: "mt-1",
       processing: processing,
       children: "Submit"
+    }), success && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("p", {
+      className: "bg-sage/75 text-white mt-2 w-fit rounded-lg py-1 px-4",
+      children: success
     }), error && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("p", {
       className: "bg-red-500/75 text-white mt-2 p-2 w-fit rounded-lg",
       children: error
@@ -11010,8 +11023,14 @@ function Dashboard(props) {
     if (posts.length >= 20 && e.target.scrollHeight - e.target.scrollTop === e.target.clientHeight) {
       fetchMorePosts();
     }
-  };
+  }; //hacky work around for posts not updating when you make a new post
 
+
+  (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(function () {
+    if (posts.length > 0) {
+      setPosts(props.posts);
+    }
+  }, [props.posts]);
   (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(function () {
     if (posts.length === 0) {
       setPosts(props.posts);

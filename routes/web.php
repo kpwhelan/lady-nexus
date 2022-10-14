@@ -21,37 +21,39 @@ Route::get('/', function () {
     ]);
 });
 
-Route::get('/nexus', function () {
-    $categories = Category::all();
-    $posts = Post::with(['user', 'category', 'comments', 'comments.user', 'comments.sub_comments.user', 'comments.sub_comments', 'comments.sub_comments.user', 'comments.sub_comments.sub_comment_likes', 'comments.comment_likes', 'post_likes'])
-            ->offset(0)
-            ->limit(20)
-            ->orderBy('id', 'desc')
-            ->get()
-            ->each(function ($post) {
-                if ($post->user->profile_picture_url) {
-                    $post->user->temp_profile_picture_url = Storage::temporaryUrl($post->user->profile_picture_url, now()->addHours(24));
-                }
+// Route::get('/nexus', function () {
+//     $categories = Category::all();
+//     $posts = Post::with(['user', 'category', 'comments', 'comments.user', 'comments.sub_comments.user', 'comments.sub_comments', 'comments.sub_comments.user', 'comments.sub_comments.sub_comment_likes', 'comments.comment_likes', 'post_likes'])
+//             ->offset(0)
+//             ->limit(20)
+//             ->orderBy('id', 'desc')
+//             ->get()
+//             ->each(function ($post) {
+//                 if ($post->user->profile_picture_url) {
+//                     $post->user->temp_profile_picture_url = Storage::temporaryUrl($post->user->profile_picture_url, now()->addHours(24));
+//                 }
 
-                $post->comments->each(function ($comment) {
-                    if ($comment->user->profile_picture_url) {
-                        $comment->user->temp_profile_picture_url = Storage::temporaryUrl($comment->user->profile_picture_url, now()->addHours(24));
-                    }
+//                 $post->comments->each(function ($comment) {
+//                     if ($comment->user->profile_picture_url) {
+//                         $comment->user->temp_profile_picture_url = Storage::temporaryUrl($comment->user->profile_picture_url, now()->addHours(24));
+//                     }
 
-                    $comment->sub_comments->each(function ($sub_comment) {
-                        if ($sub_comment->user->profile_picture_url) {
-                            $sub_comment->user->temp_profile_picture_url = Storage::temporaryUrl($sub_comment->user->profile_picture_url, now()->addHours(24));
-                        }
-                    });
-                });
-            });
+//                     $comment->sub_comments->each(function ($sub_comment) {
+//                         if ($sub_comment->user->profile_picture_url) {
+//                             $sub_comment->user->temp_profile_picture_url = Storage::temporaryUrl($sub_comment->user->profile_picture_url, now()->addHours(24));
+//                         }
+//                     });
+//                 });
+//             });
 
-    return Inertia::render('Dashboard', ['categories' => $categories, 'posts' => $posts]);
-})->middleware(['auth', 'verified'])->name('dashboard');
+//     return Inertia::render('Dashboard', ['categories' => $categories, 'posts' => $posts]);
+// })->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::get('invite', function () {
     return Inertia::render('Invite');
 })->middleware(['auth'])->name('invite');
+
+Route::get('nexus', [PostsController::class, 'getDashboard'])->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::prefix('posts')->middleware(['auth', 'verified'])->group(function() {
     Route::get('/more-dashboard-posts', [PostsController::class, 'getMoreDashboardPosts'])->name('more-dashboard-posts');

@@ -1183,6 +1183,18 @@ select {
 .bg-sage\/\[0\.6\] {
   background-color: rgb(95 125 84 / 0.6);
 }
+.bg-sage\/75 {
+  background-color: rgb(95 125 84 / 0.75);
+}
+.bg-sage\/25 {
+  background-color: rgb(95 125 84 / 0.25);
+}
+.bg-sage\/30 {
+  background-color: rgb(95 125 84 / 0.3);
+}
+.bg-sage\/50 {
+  background-color: rgb(95 125 84 / 0.5);
+}
 .bg-opacity-75 {
   --tw-bg-opacity: 0.75;
 }
@@ -1207,6 +1219,9 @@ select {
 }
 .p-0 {
   padding: 0px;
+}
+.p-1 {
+  padding: 0.25rem;
 }
 .px-4 {
   padding-left: 1rem;

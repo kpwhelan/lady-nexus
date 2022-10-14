@@ -34,6 +34,13 @@ export default function Dashboard(props) {
         }
     }
 
+    //hacky work around for posts not updating when you make a new post
+    useEffect(() => {
+        if (posts.length > 0) {
+            setPosts(props.posts)
+        }
+    }, [props.posts])
+
     useEffect(() => {
         if (posts.length === 0) {
             setPosts(props.posts)

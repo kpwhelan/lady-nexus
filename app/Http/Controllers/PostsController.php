@@ -7,10 +7,10 @@ use App\Models\Comment;
 use App\Models\Post;
 use App\Models\PostLike;
 use App\Models\User;
-use Error;
 use Exception;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Routing\Route;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Redirect;
@@ -22,6 +22,37 @@ class PostsController extends Controller {
         $categories = Category::all();
 
         return response()->json(['categories' => $categories]);
+    }
+
+    public function getDashboard() {
+        $categories = Category::all();
+        $posts = Post::with(['user', 'category', 'comments', 'comments.user', 'comments.sub_comments.user', 'comments.sub_comments', 'comments.sub_comments.user', 'comments.sub_comments.sub_comment_likes', 'comments.comment_likes', 'post_likes'])
+            ->offset(0)
+            ->limit(20)
+            ->orderBy('id', 'desc')
+            ->get()
+            ->each(function ($post) {
+                if ($post->user->profile_picture_url) {
+                    $post->user->temp_profile_picture_url = Storage::temporaryUrl($post->user->profile_picture_url, now()->addHours(24));
+                }
+
+                $post->comments->each(function ($comment) {
+                    if ($comment->user->profile_picture_url) {
+                        $comment->user->temp_profile_picture_url = Storage::temporaryUrl($comment->user->profile_picture_url, now()->addHours(24));
+                    }
+
+                    $comment->sub_comments->each(function ($sub_comment) {
+                        if ($sub_comment->user->profile_picture_url) {
+                            $sub_comment->user->temp_profile_picture_url = Storage::temporaryUrl($sub_comment->user->profile_picture_url, now()->addHours(24));
+                        }
+                    });
+                });
+            });
+
+        return Inertia::render('Dashboard', [
+            'posts' => $posts,
+            'categories' => $categories
+        ]);
     }
 
     public function getMoreDashboardPosts(Request $request): JsonResponse {
@@ -67,6 +98,10 @@ class PostsController extends Controller {
             'category_id.required' => 'You have to select a category!'
         ]);
 
+        $route = $request->current_route ?? 'dashboard';
+
+        // dd($route);
+
         $post             = new Post();
         $post->post       = $request->post_body;
         $post->category_id = $request->category_id;
@@ -76,7 +111,7 @@ class PostsController extends Controller {
             return back()->withErrors(['message' => 'Something went wrong, please try again.']);
         }
 
-        return Redirect::route('my-posts');
+        return Redirect::route($route);
     }
 
     public function deletePost($id) {

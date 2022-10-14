@@ -100,7 +100,7 @@ export default function Dashboard(props) {
                             <p className='text-xl font-semibold ml-10 mt-10'>No one has posted yet, you can be the first one!</p>
                     </div>
                     <div className='flex-initial w-1/3 mr-2 mt-5'>
-                        <PostForm className="mt-4" categories={categories} />
+                        <PostForm className="mt-4" categories={props.categories} />
                     </div>
                 </div>
             )

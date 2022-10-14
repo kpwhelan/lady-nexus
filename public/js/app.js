@@ -11087,7 +11087,7 @@ function Dashboard(props) {
         className: "flex-initial w-1/3 mr-2 mt-5",
         children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)(_Components_PostForm__WEBPACK_IMPORTED_MODULE_5__["default"], {
           className: "mt-4",
-          categories: categories
+          categories: props.categories
         })
       })]
     })]

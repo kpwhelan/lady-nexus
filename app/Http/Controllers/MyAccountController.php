@@ -13,6 +13,7 @@ use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Illuminate\Validation\Rules;
 use Inertia\Inertia;
@@ -20,6 +21,11 @@ use Inertia\Inertia;
 class MyAccountController extends Controller {
     public function getMyAccountPage() {
         $user_id = Auth::user()->id;
+        $user = User::find($user_id);
+
+        if ($user->profile_picture_url) {
+            $user->temp_profile_picture_url = Storage::temporaryUrl($user->profile_picture_url, now()->addHours(24));
+        }
 
         $post_count = Post::where('user_id', $user_id)->count();
         $comment_count = Comment::where('user_id', $user_id)->count();
@@ -28,13 +34,15 @@ class MyAccountController extends Controller {
         $comment_like_count = CommentLike::where('user_id', $user_id)->count();
         $sub_comment_like_count = SubCommentLike::where('user_id', $user_id)->count();
 
+
         return Inertia::render('MyAccount', [
             'post_count' => $post_count,
             'comment_count' => $comment_count,
             'sub_comment_count' => $sub_comment_count,
             'post_like_count' => $post_like_count,
             'comment_like_count' => $comment_like_count,
-            'sub_comment_like_count' => $sub_comment_like_count
+            'sub_comment_like_count' => $sub_comment_like_count,
+            'profile_picture_url' => $user->temp_profile_picture_url
         ]);
     }
 

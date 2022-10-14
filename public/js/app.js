@@ -11387,7 +11387,7 @@ function MyAccount(props) {
             className: "text-xl underline",
             children: "Account Details"
           }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)(_Components_ProfilePicture__WEBPACK_IMPORTED_MODULE_6__["default"], {
-            profilePictureUrl: props.auth.user.profile_picture_url,
+            profilePictureUrl: props.profile_picture_url,
             className: "w-46 h-36 my-2",
             defaultSize: "2x"
           }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsxs)("p", {

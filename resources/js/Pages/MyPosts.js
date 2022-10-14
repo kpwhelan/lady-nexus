@@ -96,7 +96,7 @@ function MyPosts(props) {
     >
         <Head title="My Posts" />
 
-        {posts ? (
+        {posts.length > 0 ? (
                 <div className='sm:flex-col md:flex md:flex-row justify-around'>
                     <div className='flex-initial md:w-2/3 max-h-screen overflow-scroll' onScroll={handleScroll}>
                         <div className='ml-6 mt-2 w-3/6'>
@@ -118,7 +118,7 @@ function MyPosts(props) {
             (
                 <div className='flex justify-around'>
                     <div className='flex-initial w-2/3 max-h-screen overflow-scroll'>
-                            <p>No posts yet...</p>
+                            <p className='text-xl font-semibold ml-10 mt-10'>You haven't posted anything yet...</p>
                     </div>
                     <div>
                         <PostForm categories={props.categories} />

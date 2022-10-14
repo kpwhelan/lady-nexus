@@ -112,7 +112,7 @@ function MyFollows(props) {
             (
                 <div className='flex justify-around'>
                     <div className='flex-initial w-2/3 max-h-screen overflow-scroll'>
-                            <p>You haven't liked anything yet...</p>
+                            <p className='text-xl font-semibold ml-10 mt-10'>You haven't followed anyone yet...</p>
                     </div>
                     <div className='flex-initial w-1/3 mr-2 mt-5'>
                         <PostForm className="mt-4" categories={props.categories} />

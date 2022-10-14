@@ -76,7 +76,7 @@ export default function Dashboard(props) {
             errors={props.errors}
         >
             <Head title="Nexus" />
-            {posts ? (
+            {posts.length > 0 ? (
                 <div className='sm:flex-col md:flex md:flex-row justify-around'>
                     <div className='flex-initial md:w-2/3 max-h-screen overflow-scroll' onScroll={handleScroll}>
                         <div className='ml-6 mt-2 w-3/6'>
@@ -97,7 +97,7 @@ export default function Dashboard(props) {
             (
                 <div className='flex justify-around'>
                     <div className='flex-initial w-2/3 max-h-screen overflow-scroll'>
-                            <p>No one has posted yet, you can be the first one!</p>
+                            <p className='text-xl font-semibold ml-10 mt-10'>No one has posted yet, you can be the first one!</p>
                     </div>
                     <div className='flex-initial w-1/3 mr-2 mt-5'>
                         <PostForm className="mt-4" categories={categories} />

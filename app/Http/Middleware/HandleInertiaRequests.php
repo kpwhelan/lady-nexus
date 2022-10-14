@@ -36,7 +36,7 @@ class HandleInertiaRequests extends Middleware
     {
         $user = $request->user();
         if ($user && $user->profile_picture_url) {
-            $user->profile_picture_url = Storage::temporaryUrl($user->profile_picture_url, now()->addHours(24));
+            $user->temp_profile_picture_url = Storage::temporaryUrl($user->profile_picture_url, now()->addHours(24));
         }
 
         return array_merge(parent::share($request), [

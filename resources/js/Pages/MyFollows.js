@@ -90,7 +90,7 @@ function MyFollows(props) {
     >
         <Head title="My Posts" />
 
-        {posts.length > 0 ? (
+        {posts ? (
                 <div className='sm:flex-col md:flex md:flex-row justify-around'>
                     <div className='flex-initial md:w-2/3 max-h-screen overflow-scroll' onScroll={handleScroll}>
                         <div className='ml-6 mt-2 w-3/6'>

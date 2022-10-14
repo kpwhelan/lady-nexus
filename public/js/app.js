@@ -8712,6 +8712,9 @@ function PostForm(_ref) {
       handleChange: onHandleChange,
       placeholder: postFormSayings(),
       required: true
+    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("p", {
+      className: "text-s",
+      children: "Link a category"
     }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("div", {
       className: "flex flex-wrap mt-2",
       children: theCategories.map(function (category) {

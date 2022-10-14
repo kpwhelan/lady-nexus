@@ -7,9 +7,12 @@ use App\Models\Comment;
 use App\Models\Post;
 use App\Models\PostLike;
 use App\Models\User;
+use Error;
+use Exception;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Storage;
 use Inertia\Inertia;
@@ -82,11 +85,8 @@ class PostsController extends Controller {
 
         if (!$post) {
             return response()->json([
-                'status'  => 'Not Found',
-                'code'    => 404,
                 'message' => 'Hmmm we\'re having trouble deleting that post...try again?',
-                'post_id' => $post_id
-            ]);
+            ], 404);
         }
 
         $post->comments()->delete();
@@ -109,27 +109,32 @@ class PostsController extends Controller {
             'category_id.required' => 'You have to select a category!'
         ]);
 
-        $post = Post::with(['user', 'category', 'comments', 'comments.user', 'comments.sub_comments.user', 'comments.sub_comments', 'comments.sub_comments.user', 'comments.sub_comments.sub_comment_likes', 'comments.comment_likes', 'post_likes'])
-            ->find($request->post_id);
+        try {
+            $post = Post::with(['user', 'category', 'comments', 'comments.user', 'comments.sub_comments.user', 'comments.sub_comments', 'comments.sub_comments.user', 'comments.sub_comments.sub_comment_likes', 'comments.comment_likes', 'post_likes'])
+                ->find($request->post_id);
 
-        if ($post->user->profile_picture_url) {
-            $post->user->temp_profile_picture_url = Storage::temporaryUrl($post->user->profile_picture_url, now()->addHours(24));
-        }
-
-        $post->comments->each(function ($comment) {
-            if ($comment->user->profile_picture_url) {
-                $comment->user->temp_profile_picture_url = Storage::temporaryUrl($comment->user->profile_picture_url, now()->addHours(24));
+            if ($post->user->profile_picture_url) {
+                $post->user->temp_profile_picture_url = Storage::temporaryUrl($post->user->profile_picture_url, now()->addHours(24));
             }
 
-            $comment->sub_comments->each(function ($sub_comment) {
-                if ($sub_comment->user->profile_picture_url) {
-                    $sub_comment->user->temp_profile_picture_url = Storage::temporaryUrl($sub_comment->user->profile_picture_url, now()->addHours(24));
+            $post->comments->each(function ($comment) {
+                if ($comment->user->profile_picture_url) {
+                    $comment->user->temp_profile_picture_url = Storage::temporaryUrl($comment->user->profile_picture_url, now()->addHours(24));
                 }
+
+                $comment->sub_comments->each(function ($sub_comment) {
+                    if ($sub_comment->user->profile_picture_url) {
+                        $sub_comment->user->temp_profile_picture_url = Storage::temporaryUrl($sub_comment->user->profile_picture_url, now()->addHours(24));
+                    }
+                });
             });
-        });
+        } catch (Exception $e) {
+            Log::error($e->getMessage());
+            return response()->json(['message' => 'Sorry, something went wrong, try again'], 500);
+        }
 
         if (!$post) {
-            return response()->json(['message' => 'Something went wrong, please try again.'], 404);
+            return response()->json(['message' => 'Sorry, something went wrong, please try again.'], 404);
         }
 
         $post->post = $request->post_body;

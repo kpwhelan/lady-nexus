@@ -147,8 +147,8 @@ export default function Authenticated({ auth, header, children}) {
                         <ResponsiveNavLink href={route('my-likes')} active={route().current('my-likes')}>
                             My Likes
                         </ResponsiveNavLink>
-                        <ResponsiveNavLink href={route('get-my-follows-post-page')} active={route().current('get-my-follows-post-page')}>
-                            My Likes
+                        <ResponsiveNavLink href={route('get-my-follow-posts-page')} active={route().current('get-my-follow-posts-page')}>
+                            My Follows
                         </ResponsiveNavLink>
                         <ResponsiveNavLink href={route('invite')} active={route().current('invite')}>
                             Invite

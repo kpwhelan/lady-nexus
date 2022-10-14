@@ -8675,6 +8675,10 @@ function PostForm(_ref) {
   var submit = function submit(e) {
     e.preventDefault();
     post(route('create-post'), {
+      onSuccess: function onSuccess() {
+        reset();
+        toggleIsCategorySelected();
+      },
       onError: function onError(error) {
         if (error.message) {
           setError(error.message);
@@ -8701,7 +8705,7 @@ function PostForm(_ref) {
     }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)(_Input__WEBPACK_IMPORTED_MODULE_2__["default"], {
       type: "textarea",
       name: "post_body",
-      value: data.comment_body,
+      value: data.post_body,
       className: "w-full",
       autoComplete: "post_body",
       isFocused: false,
@@ -9758,9 +9762,10 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 /* harmony import */ var _Post__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Post */ "./resources/js/Components/Post.js");
 /* harmony import */ var _ProfilePicture__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./ProfilePicture */ "./resources/js/Components/ProfilePicture.js");
-/* harmony import */ var _fortawesome_free_solid_svg_icons__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @fortawesome/free-solid-svg-icons */ "./node_modules/@fortawesome/free-solid-svg-icons/index.mjs");
+/* harmony import */ var _fortawesome_free_solid_svg_icons__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @fortawesome/free-solid-svg-icons */ "./node_modules/@fortawesome/free-solid-svg-icons/index.mjs");
 /* harmony import */ var _fortawesome_react_fontawesome__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @fortawesome/react-fontawesome */ "./node_modules/@fortawesome/react-fontawesome/index.es.js");
-/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
+/* harmony import */ var _Button__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./Button */ "./resources/js/Components/Button.js");
+/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
 function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }
 
 function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
@@ -9789,6 +9794,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
 
 
+
 function UserProfile(_ref) {
   var user = _ref.user,
       toggleSetDisplayUserProfile = _ref.toggleSetDisplayUserProfile,
@@ -9804,6 +9810,21 @@ function UserProfile(_ref) {
       _useState4 = _slicedToArray(_useState3, 2),
       posts = _useState4[0],
       setPosts = _useState4[1];
+
+  var _useState5 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(0),
+      _useState6 = _slicedToArray(_useState5, 2),
+      followersCount = _useState6[0],
+      setFollowersCount = _useState6[1];
+
+  var _useState7 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(false),
+      _useState8 = _slicedToArray(_useState7, 2),
+      isFollowedByUser = _useState8[0],
+      setIsFollowedByUser = _useState8[1];
+
+  var _useState9 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(false),
+      _useState10 = _slicedToArray(_useState9, 2),
+      displayFollowButton = _useState10[0],
+      setDisplayFollowButton = _useState10[1];
 
   var getPosts = function getPosts() {
     axios.get(route('get-user-profile-posts'), {
@@ -9838,6 +9859,22 @@ function UserProfile(_ref) {
   };
 
   (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(function () {
+    if (user.followed_by) {
+      setFollowersCount(user.followed_by.length);
+    }
+
+    if (user.id != currentUser.id) {
+      var _user$followed_by;
+
+      if ((_user$followed_by = user.followed_by) !== null && _user$followed_by !== void 0 && _user$followed_by.find(function (follower) {
+        return follower == currentUser.id;
+      })) {
+        setIsFollowedByUser(true);
+      }
+
+      setDisplayFollowButton(true);
+    }
+
     getPosts();
   }, []);
 
@@ -9847,52 +9884,87 @@ function UserProfile(_ref) {
     }
   };
 
-  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("div", {
+  var follow = function follow() {
+    axios.post(route('follow'), {
+      user_id_to_follow: post.user.id
+    }).then(function () {
+      setIsFollowedByUser(true);
+    });
+  };
+
+  var unfollow = function unfollow() {
+    axios.post(route('unfollow'), {
+      user_id_to_unfollow: post.user.id
+    }).then(function () {
+      setIsFollowedByUser(false);
+    });
+  };
+
+  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("div", {
     className: "fixed top-20 bottom-2 right-2 left-2 md:inset-3 bg-sage/70 backdrop-blur-sm",
-    children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("div", {
+    children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxs)("div", {
       className: "overflow-scroll md:flex fixed inset-2 md:inset-4 md:top-16 md:bottom-16 md:left-48 md:right-48 bg-white/80 md:p-5",
-      children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("div", {
+      children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("div", {
         onClick: toggleSetDisplayUserProfile,
         className: "cursor-pointer fixed top-6 right-6 md:static",
-        children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_fortawesome_react_fontawesome__WEBPACK_IMPORTED_MODULE_3__.FontAwesomeIcon, {
-          icon: _fortawesome_free_solid_svg_icons__WEBPACK_IMPORTED_MODULE_5__.faX
+        children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)(_fortawesome_react_fontawesome__WEBPACK_IMPORTED_MODULE_3__.FontAwesomeIcon, {
+          icon: _fortawesome_free_solid_svg_icons__WEBPACK_IMPORTED_MODULE_6__.faX
         })
-      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("div", {
+      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxs)("div", {
         className: "bg-white md:h-full p-2 md:ml-auto",
-        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("h1", {
+        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("h1", {
           className: "text-xl underline",
-          children: "Account Details"
-        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_ProfilePicture__WEBPACK_IMPORTED_MODULE_2__["default"], {
+          children: user.username
+        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)(_ProfilePicture__WEBPACK_IMPORTED_MODULE_2__["default"], {
           profilePictureUrl: user.temp_profile_picture_url,
           className: "w-46 h-36 my-2",
           defaultSize: "2x"
-        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("p", {
+        }), isFollowedByUser && displayFollowButton && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("div", {
+          className: "cursor-pointer text-center",
+          onClick: unfollow,
+          children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)(_Button__WEBPACK_IMPORTED_MODULE_4__["default"], {
+            onClick: unfollow,
+            children: "Unfollow"
+          })
+        }), displayFollowButton && !isFollowedByUser && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("div", {
+          className: "cursor-pointer text-center",
+          onClick: follow,
+          children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)(_Button__WEBPACK_IMPORTED_MODULE_4__["default"], {
+            onClick: follow,
+            children: "Follow"
+          })
+        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxs)("p", {
           className: "bg-white rounded-xl p-2 max-w-fit mb-1",
-          children: user.username
-        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("p", {
-          className: "bg-white rounded-xl p-2 max-w-fit mb-1",
+          children: [user.first_name, " ", user.last_name]
+        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxs)("p", {
+          className: "bg-white rounded-xl max-w-fit mb-1 ml-1",
+          children: [followersCount, " ", followersCount == 1 ? 'follower' : 'followers']
+        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxs)("p", {
+          className: "bg-white rounded-xl max-w-fit mb-1 ml-1",
+          children: [user.posts.length, " ", user.posts.length == 1 ? 'post' : 'posts']
+        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxs)("p", {
+          className: "bg-white rounded-xl max-w-fit mb-1 ml-1",
           children: ["Joined: ", new Date(user.created_at).toLocaleDateString('en-us', {
-            weekday: "long",
             year: "numeric",
             month: "short",
             day: "numeric"
           })]
         })]
-      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("div", {
+      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("div", {
         className: "md:mr-auto overflow-scroll bg-white md:h-full md:p-2 w-5/5 md:w-3/5 md:max-w-3/5",
         onScroll: handleScroll,
         children: posts ? posts.map(function (post) {
-          return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_Post__WEBPACK_IMPORTED_MODULE_1__["default"], {
+          return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)(_Post__WEBPACK_IMPORTED_MODULE_1__["default"], {
             post: post,
             currentUser: currentUser,
             categories: categories
           }, "profile_post_".concat(post.id));
-        }) : /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("div", {
+        }) : /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("div", {
           "class": "flex justify-center items-center",
-          children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("div", {
+          children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("div", {
             "class": "spinner-border animate-spin inline-block w-8 h-8 border-4 rounded-full",
             role: "status",
-            children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("span", {
+            children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("span", {
               "class": "visually-hidden",
               children: "Loading..."
             })
@@ -10154,6 +10226,10 @@ function Authenticated(_ref) {
             href: route('my-likes'),
             active: route().current('my-likes'),
             children: "My Likes"
+          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)(_Components_ResponsiveNavLink__WEBPACK_IMPORTED_MODULE_4__["default"], {
+            href: route('get-my-follow-posts-page'),
+            active: route().current('get-my-follow-posts-page'),
+            children: "My Follows"
           }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)(_Components_ResponsiveNavLink__WEBPACK_IMPORTED_MODULE_4__["default"], {
             href: route('invite'),
             active: route().current('invite'),

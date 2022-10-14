@@ -92,6 +92,10 @@ function PostForm({ categories, className }) {
         e.preventDefault();
 
         post(route('create-post'), {
+            onSuccess: () => {
+                reset()
+                toggleIsCategorySelected()
+            },
             onError: error => {
                 if (error.message) {
                     setError(error.message);
@@ -114,7 +118,7 @@ function PostForm({ categories, className }) {
             <Input
                 type="textarea"
                 name="post_body"
-                value={data.comment_body}
+                value={data.post_body}
                 className="w-full"
                 autoComplete="post_body"
                 isFocused={false}

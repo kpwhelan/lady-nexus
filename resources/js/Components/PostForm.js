@@ -95,8 +95,8 @@ function PostForm({ categories, className }) {
 
         post(route('create-post'), {
             onSuccess: () => {
-                toggleIsCategorySelected()
                 reset()
+                toggleIsCategorySelected()
                 setSuccess('Posted successfully!')
 
                 setTimeout(() => {

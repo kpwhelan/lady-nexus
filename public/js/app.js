@@ -10155,6 +10155,10 @@ function Authenticated(_ref) {
             active: route().current('my-likes'),
             children: "My Likes"
           }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)(_Components_ResponsiveNavLink__WEBPACK_IMPORTED_MODULE_4__["default"], {
+            href: route('get-my-follow-posts-page'),
+            active: route().current('get-my-follow-posts-page'),
+            children: "My Follows"
+          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)(_Components_ResponsiveNavLink__WEBPACK_IMPORTED_MODULE_4__["default"], {
             href: route('invite'),
             active: route().current('invite'),
             children: "Invite"
